@@ -46,7 +46,8 @@ const UpgradeAccountStyle = styled(Stack)(({ theme }) => ({
 
   "& .chef-image": {
     position: "absolute",
-    top: "-50px",
+    top: 0,
+    transform: "translate(0,-50%)",
     height: "110px",
     width: "auto",
   },
