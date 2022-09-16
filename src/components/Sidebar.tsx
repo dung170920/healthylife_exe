@@ -22,6 +22,10 @@ const SidebarContainer = styled("aside")(({ theme }) => ({
 const SidebarList = styled(MenuList)(({ theme }) => ({
   gap: "1.5rem",
   paddingTop: "5rem",
+
+  "& .MuiMenuItem-root": {
+    display: "flex",
+  },
 }));
 
 export const Sidebar = () => {
