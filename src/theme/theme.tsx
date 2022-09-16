@@ -6,6 +6,7 @@ import {
 } from "@mui/material/styles";
 import breakpoints from "./breakpoints";
 import palette from "./palette";
+import typography from "./typography";
 import Overrides from "./overrides";
 import { CssBaseline } from "@mui/material";
 
@@ -17,10 +18,11 @@ const ThemeProvider = ({ children }: ThemeConfigProps) => {
   const themeOptions: ThemeOptions = {
     palette,
     breakpoints,
+    typography,
   };
 
   const theme = createTheme(themeOptions);
-  //theme.components = Overrides(theme);
+  theme.components = Overrides(theme);
 
   return (
     <MUIThemeProvider theme={theme}>

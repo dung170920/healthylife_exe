@@ -32,9 +32,11 @@ export default function Router() {
     {
       path: "/",
       element: <DashboardLayout />,
+      children: [{ element: <Dashboard />, index: true }],
     },
   ]);
 }
 
 const Login = Loadable(lazy(() => import("pages/auth/Login")));
 const Register = Loadable(lazy(() => import("pages/auth/Register")));
+const Dashboard = Loadable(lazy(() => import("pages/dashboard/Dashboard")));
