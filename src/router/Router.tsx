@@ -26,17 +26,59 @@ export default function Router() {
           path: "register",
           element: <Register />,
         },
-        { path: "/auth", element: <Navigate to="/auth/login" replace /> },
+        { path: "", element: <Navigate to="/auth/login" replace /> },
       ],
     },
     {
       path: "/",
       element: <DashboardLayout />,
-      children: [{ element: <Dashboard />, index: true }],
+      children: [
+        { element: <Dashboard />, index: true },
+        {
+          path: "recipes",
+          children: [
+            {
+              path: ":type",
+              element: <RecipeList />,
+              index: true,
+            },
+            {
+              path: ":recipeId",
+              element: <Recipe />,
+            },
+            {
+              path: "add",
+              element: <AddRecipe />,
+            },
+            { path: "", element: <Navigate to="/recipes/foods" replace /> },
+          ],
+        },
+        {
+          path: "chefs",
+          children: [
+            {
+              element: <ChefList />,
+              index: true,
+            },
+            {
+              path: ":chefId",
+              element: <Chef />,
+            },
+          ],
+        },
+      ],
     },
   ]);
 }
 
 const Login = Loadable(lazy(() => import("pages/auth/Login")));
 const Register = Loadable(lazy(() => import("pages/auth/Register")));
+
 const Dashboard = Loadable(lazy(() => import("pages/dashboard/Dashboard")));
+
+const RecipeList = Loadable(lazy(() => import("pages/recipe/RecipeList")));
+const Recipe = Loadable(lazy(() => import("pages/recipe/Recipe")));
+const AddRecipe = Loadable(lazy(() => import("pages/recipe/AddRecipe")));
+
+const ChefList = Loadable(lazy(() => import("pages/chef/ChefList")));
+const Chef = Loadable(lazy(() => import("pages/chef/Chef")));
