@@ -1,2 +1,2 @@
-export * from "./DashboardLayout";
+export * from "./dashboard/DashboardLayout";
 export * from "./AuthLayout";

@@ -50,7 +50,7 @@ const RecipeTabList = () => {
       sx={{ width: "100%", padding: "0 15px" }}
     >
       {dummyRecipeData.map((recipe) => (
-        <RecipeTab recipe={recipe} />
+        <RecipeTab recipe={recipe} key={recipe.id} />
       ))}
     </Stack>
   );
