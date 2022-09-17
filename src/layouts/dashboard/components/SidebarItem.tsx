@@ -5,8 +5,8 @@ import {
   styled,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import React from "react";
+import { Link } from "react-router-dom";
 
 type SidebarItemStyleProps = {
   active: boolean;
@@ -15,6 +15,8 @@ type SidebarItemStyleProps = {
 };
 
 type SidebarItemProps = {
+  active: string;
+  onActive: (arg: string) => void;
   item: {
     name: string;
     icon: React.ReactNode;
@@ -67,17 +69,14 @@ const SidebarItemStyle = styled(MenuItem)<SidebarItemStyleProps>(
   })
 );
 
-const SidebarItem = ({ item }: SidebarItemProps) => {
-  const location = useLocation();
-  const [active, setActive] = useState(location.pathname);
-
+const SidebarItem = ({ item, active, onActive }: SidebarItemProps) => {
   return (
     <SidebarItemStyle
       component={Link}
       key={item.name}
       active={active === item.to}
       to={item.to}
-      onClick={() => setActive(item.to)}
+      onClick={() => onActive(item.to)}
     >
       <span></span>
       <ListItemIcon>{item.icon}</ListItemIcon>

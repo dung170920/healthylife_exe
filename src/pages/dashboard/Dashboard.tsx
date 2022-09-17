@@ -86,7 +86,13 @@ const Dashboard = () => {
     <>
       <TopMain>
         <LeftInfoStyle>
-          <Typography variant="h5" sx={{ fontWeight: "700", fontSize: "50px" }}>
+          <Typography
+            variant="h5"
+            sx={{
+              fontWeight: "700",
+              fontSize: "50px",
+            }}
+          >
             Bắt đầu với những công thức <br /> nấu ăn tốt nhất
           </Typography>
 
