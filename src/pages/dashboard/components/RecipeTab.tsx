@@ -2,15 +2,14 @@ import { Stack, Box, styled, Typography } from "@mui/material";
 import { RecipePreviewModel } from "models";
 import { GiKnifeFork } from "react-icons/gi";
 import { BiTimeFive } from "react-icons/bi";
-import React from "react";
 
 const RecipeTabStyle = styled(Stack)(({ theme }) => ({
   backgroundColor: "#E6EEFB",
   borderRadius: "10px",
   position: "relative",
   padding: "60px 15px 15px",
-  width: "210px",
-  height: "130px",
+  width: "230px",
+  height: "210px",
   cursor: "pointer",
 
   "& img": {
@@ -37,6 +36,7 @@ const RecipeTabStyle = styled(Stack)(({ theme }) => ({
     alignItems: "center",
     marginTop: "15px",
     fontSize: "15px",
+    color: "#44444F",
   },
   "& .recipe-info-detail__icon": { marginRight: "5px" },
 
