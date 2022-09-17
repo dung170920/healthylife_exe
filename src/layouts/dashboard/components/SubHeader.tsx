@@ -7,9 +7,11 @@ import {
 } from "@mui/material";
 import { HiChevronDown, HiChevronUp } from "react-icons/hi";
 import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 type SubHeaderProps = {
+  active: string;
+  onActive: (arg: string) => void;
   item: {
     name: string;
     icon: React.ReactNode;
@@ -67,10 +69,8 @@ const SidebarItem = styled(MenuItem)<SidebarItemProps>(({ theme, active }) => ({
   },
 }));
 
-const SubHeader = ({ item }: SubHeaderProps) => {
+const SubHeader = ({ item, active, onActive }: SubHeaderProps) => {
   const [showSubHeader, setShowSubHeader] = useState(false);
-  const location = useLocation();
-  const [active, setActive] = useState(location.pathname);
 
   return (
     <>
@@ -88,7 +88,7 @@ const SubHeader = ({ item }: SubHeaderProps) => {
           </Typography>
         </ListItemText>
         <ListItemIcon>
-          {showSubHeader ? <HiChevronDown /> : <HiChevronUp />}
+          {!showSubHeader ? <HiChevronDown /> : <HiChevronUp />}
         </ListItemIcon>
       </SidebarItem>
       {showSubHeader &&
@@ -98,7 +98,7 @@ const SubHeader = ({ item }: SubHeaderProps) => {
             key={child.name}
             active={active === child.to}
             to={child.to}
-            onClick={() => setActive(child.to)}
+            onClick={() => onActive(child.to)}
           >
             <Typography sx={{ fontSize: 14, fontWeight: 500, pl: 8 }}>
               {child.name}

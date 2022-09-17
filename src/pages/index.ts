@@ -9,3 +9,8 @@ export * from "./recipe/AddRecipe";
 
 export * from "./chef/ChefList";
 export * from "./chef/Chef";
+
+export * from "./menu/Menu";
+
+export * from "./order/OrderList";
+export * from "./order/Order";

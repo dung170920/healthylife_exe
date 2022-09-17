@@ -5,6 +5,8 @@ import { MenuList, styled } from "@mui/material";
 import { Logo } from "components";
 import SubHeader from "./SubHeader";
 import SidebarItem from "./SidebarItem";
+import { useState } from "react";
+import { useLocation } from "react-router-dom";
 
 const sidebar = [
   { name: "Trang chủ", icon: <TbLayout2 />, to: "/" },
@@ -37,19 +39,30 @@ const SidebarContainer = styled("aside")(({ theme }) => ({
 }));
 
 export const Sidebar = () => {
+  const location = useLocation();
+  const [active, setActive] = useState(location.pathname);
+
   return (
     <SidebarContainer>
       <Logo sx={{ p: 6 }} />
       <MenuList sx={{ gap: 1.5, pt: 8 }}>
-        {sidebar.map((item) => (
-          <>
-            {item.children ? (
-              <SubHeader item={item} />
-            ) : (
-              <SidebarItem item={item} />
-            )}
-          </>
-        ))}
+        {sidebar.map((item, index) =>
+          item.children ? (
+            <SubHeader
+              item={item}
+              key={index}
+              active={active}
+              onActive={setActive}
+            />
+          ) : (
+            <SidebarItem
+              item={item}
+              key={index}
+              active={active}
+              onActive={setActive}
+            />
+          )
+        )}
       </MenuList>
     </SidebarContainer>
   );

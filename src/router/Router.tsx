@@ -66,6 +66,23 @@ export default function Router() {
             },
           ],
         },
+        {
+          path: "menu",
+          element: <Menu />,
+        },
+        {
+          path: "orders",
+          children: [
+            {
+              element: <OrderList />,
+              index: true,
+            },
+            {
+              path: ":orderId",
+              element: <Order />,
+            },
+          ],
+        },
       ],
     },
   ]);
@@ -82,3 +99,8 @@ const AddRecipe = Loadable(lazy(() => import("pages/recipe/AddRecipe")));
 
 const ChefList = Loadable(lazy(() => import("pages/chef/ChefList")));
 const Chef = Loadable(lazy(() => import("pages/chef/Chef")));
+
+const Menu = Loadable(lazy(() => import("pages/menu/Menu")));
+
+const OrderList = Loadable(lazy(() => import("pages/order/OrderList")));
+const Order = Loadable(lazy(() => import("pages/order/Order")));

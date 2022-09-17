@@ -1,6 +1,7 @@
 import { Theme } from "@mui/material";
 import Accordion from "./Accordion";
 import Badge from "./Badge";
+import Button from "./Button";
 import CssBaseline from "./CssBaseline";
 import Paper from "./Paper";
 
@@ -9,7 +10,8 @@ const Overrides = (theme: Theme) => {
     Accordion(theme),
     Paper(theme),
     CssBaseline(theme),
-    Badge()
+    Badge(),
+    Button(theme)
   );
 };
 
