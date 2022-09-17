@@ -7,7 +7,7 @@ const DateRecipeMenuItem = styled(Stack)(({ theme }) => ({
   marginTop: "15px",
   justifyContent: "space-between",
 
-  "& .date-recipe-name": { fontSize: "15px", fontWeight: "bold" },
+  "& .date-recipe-name": { fontSize: "18px", fontWeight: "bold" },
 
   "& .date-recipe-detail": {
     frontSize: "10px",
