@@ -42,11 +42,6 @@ const ImageFoodStyle = styled("img")(({ theme }) => ({
   height: "100%",
   borderRadius: "inherit",
   objectFit: "cover",
-  // borderRadius: "100%",
-  // position: "absolute",
-  // right: "0",
-  // bottom: "70px",
-  // transform: " translateX(50%)",
 }));
 
 const DescriptionStyle = styled(Stack)(({ theme }) => ({
@@ -98,7 +93,18 @@ const dummyDetailData = {
     "Ngon đến vị cúi cùng baby oh yeah, ngon lắm nha nấu đi em ahujh aauhdu ijaiji i love you, do you nsjdfnj uasufh",
   time: 60,
   level: "Hard",
-  ingredients: ["con chó", "mắm tôm", "lá mơ"],
+  ingredients: [
+    "con chó",
+    "mắm tôm",
+    "lá mơ",
+    "lá mơ",
+    "lá mơ",
+    "lá mơ",
+    "lá mơ",
+    "lá mơ",
+    "lá mơ",
+    "lá mơ",
+  ],
   nutritionList: nutritionListArr,
 };
 
@@ -107,12 +113,22 @@ const makingDialogContent = () => {
     <Stack
       direction="row"
       sx={{
-        padding: "20px",
         "& .icon": { fontSize: "50px", marginRight: "15px" },
       }}
     >
       <IoMdList className="icon" />
       <Box>
+        {/* Ingredient */}
+        <Box sx={{ marginBottom: "10px" }}>
+          <Typography
+            fontWeight="bold"
+            sx={{ marginBottom: "10px", marginTop: "10px" }}
+          >
+            Nguyên liệu
+          </Typography>
+          <IngredientList ingredients={dummyDetailData.ingredients} />
+        </Box>
+
         <Typography
           fontWeight="bold"
           sx={{ marginBottom: "10px", marginTop: "10px" }}
@@ -156,7 +172,7 @@ const Recipe = () => {
         <Bowl
           size={500}
           sx={{
-            bottom: "120px",
+            bottom: "70px",
             right: "-70%",
             transform: "translateX(-50%)",
           }}
@@ -195,10 +211,6 @@ const Recipe = () => {
             </Stack>
           </Stack>
         </DescriptionStyle>
-
-        {/* Ingredients */}
-        <Typography className="title-text">Nguyên liệu</Typography>
-        <IngredientList ingredients={dummyDetailData.ingredients} />
 
         {/* Nutrition Information */}
         <Typography className="title-text">Thông tin dinh dưỡng</Typography>
