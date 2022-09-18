@@ -4,6 +4,8 @@ import { store } from "./app/store";
 import App from "./App";
 import { BrowserRouter } from "react-router-dom";
 
+import "simplebar/dist/simplebar.min.css";
+
 const container = document.getElementById("root")!;
 const root = createRoot(container);
 

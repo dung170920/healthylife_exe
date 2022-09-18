@@ -1,20 +1,19 @@
-import { Box } from "@mui/material";
+import { Stack, styled, Typography } from "@mui/material";
 import React from "react";
+
+const ErrorBoundaryStyle = styled(Stack)(({ theme }) => ({
+  color: theme.palette.error.main,
+  justifyContent: "center",
+  alignItems: "center",
+  padding: "5rem",
+  backgroundColor: theme.palette.error.lighter,
+}));
 
 export const ErrorBoundary = ({ error }: any) => {
   return (
-    <Box
-      sx={{
-        display: "flex",
-        color: "theme.error.main",
-        justifyContent: "center",
-        alignItems: "center",
-        p: 5,
-        bgcolor: "theme.error.light",
-      }}
-    >
+    <ErrorBoundaryStyle>
       <h2>Oops, something went wrong</h2>
-      <h4>{error.message}</h4>
-    </Box>
+      <Typography textAlign={"center"}>{error.message}</Typography>
+    </ErrorBoundaryStyle>
   );
 };

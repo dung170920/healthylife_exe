@@ -4,6 +4,7 @@ import Badge from "./Badge";
 import Button from "./Button";
 import CssBaseline from "./CssBaseline";
 import Paper from "./Paper";
+import Popover from "./Popover";
 
 const Overrides = (theme: Theme) => {
   return Object.assign(
@@ -11,7 +12,8 @@ const Overrides = (theme: Theme) => {
     Paper(theme),
     CssBaseline(theme),
     Badge(),
-    Button(theme)
+    Button(theme),
+    Popover(theme)
   );
 };
 

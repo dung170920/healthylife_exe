@@ -1,27 +1,26 @@
-import { Stack, Box, styled, Typography, Button } from "@mui/material";
-import { chef, chefCooking } from "assets/images";
+import { Stack, Box, styled, Typography } from "@mui/material";
+import { chefCooking } from "assets/images";
 import NormalAccountInfo from "./components/NormalAccountInfo";
 import MemberAccountInfo from "./components/MemberAccountInfo";
 import RecipeTabList from "./components/RecipeTabList";
 
 const TopMain = styled("div")({
   display: "flex",
-  marginBottom: "50px",
 });
 
 const LeftInfoStyle = styled(Stack)(({ theme }) => ({
   width: "70%",
-  height: "600px",
+  height: "475px",
   color: "white",
   borderRadius: "15px",
   backgroundImage: `linear-gradient(to right, ${theme.palette.primary.main}, ${theme.palette.primary.light})`,
-  padding: "45px",
+  padding: "36px",
   position: "relative",
 
   "& img": {
     position: "absolute",
-    right: "40px",
-    bottom: "40px",
+    right: "36px",
+    bottom: "36px",
     width: "410px",
     height: "auto",
   },
@@ -29,7 +28,7 @@ const LeftInfoStyle = styled(Stack)(({ theme }) => ({
 
 const RightInfoStyle = styled(Box)(({ theme }) => ({
   width: "30%",
-  padding: "40px",
+  paddingLeft: "20px",
 }));
 
 const Dashboard = () => {
@@ -41,13 +40,15 @@ const Dashboard = () => {
             variant="h5"
             sx={{
               fontWeight: "700",
-              fontSize: "50px",
+              fontSize: "35px",
             }}
           >
             Bắt đầu với những công thức <br /> nấu ăn tốt nhất
           </Typography>
 
-          <Typography sx={{ marginTop: "10px", fontSize: "30px" }}>
+          <Typography
+            sx={{ marginTop: "10px", fontSize: "18px", fontWeight: 500 }}
+          >
             Chúng tôi sẽ giúp bạn thiết kế thực đơn <br />
             cho bữa ăn của bạn
           </Typography>
@@ -64,11 +65,10 @@ const Dashboard = () => {
       {/* Outstanding Recipe */}
       <Box>
         <Typography
-          variant="h5"
-          fontWeight="bold"
-          sx={{ fontSize: "20px", marginBottom: "110px" }}
+          fontWeight="600"
+          sx={{ fontSize: "24px", marginBottom: "110px" }}
         >
-          Công thức nổi bật
+          Công thức mới nhất
         </Typography>
 
         <Stack direction="row">
