@@ -83,6 +83,10 @@ export default function Router() {
             },
           ],
         },
+        {
+          path: "test",
+          element: <Recipe />,
+        },
       ],
     },
   ]);
