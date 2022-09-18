@@ -2,31 +2,30 @@ import { Stack, Box, styled, Typography } from "@mui/material";
 import { RecipePreviewModel } from "models";
 import { GiKnifeFork } from "react-icons/gi";
 import { BiTimeFive } from "react-icons/bi";
+import { Bowl } from "components";
 
 const RecipeTabStyle = styled(Stack)(({ theme }) => ({
-  backgroundColor: "#E6EEFB",
-  borderRadius: "10px",
+  backgroundColor: theme.palette.primary.lighter,
+  borderRadius: "20px",
   position: "relative",
-  padding: "60px 15px 15px",
-  width: "230px",
-  height: "210px",
+  padding: "16px",
+  width: "225px",
+
   cursor: "pointer",
 
   "& img": {
-    width: "160px",
-    height: "160px",
-    borderRadius: "100px",
-    position: "absolute",
-    top: "-40%",
-    right: "50%",
-    transform: "translate(50%)",
+    width: "120px",
+    height: "120px",
+    borderRadius: "inherit",
+    objectFit: "cover",
   },
 
   "& .recipe-info": { marginTop: "auto" },
 
   "& .recipe-name": {
-    marginBottom: "3px",
-    fontSize: "17px",
+    marginTop: "100px",
+    fontSize: "18px",
+    fontWeight: "bold",
     whiteSpace: "nowrap",
     overflow: "hidden",
     textOverflow: "ellipsis",
@@ -34,34 +33,49 @@ const RecipeTabStyle = styled(Stack)(({ theme }) => ({
 
   "& .recipe-info-detail": {
     alignItems: "center",
-    marginTop: "15px",
-    fontSize: "15px",
-    color: "#44444F",
+    marginTop: "8px",
+    fontSize: "14px",
+    color: theme.palette.grey[700],
   },
-  "& .recipe-info-detail__icon": { marginRight: "5px" },
+  "& .recipe-info-detail__icon": { marginRight: "8px" },
 
   "& .recipe-info-kcal": {
-    fontSize: "15px",
+    fontSize: "14px",
     justifyContent: "center",
     alignItems: "center",
     marginTop: "33px",
+    color: theme.palette.grey[600],
   },
 }));
 
 const KcalTextStyle = styled("span")(({ theme }) => ({
-  fontSize: "15px",
+  fontSize: "20px",
   fontWeight: "bold",
   color: theme.palette.primary.main,
 }));
 
 type Props = {
   recipe: RecipePreviewModel;
+  index: number;
 };
 
-const RecipeTab = ({ recipe }: Props) => {
+const RecipeTab = ({ recipe, index }: Props) => {
   return (
-    <RecipeTabStyle direction="column" key={recipe.id}>
-      <img src={recipe.image} alt=""></img>
+    <RecipeTabStyle
+      direction="column"
+      key={recipe.id}
+      sx={{
+        ...(index === 0 && { backgroundColor: "info.lighter" }),
+        ...(index === 1 && { backgroundColor: "error.lighter" }),
+        ...(index === 2 && { backgroundColor: "warning.lighter" }),
+      }}
+    >
+      <Bowl
+        size={170}
+        sx={{ top: "-40%", right: "50%", transform: "translate(50%)" }}
+      >
+        <img src={recipe.image} alt=""></img>
+      </Bowl>
       <Stack className="recipe-info" direction="column">
         <Typography className="recipe-name" fontWeight="bold">
           {recipe.name}
@@ -71,11 +85,11 @@ const RecipeTab = ({ recipe }: Props) => {
           <Stack direction="column">
             <Stack className="recipe-info-detail" direction="row">
               <GiKnifeFork className="recipe-info-detail__icon" />
-              {recipe.level} Level
+              {recipe.level}
             </Stack>
             <Stack className="recipe-info-detail" direction="row">
               <BiTimeFive className="recipe-info-detail__icon" />
-              {recipe.time} min
+              {recipe.time} phút
             </Stack>
           </Stack>
 

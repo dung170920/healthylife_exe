@@ -1,10 +1,11 @@
-import { Stack, Box, styled, Typography, Button } from "@mui/material";
+import { Stack, styled, Typography, Button } from "@mui/material";
 import { BsCardList } from "react-icons/bs";
 import { GiOnTarget } from "react-icons/gi";
 import { BiDish } from "react-icons/bi";
 import { chef } from "assets/images";
 
 const UpgradeAccountStyle = styled(Stack)(({ theme }) => ({
+  width: 320,
   backgroundColor: theme.palette.primary.main,
   color: "white",
   position: "relative",
@@ -22,28 +23,37 @@ const UpgradeAccountStyle = styled(Stack)(({ theme }) => ({
   "& .upgrade-button": {
     backgroundColor: "white",
     color: theme.palette.primary.main,
-    marginTop: "10px",
+    padding: "12px 0",
+    width: "100%",
     borderRadius: "10px",
-    fontSize: "14px",
+    fontSize: "12px",
+    fontWeight: 600,
+    ":hover": {
+      backgroundColor: "white",
+    },
   },
 }));
 
 const MenuBoxItem = styled(Stack)(({ theme }) => ({
-  borderRadius: "10px",
+  width: 320,
+  borderRadius: "20px",
   marginBottom: "15px",
-  padding: "10px 20px",
-  border: "0.5px solid #D5D5D5",
+  padding: "10px 12px",
+  border: `1px solid ${theme.palette.grey[400]}`,
   alignItems: "center",
-  gap: "10px",
+  gap: "18px",
 
-  "& .menu-item-text": { fontSize: "17px", color: "#44444F" },
+  "& .menu-item-text": {
+    fontSize: "16px",
+    color: theme.palette.grey[700],
+    letterSpacing: "0.1px",
+  },
   "& .menu-item-icon": {
     color: theme.palette.primary.main,
-    backgroundColor: "#E4F4ED",
+    backgroundColor: theme.palette.primary.lighter,
     borderRadius: "5px",
     padding: "8px",
-    fontSize: "40px",
-    marginRight: "10px",
+    fontSize: 40,
   },
 }));
 
@@ -57,7 +67,14 @@ const NormalAccountInfo = () => {
     <Stack sx={{ marginTop: "25px" }}>
       <UpgradeAccountStyle direction="column" alignItems="center">
         <img src={chef} alt="Chef" className="chef-image"></img>
-        <Typography sx={{ fontSize: "18px", marginTop: "5px" }}>
+        <Typography
+          sx={{
+            fontSize: "16px",
+            fontWeight: 600,
+            lineHeight: "28px",
+            mb: "12px",
+          }}
+        >
           Nâng cấp tài khoản để mở khóa tất cả các tính năng
         </Typography>
         <Button className="upgrade-button">

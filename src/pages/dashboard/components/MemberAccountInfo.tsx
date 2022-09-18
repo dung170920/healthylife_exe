@@ -44,7 +44,7 @@ const dummyRecipeData: RecipePreviewModel[] = [
 
 const MemberAccountInfo = () => {
   return (
-    <Stack>
+    <Stack sx={{ backgroundColor: "white", p: 3, borderRadius: "25px" }}>
       <DateBar />
       <DateRecipeBarList recipes={dummyRecipeData} />
     </Stack>

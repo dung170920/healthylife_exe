@@ -4,6 +4,10 @@ declare module "@mui/material/styles" {
   interface SimplePaletteColorOptions {
     lighter: string;
   }
+
+  interface PaletteColor {
+    lighter: string;
+  }
 }
 
 const palette: PaletteOptions = {
