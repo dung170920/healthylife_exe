@@ -18,7 +18,7 @@ export const DashboardLayout = () => {
   return (
     <MainContainer>
       <Sidebar />
-      <Box sx={{ flex: 1, pb: 8, padding: "30px" }}>
+      <Box sx={{ flex: 1, pb: 8 }}>
         <Navbar />
         <Scrollbar sx={{ height: 1, px: 5, pt: 6, pb: 18 }}>
           <Outlet />

@@ -7,6 +7,7 @@ import SubHeader from "./SubHeader";
 import SidebarItem from "./SidebarItem";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
+import React from "react";
 
 const sidebar = [
   { name: "Trang chủ", icon: <TbLayout2 />, to: "/" },

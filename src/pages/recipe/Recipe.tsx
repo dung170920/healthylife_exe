@@ -1,12 +1,12 @@
 import { Stack, Box, styled, Typography, Paper, Button } from "@mui/material";
-import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { RecipeDetailModel } from "models/RecipeDetailModel";
 import { BiTimeFive } from "react-icons/bi";
 import { BiDish } from "react-icons/bi";
 import IngredientList from "pages/recipe/components/IngredientList";
 import NutritionList from "pages/recipe/components/NutritionList";
 import { NutritionModel } from "models/NutritionModel";
+import { AiFillEye, AiOutlineHeart } from "react-icons/ai";
+import { Bowl } from "components";
 
 const DetailStyle = styled(Paper)(({ theme }) => ({
   width: "70%",
@@ -36,13 +36,15 @@ const IntroStyle = styled(Stack)(({ theme }) => ({
 }));
 
 const ImageFoodStyle = styled("img")(({ theme }) => ({
-  width: "450px",
-  height: "450px",
-  borderRadius: "100%",
-  position: "absolute",
-  right: "0",
-  bottom: "70px",
-  transform: " translateX(50%)",
+  width: "100%",
+  height: "100%",
+  borderRadius: "inherit",
+  objectFit: "cover",
+  // borderRadius: "100%",
+  // position: "absolute",
+  // right: "0",
+  // bottom: "70px",
+  // transform: " translateX(50%)",
 }));
 
 const DescriptionStyle = styled(Stack)(({ theme }) => ({
@@ -78,7 +80,6 @@ const DescriptionStyle = styled(Stack)(({ theme }) => ({
     "& .recipe_chef--name": { fontWeight: "bold" },
   },
 }));
-const IngredientStyle = styled(Stack)(({ theme }) => ({}));
 
 const nutritionListArr: NutritionModel[] = [
   { amount: 100, name: "Calories", unit: "kcal" },
@@ -89,6 +90,8 @@ const nutritionListArr: NutritionModel[] = [
 
 const dummyDetailData = {
   name: "Thịt Chó Mắm Tôm",
+  image:
+    "https://www.thatlangon.com/wp-content/uploads/2020/06/bun-dau-7-e1593236905415.jpg",
   description:
     "Ngon đến vị cúi cùng baby oh yeah, ngon lắm nha nấu đi em ahujh aauhdu ijaiji i love you, do you nsjdfnj uasufh",
   time: 60,
@@ -112,10 +115,20 @@ const Recipe = () => {
         </IntroStyle>
 
         {/* Image */}
-        <ImageFoodStyle src="https://www.thatlangon.com/wp-content/uploads/2020/06/bun-dau-7-e1593236905415.jpg" />
+        <Bowl
+          size={500}
+          sx={{
+            bottom: "120px",
+            right: "-70%",
+            transform: "translateX(-50%)",
+          }}
+        >
+          <ImageFoodStyle src={dummyDetailData.image} />
+        </Bowl>
 
         {/* Description */}
         <Typography className="title-text">Mô tả</Typography>
+
         <DescriptionStyle direction="row">
           <Stack className="recipe_time_difficulty">
             <Stack className="recipe_time_difficulty--item" direction="row">
@@ -137,6 +150,7 @@ const Recipe = () => {
               className="recipe_chef--image"
               src="https://suckhoedoisong.qltns.mediacdn.vn/324455921873985536/2022/5/15/photo-1652629284797-1652629285007183004729.jpg"
             ></img>
+
             <Stack>
               <Typography className="recipe_chef--name">Roberto Jr</Typography>
               <Typography>Chef</Typography>
@@ -162,14 +176,14 @@ const Recipe = () => {
               padding: "10px 20px",
             }}
             variant="contained"
-            startIcon={<RemoveRedEyeIcon />}
+            startIcon={<AiFillEye />}
           >
             Xem cách làm
           </Button>
           <Button
             sx={{ fontSize: "12px", padding: "10px 20px" }}
             variant="outlined"
-            startIcon={<FavoriteBorderIcon />}
+            startIcon={<AiOutlineHeart />}
           >
             Yêu thích
           </Button>
@@ -177,12 +191,6 @@ const Recipe = () => {
       </DetailStyle>
 
       {/* Gói nguyên liệu */}
-      <Typography
-        sx={{ marginTop: "20px", fontSize: "23.98px", fontWeight: "800" }}
-      >
-        Gói nguyên liệu
-      </Typography>
-      <Stack></Stack>
     </>
   );
 };
