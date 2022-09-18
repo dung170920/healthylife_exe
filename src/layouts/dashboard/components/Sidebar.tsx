@@ -34,7 +34,7 @@ const sidebar = [
 ];
 
 const SidebarContainer = styled("aside")(({ theme }) => ({
-  width: "16rem",
+  width: "17rem",
   background: "white",
 }));
 

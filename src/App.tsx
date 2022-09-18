@@ -5,11 +5,11 @@ import MUIThemeProvider from "theme/theme";
 
 function App() {
   return (
-    <ReactErrorBoundary FallbackComponent={ErrorBoundary}>
-      <MUIThemeProvider>
+    <MUIThemeProvider>
+      <ReactErrorBoundary FallbackComponent={ErrorBoundary}>
         <Router />
-      </MUIThemeProvider>
-    </ReactErrorBoundary>
+      </ReactErrorBoundary>
+    </MUIThemeProvider>
   );
 }
 

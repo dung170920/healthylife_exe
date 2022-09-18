@@ -3,13 +3,15 @@ import { Sidebar } from "./components/Sidebar";
 import { Outlet } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import React from "react";
+import { Scrollbar } from "components";
 
 const MainContainer = styled("div")(({ theme }) => ({
   width: "100%",
-  minHeight: "100vh",
+  height: "100vh",
   color: theme.palette.grey[900],
   background: theme.palette.grey[100],
   display: "flex",
+  overflow: "hidden",
 }));
 
 export const DashboardLayout = () => {
@@ -18,7 +20,9 @@ export const DashboardLayout = () => {
       <Sidebar />
       <Box sx={{ flex: 1, pb: 8, padding: "30px" }}>
         <Navbar />
-        <Outlet />
+        <Scrollbar sx={{ height: 1, px: 5, pt: 6, pb: 18 }}>
+          <Outlet />
+        </Scrollbar>
       </Box>
     </MainContainer>
   );

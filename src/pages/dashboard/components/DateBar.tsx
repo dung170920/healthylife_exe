@@ -4,6 +4,7 @@ import React from "react";
 const DateBarStyle = styled(Stack)(({ theme }) => ({
   marginBottom: "10px",
   cursor: "pointer",
+  color: theme.palette.grey[900],
 }));
 const DateBarItemStyle = styled(Box)(({ theme }) => ({
   borderRadius: "15px",
@@ -39,11 +40,16 @@ const DateBar = () => {
   ];
 
   return (
-    <DateBarStyle direction="row" spacing={3}>
+    <DateBarStyle
+      direction="row"
+      spacing={3}
+      alignItems="center"
+      justifyContent="center"
+    >
       {dummyDateData.map((d) => (
         <DateBarItemStyle>
-          <Typography>{d.date}</Typography>
-          <Typography>{d.day}</Typography>
+          <Typography fontSize={14}>{d.date}</Typography>
+          <Typography fontSize={14}>{d.day}</Typography>
         </DateBarItemStyle>
       ))}
     </DateBarStyle>
