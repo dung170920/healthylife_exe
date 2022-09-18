@@ -6,7 +6,9 @@ import IngredientList from "pages/recipe/components/IngredientList";
 import NutritionList from "pages/recipe/components/NutritionList";
 import { NutritionModel } from "models/NutritionModel";
 import { AiFillEye, AiOutlineHeart } from "react-icons/ai";
-import { Bowl } from "components";
+import { IoMdList } from "react-icons/io";
+import { Bowl, CustomDialog } from "components";
+import { useState } from "react";
 
 const DetailStyle = styled(Paper)(({ theme }) => ({
   width: "70%",
@@ -32,7 +34,7 @@ const IntroStyle = styled(Stack)(({ theme }) => ({
     marginBottom: "15px",
   },
 
-  "& .intro_desc": { width: "60%", wordBreak: " break-all" },
+  "& .intro_desc": { width: "60%" },
 }));
 
 const ImageFoodStyle = styled("img")(({ theme }) => ({
@@ -100,7 +102,43 @@ const dummyDetailData = {
   nutritionList: nutritionListArr,
 };
 
+const makingDialogContent = () => {
+  return (
+    <Stack
+      direction="row"
+      sx={{
+        padding: "20px",
+        "& .icon": { fontSize: "50px", marginRight: "15px" },
+      }}
+    >
+      <IoMdList className="icon" />
+      <Box>
+        <Typography
+          fontWeight="bold"
+          sx={{ marginBottom: "10px", marginTop: "10px" }}
+        >
+          Cách làm
+        </Typography>
+        <Typography>
+          1. Đánh trứng <br /> Lần lượt đập 2 quả trứng xong bỏ vô máy xay sinh
+          tố xay nhiễn, Sau đó bỏ 1 thìa ca phê và 1 thìa đường. Khuấy thật đều
+          trong 5 phút <br />
+          <br />
+          2. Sơ chế nguyên liệu <br />
+          Nêm thêm 1/2 thìa muối cho ngon.
+        </Typography>
+      </Box>
+    </Stack>
+  );
+};
+
 const Recipe = () => {
+  const [isMakingDialogOpen, setIsMakingDialogOpen] = useState(false);
+
+  const makingDialogOpenCloseHandler = () => {
+    setIsMakingDialogOpen(!isMakingDialogOpen);
+  };
+
   return (
     <>
       <DetailStyle elevation={3} sx={{}}>
@@ -177,6 +215,7 @@ const Recipe = () => {
             }}
             variant="contained"
             startIcon={<AiFillEye />}
+            onClick={makingDialogOpenCloseHandler}
           >
             Xem cách làm
           </Button>
@@ -189,8 +228,17 @@ const Recipe = () => {
           </Button>
         </Stack>
       </DetailStyle>
-
       {/* Gói nguyên liệu */}
+
+      {/* Cách làm Dialog */}
+      <CustomDialog
+        isOpen={isMakingDialogOpen}
+        onClose={makingDialogOpenCloseHandler}
+        children={makingDialogContent()}
+        title="Cách làm"
+        sx={{ "& .MuiDialog-paper": { width: "70%", height: "60%" } }}
+        other={{}}
+      />
     </>
   );
 };

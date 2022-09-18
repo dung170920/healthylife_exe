@@ -65,7 +65,7 @@ const NotificationPopover = () => {
 
         <Scrollbar sx={{ height: 340 }}>
           {[...Array(50)].map((x, i) => (
-            <p>{i}</p>
+            <p key={i}>{i}</p>
           ))}
         </Scrollbar>
       </Dropdown>
