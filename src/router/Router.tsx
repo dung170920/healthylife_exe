@@ -43,7 +43,7 @@ export default function Router() {
               index: true,
             },
             {
-              path: ":recipeId",
+              path: "de",
               element: <Recipe />,
             },
             {

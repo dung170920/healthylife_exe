@@ -1,4 +1,13 @@
-import { Dialog, DialogTitle, Divider } from "@mui/material";
+import {
+  Dialog,
+  DialogTitle,
+  Divider,
+  Typography,
+  Stack,
+  styled,
+  Box,
+} from "@mui/material";
+import { GrClose } from "react-icons/gr";
 import React from "react";
 
 import Slide from "@mui/material/Slide";
@@ -12,6 +21,10 @@ type DialogProps = {
   other: any;
   isOpen: boolean;
 };
+
+const DialogContentStyle = styled(Box)(({ theme }) => ({
+  padding: "10px 20px 20px",
+}));
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -40,9 +53,34 @@ export const CustomDialog = ({
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
-      <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
+      <DialogTitle id="alert-dialog-title">
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          sx={{
+            "& .close-icon": {
+              cursor: "pointer",
+              padding: "10px",
+              borderRadius: "100%",
+              color: "#171725",
+              fontSize: "40px",
+
+              "&:hover": { backgroundColor: "#B5B5BE", transition: "0.3s" },
+            },
+          }}
+        >
+          <Typography
+            sx={{ lineHeight: 2.2, fontSize: "20px", fontWeight: "bold" }}
+          >
+            {title}
+          </Typography>
+
+          <GrClose onClick={onClose} className="close-icon" />
+        </Stack>
+      </DialogTitle>
       <Divider sx={{ marginBottom: "10px" }} />
-      {children}
+
+      <DialogContentStyle>{children}</DialogContentStyle>
     </Dialog>
   );
 };
