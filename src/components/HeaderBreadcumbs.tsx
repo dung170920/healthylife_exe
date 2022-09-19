@@ -37,7 +37,7 @@ export const HeaderBreadcumbs = ({
             maxWidth: 260,
             overflow: "hidden",
             whiteSpace: "nowrap",
-            color: "grey.500",
+            color: "grey.600",
             textOverflow: "ellipsis",
           }}
         >

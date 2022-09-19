@@ -5,6 +5,8 @@ export default function Button(theme: Theme) {
     MuiButton: {
       styleOverrides: {
         root: {
+          padding: "12px 20px",
+          borderRadius: 12,
           "&:hover": {
             boxShadow: "none",
           },
@@ -14,29 +16,12 @@ export default function Button(theme: Theme) {
         },
         // contained
         containedInherit: {
-          color: theme.palette.grey[800],
-          boxShadow: 0,
-          "&:hover": {
-            backgroundColor: theme.palette.grey[400],
-          },
+          color: "#fff",
+          boxShadow: "none",
         },
         containedPrimary: {
-          boxShadow: 0,
-        },
-        containedSecondary: {
-          boxShadow: 0,
-        },
-        containedInfo: {
-          boxShadow: 0,
-        },
-        containedSuccess: {
-          boxShadow: 0,
-        },
-        containedWarning: {
-          boxShadow: 0,
-        },
-        containedError: {
-          boxShadow: 0,
+          color: "#fff",
+          boxShadow: "none",
         },
         // outlined
         outlinedInherit: {

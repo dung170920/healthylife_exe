@@ -5,7 +5,6 @@ import { RiSearchLine } from "react-icons/ri";
 const Searchbar = () => {
   return (
     <Input
-      autoFocus
       disableUnderline
       placeholder="Tìm kiếm công thức…"
       startAdornment={
