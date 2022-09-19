@@ -70,6 +70,10 @@ export default function Router() {
           element: <Menu />,
         },
         {
+          path: "upgrade",
+          element: <Upgrade />,
+        },
+        {
           path: "orders",
           children: [
             {
@@ -103,3 +107,5 @@ const Menu = Loadable(lazy(() => import("pages/menu/Menu")));
 
 const OrderList = Loadable(lazy(() => import("pages/order/OrderList")));
 const Order = Loadable(lazy(() => import("pages/order/Order")));
+
+const Upgrade = Loadable(lazy(() => import("pages/upgrade/Upgrade")));
