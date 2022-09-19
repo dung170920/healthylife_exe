@@ -46,7 +46,7 @@ const palette: PaletteOptions = {
     900: "#171725",
   },
   background: {
-    default: "#FAFAFB",
+    default: "#F1F1F5",
   },
 };
 

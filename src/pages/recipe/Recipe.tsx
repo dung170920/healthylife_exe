@@ -203,6 +203,7 @@ const Recipe = () => {
             <img
               className="recipe_chef--image"
               src="https://suckhoedoisong.qltns.mediacdn.vn/324455921873985536/2022/5/15/photo-1652629284797-1652629285007183004729.jpg"
+              alt=""
             ></img>
 
             <Stack>
@@ -221,7 +222,7 @@ const Recipe = () => {
           <Button
             sx={{
               fontSize: "12px",
-              color: "#FFFF",
+              color: "white",
               marginRight: "15px",
               padding: "10px 20px",
             }}
@@ -249,7 +250,6 @@ const Recipe = () => {
         children={makingDialogContent()}
         title="Cách làm"
         sx={{ "& .MuiDialog-paper": { width: "70%", height: "60%" } }}
-        other={{}}
       />
     </>
   );
