@@ -5,9 +5,16 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Typography, styled } from "@mui/material";
+import { Typography, styled, Alert } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { auth } from "config/config";
+import { useDispatch, useSelector } from "react-redux";
+import { authPending, loginFail, loginSuccess } from "redux/slices/AuthSlice";
+//import { postIdToken } from "services/AuthService";
+import jwtDecode from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
 const theme = createTheme();
 const DivContainner = styled("div")(({ theme }) => ({
@@ -26,7 +33,7 @@ const DivHeader = styled("div")(({ theme }) => ({
   alignItems: "center",
 }));
 
-const DivLogin = styled("div")(({ theme }) => ({
+const DivDangNhap = styled("div")(({ theme }) => ({
   width: "100%",
   height: "100%",
   display: "flex",
@@ -92,18 +99,52 @@ const InstantLogin = styled("div")(({ theme }) => ({
 }));
 
 const Login = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { error, isLoading } = useSelector((state: any) => state.auth);
+
+  const loginGoogle = async () => {
+    dispatch(authPending());
+    const provider = new GoogleAuthProvider();
+    await signInWithPopup(auth, provider);
+    // .then((result) => {
+    //   console.log(result._tokenResponse.idToken);
+    //   postIdToken(result._tokenResponse.idToken).then((res) => {
+    //     console.log(res);
+    //     dispatch(
+    //       loginSuccess({
+    //         accessToken: res.accessToken,
+    //         refreshToken: res.requestToken,
+    //         user: jwtDecode(res.accessToken),
+    //       })
+    //     );
+    //     localStorage.setItem(
+    //       "authTokens",
+    //       JSON.stringify({
+    //         accessToken: res.accessToken,
+    //         refreshToken: res.refreshToken,
+    //       })
+    //     );
+    //     navigate("/");
+    //   });
+    // })
+    // .catch((error) => {
+    //   console.log(error);
+    //   dispatch(loginFail(error.message));
+    // });
+  };
   return (
     <ThemeProvider theme={theme}>
       <DivContainner>
         <DivHeader>
-          <DivLogin>Đăng nhập</DivLogin>
+          <DivDangNhap>Đăng nhập</DivDangNhap>
         </DivHeader>
         <DivContent>
           <DivForm>
             <Box component="form" sx={{ m: "0" }}>
               <label>Email</label>
               <TextField
-                margin="normal"
+                margin="dense"
                 required
                 fullWidth
                 id="email"
@@ -114,7 +155,7 @@ const Login = () => {
               />
               <label>Mật khẩu</label>
               <TextField
-                margin="normal"
+                margin="dense"
                 required
                 fullWidth
                 name="password"
@@ -141,9 +182,10 @@ const Login = () => {
                 ----------------------------Đăng nhập
                 với---------------------------
               </InstantLogin>
-              <ButtonLoginWithGoogle>
+              <ButtonLoginWithGoogle onClick={loginGoogle} disabled={isLoading}>
                 Đăng nhập với Google
               </ButtonLoginWithGoogle>
+              {/* {error && <Alert severity="error">{error}</Alert>} */}
             </Box>
           </DivForm>
         </DivContent>

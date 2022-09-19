@@ -6,8 +6,12 @@ import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Typography, styled } from "@mui/material";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { auth } from "config/config";
+import { useDispatch, useSelector } from "react-redux";
+import { authPending, loginFail, loginSuccess } from "redux/slices/AuthSlice";
+
+import { useNavigate } from "react-router-dom";
 
 const theme = createTheme();
 const DivContainner = styled("div")(({ theme }) => ({
@@ -28,12 +32,11 @@ const DivHeader = styled("div")(({ theme }) => ({
 
 const DivRegister = styled("div")(({ theme }) => ({
   width: "100%",
-  height: "100%",
+  height: "85%",
   display: "flex",
   justifyContent: "start",
   alignItems: "center",
   marginLeft: "20px",
-  marginTop: "15px",
   fontSize: "150%",
   fontWeight: "600",
 }));
@@ -64,7 +67,7 @@ const CreateAccount = styled(Button)(({ theme }) => ({
   border: "1px solid ",
   backgroundColor: "#1AC073",
   color: "#FFF",
-  marginTop: "24px",
+  marginTop: "15px",
   marginBottom: "16px",
   ":hover": {
     backgroundColor: "#B5B5BE",
@@ -78,7 +81,7 @@ const ButtonLoginWithGoogle = styled(Button)(({ theme }) => ({
   borderRadius: "4px",
   backgroundColor: "#FC5A5A",
   color: "#FFF",
-  marginTop: "24px",
+  marginTop: "15px",
   marginBottom: "16px",
   ":hover": {
     backgroundColor: "#B5B5BE",
@@ -92,6 +95,41 @@ const InstantLogin = styled("div")(({ theme }) => ({
 }));
 
 const Register = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { error, isLoading } = useSelector((state: any) => state.auth);
+
+  const loginGoogle = async () => {
+    dispatch(authPending());
+    const provider = new GoogleAuthProvider();
+    await signInWithPopup(auth, provider);
+    // .then((result) => {
+    //   console.log(result._tokenResponse.idToken);
+    //   postIdToken(result._tokenResponse.idToken).then((res) => {
+    //     console.log(res);
+    //     dispatch(
+    //       loginSuccess({
+    //         accessToken: res.accessToken,
+    //         refreshToken: res.requestToken,
+    //         user: jwtDecode(res.accessToken),
+    //       })
+    //     );
+    //     localStorage.setItem(
+    //       "authTokens",
+    //       JSON.stringify({
+    //         accessToken: res.accessToken,
+    //         refreshToken: res.refreshToken,
+    //       })
+    //     );
+    //     navigate("/");
+    //   });
+    // })
+    // .catch((error) => {
+    //   console.log(error);
+    //   dispatch(loginFail(error.message));
+    // });
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <DivContainner>
@@ -103,7 +141,7 @@ const Register = () => {
             <Box component="form" sx={{ m: "0" }}>
               <label>Tên đăng nhập</label>
               <TextField
-                margin="normal"
+                margin="dense"
                 required
                 fullWidth
                 id="account"
@@ -114,7 +152,7 @@ const Register = () => {
               />
               <label>Email</label>
               <TextField
-                margin="normal"
+                margin="dense"
                 required
                 fullWidth
                 id="email"
@@ -128,7 +166,7 @@ const Register = () => {
               <Grid container spacing={1}>
                 <Grid item xs>
                   <TextField
-                    margin="normal"
+                    margin="dense"
                     required
                     fullWidth
                     name="password"
@@ -140,7 +178,7 @@ const Register = () => {
                 </Grid>
                 <Grid item xs>
                   <TextField
-                    margin="normal"
+                    margin="dense"
                     required
                     fullWidth
                     name="password"
@@ -156,7 +194,7 @@ const Register = () => {
                 ----------------------------Đăng nhập
                 với---------------------------
               </InstantLogin>
-              <ButtonLoginWithGoogle>
+              <ButtonLoginWithGoogle onClick={loginGoogle} disabled={isLoading}>
                 Đăng nhập với Google
               </ButtonLoginWithGoogle>
             </Box>
