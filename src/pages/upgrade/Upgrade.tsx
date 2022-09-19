@@ -1,4 +1,4 @@
-import { Box, Divider, Stack, styled, Typography } from "@mui/material";
+import { Box, Divider, Stack, styled } from "@mui/material";
 import { HeaderBreadcumbs } from "components";
 import React from "react";
 import UpgradeItem from "./components/UpgradeItem";

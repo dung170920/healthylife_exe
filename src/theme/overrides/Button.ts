@@ -25,9 +25,11 @@ export default function Button(theme: Theme) {
         },
         // outlined
         outlinedInherit: {
-          border: `1px solid ${theme.palette.grey[400]}`,
+          border: `2px solid ${theme.palette.grey[300]}`,
+          color: theme.palette.grey[900],
+          backgroundColor: theme.palette.grey[100],
           "&:hover": {
-            backgroundColor: theme.palette.background,
+            border: `2px solid ${theme.palette.grey[500]}`,
           },
         },
         textInherit: {

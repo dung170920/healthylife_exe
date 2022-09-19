@@ -1,7 +1,6 @@
 import { Stack, Box, styled, Typography, Paper, Button } from "@mui/material";
-import { RecipeDetailModel } from "models/RecipeDetailModel";
-import { BiTimeFive } from "react-icons/bi";
-import { BiDish } from "react-icons/bi";
+import { RecipeDetailModel } from "models";
+import { BiTimeFive, BiDish } from "react-icons/bi";
 import IngredientList from "pages/recipe/components/IngredientList";
 import NutritionList from "pages/recipe/components/NutritionList";
 import { NutritionModel } from "models/NutritionModel";

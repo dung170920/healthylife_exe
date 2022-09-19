@@ -4,4 +4,5 @@ export interface LinkModel {
   to?: string;
   name: string;
   icon?: ReactElement;
+  children?: LinkModel[];
 }

@@ -8,16 +8,12 @@ import {
 import { HiChevronDown, HiChevronUp } from "react-icons/hi";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { LinkModel } from "models";
 
 type SubHeaderProps = {
   active: string;
   onActive: (arg: string) => void;
-  item: {
-    name: string;
-    icon: React.ReactNode;
-    to?: string;
-    children: any[];
-  };
+  item: LinkModel;
 };
 
 type SidebarItemProps = {
@@ -98,7 +94,7 @@ const SubHeader = ({ item, active, onActive }: SubHeaderProps) => {
             key={child.name}
             active={active === child.to}
             to={child.to}
-            onClick={() => onActive(child.to)}
+            onClick={() => onActive(child.to!)}
           >
             <Typography sx={{ fontSize: 14, fontWeight: 500, pl: 8 }}>
               {child.name}
