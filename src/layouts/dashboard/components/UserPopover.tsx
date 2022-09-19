@@ -17,22 +17,23 @@ import { MdLeaderboard } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logoutSuccess } from "redux/slices/AuthSlice";
+import { LinkModel } from "models";
 
-const menu = [
+const menu: LinkModel[] = [
   {
     icon: <BiUser />,
     name: "Thông tin cá nhân",
-    linkTo: "/profile",
+    to: "/profile",
   },
   {
     icon: <BiBarChartAlt />,
     name: "Thống kê",
-    linkTo: "/report",
+    to: "/report",
   },
   {
     icon: <BiCog />,
     name: "Cài đặt",
-    linkTo: "/settings",
+    to: "/settings",
   },
 ];
 
@@ -89,7 +90,7 @@ const UserPopover = () => {
           {menu.map((option) => (
             <MenuItem
               key={option.name}
-              to={option.linkTo}
+              to={option.to!}
               component={Link}
               onClick={handleClose}
               sx={{ p: 1.5, color: "grey.700", borderRadius: "12px" }}

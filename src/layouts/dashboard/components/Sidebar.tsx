@@ -5,11 +5,11 @@ import { MenuList, styled } from "@mui/material";
 import { Logo } from "components";
 import SubHeader from "./SubHeader";
 import SidebarItem from "./SidebarItem";
-import { useState } from "react";
+import { LinkModel } from "models";
 import { useLocation } from "react-router-dom";
-import React from "react";
+import { useState } from "react";
 
-const sidebar = [
+const sidebar: LinkModel[] = [
   { name: "Trang chủ", icon: <TbLayout2 />, to: "/" },
   {
     name: "Danh sách món",
