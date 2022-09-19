@@ -3,6 +3,7 @@ import { BsCardList } from "react-icons/bs";
 import { GiOnTarget } from "react-icons/gi";
 import { BiDish } from "react-icons/bi";
 import { chef } from "assets/images";
+import { formatPrice } from "utils/formatPrice";
 
 const UpgradeAccountStyle = styled(Stack)(({ theme }) => ({
   width: 320,
@@ -57,10 +58,7 @@ const MenuBoxItem = styled(Stack)(({ theme }) => ({
   },
 }));
 
-const MemberPrice = new Intl.NumberFormat("vi-VN", {
-  style: "currency",
-  currency: "VND",
-}).format(45000);
+const MemberPrice = formatPrice(45000);
 
 const NormalAccountInfo = () => {
   return (
