@@ -18,7 +18,6 @@ type DialogProps = {
   onClose: () => void;
   sx?: Object;
   title: string;
-  other: any;
   isOpen: boolean;
 };
 

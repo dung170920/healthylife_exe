@@ -9,7 +9,7 @@ const MainContainer = styled("div")(({ theme }) => ({
   width: "100%",
   height: "100vh",
   color: theme.palette.grey[900],
-  background: theme.palette.grey[100],
+  background: theme.palette.background.default,
   display: "flex",
   overflow: "hidden",
 }));

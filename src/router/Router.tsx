@@ -40,10 +40,9 @@ export default function Router() {
             {
               path: ":type",
               element: <RecipeList />,
-              index: true,
             },
             {
-              path: "de",
+              path: "recipe/:recipeId",
               element: <Recipe />,
             },
             {
