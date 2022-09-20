@@ -14,3 +14,5 @@ export * from "./menu/Menu";
 
 export * from "./order/OrderList";
 export * from "./order/Order";
+
+export * from "./profile/Profile";

@@ -86,6 +86,10 @@ export default function Router() {
             },
           ],
         },
+        {
+          path: "profile",
+          element: <Profile />,
+        },
       ],
     },
   ]);
@@ -109,3 +113,5 @@ const OrderList = Loadable(lazy(() => import("pages/order/OrderList")));
 const Order = Loadable(lazy(() => import("pages/order/Order")));
 
 const Upgrade = Loadable(lazy(() => import("pages/upgrade/Upgrade")));
+
+const Profile = Loadable(lazy(() => import("pages/profile/Profile")));
