@@ -6,7 +6,9 @@ import {
   Grid,
   Typography,
   Divider,
+  Tooltip,
 } from "@mui/material";
+import React from "react";
 import { LogoIcon } from "../../assets/icons";
 import { FaWeight } from "react-icons/fa";
 import { MdHeight } from "react-icons/md";
@@ -101,6 +103,7 @@ const dummyProfileData = {
   Height: 170,
   Birthday: "2/9/1987",
   Email: "messi@gmail.com",
+  ValidUntil: "15/5/2023",
 };
 
 const Profile = () => {
@@ -121,22 +124,35 @@ const Profile = () => {
           <Stack direction="row">
             <img
               className="profile_info avt"
-              src={dummyProfileData.PictureUrl}
+              src={
+                dummyProfileData.PictureUrl ||
+                "https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
+              }
             />
             <Stack className="profile_info detail">
               <Typography fontWeight="bold" className="profile_info name">
-                {dummyProfileData.FullName}
+                {dummyProfileData.FullName || "-"}
               </Typography>
               <Stack direction="row" className="profile_info balance">
                 <BiWallet className="profile_info balance icon" />
-                <Typography>Số dư: {dummyProfileData.Balance} VND</Typography>
+                <Typography>
+                  Số dư: {dummyProfileData.Balance || "0"} VND
+                </Typography>
               </Stack>
             </Stack>
           </Stack>
 
           {/* Right Info */}
           <RightIconGroup direction="row" spacing="30px">
-            <RiVipCrownFill className="icons crown_icon" />
+            <Tooltip
+              title={`Gói hội viên còn thời hạn đến: ${dummyProfileData.ValidUntil}`}
+              placement="bottom"
+              arrow
+            >
+              <Box sx={{ height: "30px" }}>
+                <RiVipCrownFill className="icons crown_icon" />
+              </Box>
+            </Tooltip>
             <RiMoneyDollarCircleLine className="icons rest_icon" />
             <AiOutlineEdit className="icons rest_icon" />
           </RightIconGroup>
@@ -151,7 +167,7 @@ const Profile = () => {
             <Stack direction="row" alignContent="center">
               <FaWeight className="profile_number_icon" />
               <Typography className="profile_number_text">
-                {dummyProfileData.Weight} kg
+                {dummyProfileData.Weight || "-"} kg
               </Typography>
             </Stack>
           </ProfileNumberDetail>
@@ -161,7 +177,7 @@ const Profile = () => {
             <Stack direction="row" alignContent="center">
               <MdHeight className="profile_number_icon" />
               <Typography className="profile_number_text">
-                {dummyProfileData.Height} cm
+                {dummyProfileData.Height || "-"} cm
               </Typography>
             </Stack>
           </ProfileNumberDetail>
@@ -169,14 +185,14 @@ const Profile = () => {
           <ProfileNumberDetail item xs={4}>
             <Typography className="profile_number_title">Giới tính</Typography>
             <Stack direction="row" alignContent="center">
-              {dummyProfileData.Gender === "Nam" ? (
+              {(dummyProfileData.Gender === "Nam" ? (
                 <BsGenderMale className="profile_number_icon" />
               ) : (
                 <BsGenderFemale className="profile_number_icon" />
-              )}
+              )) || "-"}
 
               <Typography className="profile_number_text">
-                {dummyProfileData.Gender}
+                {dummyProfileData.Gender || "-"}
               </Typography>
             </Stack>
           </ProfileNumberDetail>
@@ -186,7 +202,7 @@ const Profile = () => {
             <Stack direction="row" alignContent="center">
               <HiOutlineMail className="profile_number_icon" />
               <Typography className="profile_number_text">
-                {dummyProfileData.Email}
+                {dummyProfileData.Email || "-"}
               </Typography>
             </Stack>
           </ProfileNumberDetail>
@@ -196,7 +212,7 @@ const Profile = () => {
             <Stack direction="row" alignContent="center">
               <GiOnTarget className="profile_number_icon" />
               <Typography className="profile_number_text">
-                {dummyProfileData.Target}
+                {dummyProfileData.Target || "-"}
               </Typography>
             </Stack>
           </ProfileNumberDetail>
@@ -206,7 +222,7 @@ const Profile = () => {
             <Stack direction="row" alignContent="center">
               <FaBirthdayCake className="profile_number_icon" />
               <Typography className="profile_number_text">
-                {dummyProfileData.Birthday}
+                {dummyProfileData.Birthday || "-"}
               </Typography>
             </Stack>
           </ProfileNumberDetail>

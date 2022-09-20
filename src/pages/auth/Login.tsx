@@ -110,6 +110,7 @@ const Login = () => {
     await signInWithPopup(auth, provider)
       .then((result: any) => {
         postIdToken(result._tokenResponse.idToken).then((res: any) => {
+          console.log(res.result.accessToken);
           dispatch(
             loginSuccess({
               accessToken: res.result.accessToken,
