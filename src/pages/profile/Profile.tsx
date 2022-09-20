@@ -26,7 +26,7 @@ const ProfileMainContainer = styled("div")(({ theme }) => ({
 const ProfileCoverStyles = styled(Stack)(({ theme }) => ({
   width: "120%",
   height: "336px",
-  backgroundColor: "#EEF7F4",
+  backgroundColor: theme.palette.primary.lighter,
   justifyContent: "center",
   alignItems: "center",
   position: "absolute",

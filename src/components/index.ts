@@ -6,3 +6,4 @@ export * from "./Scrollbar";
 export * from "./Bowl";
 export * from "./CustomDialog";
 export * from "./HeaderBreadcumbs";
+export * from "./Pagination";

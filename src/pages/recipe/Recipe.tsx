@@ -1,10 +1,10 @@
 import { Stack, Box, styled, Typography, Paper, Button } from "@mui/material";
-import { RecipeDetailModel } from "models";
+import { RecipeModel } from "models";
 import { BiTimeFive, BiDish } from "react-icons/bi";
 import IngredientList from "pages/recipe/components/IngredientList";
 import NutritionList from "pages/recipe/components/NutritionList";
 import { NutritionModel } from "models/NutritionModel";
-import { AiFillEye, AiOutlineHeart } from "react-icons/ai";
+import { AiFillEye } from "react-icons/ai";
 import { IoMdList } from "react-icons/io";
 import { Bowl, CustomDialog } from "components";
 import { useState } from "react";
