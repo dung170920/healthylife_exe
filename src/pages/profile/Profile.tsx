@@ -20,16 +20,18 @@ import { AiOutlineEdit } from "react-icons/ai";
 
 const ProfileMainContainer = styled("div")(({ theme }) => ({
   position: "relative",
-  height: "620px",
+  height: "400px",
 }));
 
 const ProfileCoverStyles = styled(Stack)(({ theme }) => ({
-  width: "100%",
+  width: "120%",
   height: "336px",
   backgroundColor: "#EEF7F4",
   justifyContent: "center",
   alignItems: "center",
-
+  position: "absolute",
+  left: "-13%",
+  top: "-50px",
   "& .logo_icon": { width: "297px", height: "166px" },
 }));
 
@@ -41,7 +43,7 @@ const ProfileContentStyles = styled(Paper)(({ theme }) => ({
   marginRight: "auto",
   left: 0,
   right: 0,
-  top: "290px",
+  top: "220px",
   padding: "25px",
 
   "& .avt": {
