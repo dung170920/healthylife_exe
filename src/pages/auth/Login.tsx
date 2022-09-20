@@ -109,21 +109,19 @@ const Login = () => {
     const provider = new GoogleAuthProvider();
     await signInWithPopup(auth, provider)
       .then((result: any) => {
-        console.log("idToken: ", result._tokenResponse.idToken);
         postIdToken(result._tokenResponse.idToken).then((res: any) => {
-          console.log("accessToken: ", res);
           dispatch(
             loginSuccess({
-              accessToken: res.accessToken,
-              refreshToken: res.requestToken,
-              user: jwtDecode(res.accessToken),
+              accessToken: res.result.accessToken,
+              refreshToken: res.result.requestToken,
+              user: jwtDecode(res.result.accessToken),
             })
           );
           localStorage.setItem(
             "authTokens",
             JSON.stringify({
-              accessToken: res.accessToken,
-              refreshToken: res.refreshToken,
+              accessToken: res.result.accessToken,
+              refreshToken: res.result.refreshToken,
             })
           );
           navigate("/");
