@@ -231,13 +231,13 @@ const Recipe = () => {
           >
             Xem cách làm
           </Button>
-          <Button
+          {/* <Button
             sx={{ fontSize: "12px", padding: "10px 20px" }}
             variant="outlined"
             startIcon={<AiOutlineHeart />}
           >
             Yêu thích
-          </Button>
+          </Button> */}
         </Stack>
       </DetailStyle>
       {/* Gói nguyên liệu */}
