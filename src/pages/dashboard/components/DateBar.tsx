@@ -47,7 +47,7 @@ const DateBar = () => {
       justifyContent="center"
     >
       {dummyDateData.map((d) => (
-        <DateBarItemStyle>
+        <DateBarItemStyle key={d.day}>
           <Typography fontSize={14}>{d.date}</Typography>
           <Typography fontSize={14}>{d.day}</Typography>
         </DateBarItemStyle>

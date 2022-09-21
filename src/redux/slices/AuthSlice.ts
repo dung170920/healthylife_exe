@@ -51,6 +51,7 @@ export const authSlice = createSlice({
     },
     setToken: (state, action) => {
       state.auth!.accessToken = action.payload;
+      state.auth!.user = jwtDecode(action.payload);
       localStorage.setItem(
         "authTokens",
         JSON.stringify({
@@ -58,9 +59,6 @@ export const authSlice = createSlice({
           refreshToken: state.auth!.refreshToken,
         })
       );
-    },
-    setUserInfo: (state, action) => {
-      state.auth!.user = action.payload;
     },
     refreshFail: (state, action) => {
       state.error = action.payload;
@@ -77,7 +75,6 @@ export const {
   logoutSuccess,
   setToken,
   refreshFail,
-  setUserInfo,
 } = authSlice.actions;
 
 export default authSlice.reducer;

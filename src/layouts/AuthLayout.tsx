@@ -1,13 +1,10 @@
 import React from "react";
-import { Outlet } from "react-router-dom";
-import Button from "@mui/material/Button";
-import Grid from "@mui/material/Grid";
-import Logo from "assets/icons/logo.svg";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Button, Grid } from "@mui/material";
+import { LogoIcon } from "assets/icons";
 import imgSignIn from "assets/icons/imgSignIn.svg";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Typography, styled, Stack } from "@mui/material";
 import { AiOutlineCheck } from "react-icons/ai";
-const theme = createTheme();
 
 const LeftDiv = styled("div")(({ theme }) => ({
   height: "60%",
@@ -44,12 +41,12 @@ const Div = styled("div")(({ theme }) => ({
   },
 }));
 
-const ButtonStyle = styled("div")(({ theme }) => ({
+const ButtonStyle = styled(Button)(({ theme }) => ({
   padding: "6px 12px",
   height: "30px",
   width: "100px",
   borderRadius: "5px",
-  border: "2px solid #fff ",
+  border: "2px solid #fff",
   display: "flex",
   justifyContent: "center",
   alignContent: "center",
@@ -62,68 +59,76 @@ const ButtonStyle = styled("div")(({ theme }) => ({
 }));
 
 export const AuthLayout = () => {
-  var urlRoute = window.location.pathname;
+  const location = useLocation();
+  const navigate = useNavigate();
+  var urlRoute = location.pathname;
   var contentButton = "";
   if (urlRoute === "/auth/login") contentButton = "Đăng ký";
   if (urlRoute === "/auth/register") contentButton = "Đăng nhập";
 
   return (
-    <ThemeProvider theme={theme}>
-      <Grid
-        container
-        component="main"
-        alignItems={"center"}
-        sx={{ height: "100vh" }}
-      >
-        <Grid item xs={2}></Grid>
-        <Grid item xs={8} display="flex" sx={{ height: "70vh" }}>
-          <Grid item xs={6}>
-            <LeftDiv>
-              <Grid
-                item
-                xs={12}
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  p: "10px",
-                  alignItems: "center",
-                }}
+    <Grid
+      container
+      component="main"
+      alignItems={"center"}
+      sx={{ height: "100vh" }}
+    >
+      <Grid item xs={2}></Grid>
+      <Grid item xs={8} display="flex" sx={{ height: "70vh" }}>
+        <Grid item xs={6}>
+          <LeftDiv>
+            <Grid
+              item
+              xs={12}
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                p: "10px",
+                alignItems: "center",
+              }}
+            >
+              <LogoIcon />
+              <ButtonStyle
+                onClick={() =>
+                  urlRoute === "/auth/login"
+                    ? navigate("/auth/register")
+                    : navigate("/auth/login")
+                }
               >
-                <img src={Logo} alt="" />
-                <ButtonStyle> {contentButton}</ButtonStyle>
-              </Grid>
-              <img src={imgSignIn} alt="" className="eatClean" />
-            </LeftDiv>
-            <LeftBottomDiv>
-              <Stack>
-                <Typography variant="h4" color="success.light">
-                  Ăn sạch, sống khoẻ
-                </Typography>
-                <Div>
-                  <AiOutlineCheck className="icon" />
-                  100+ Công thức Eat Clean
-                </Div>
+                {contentButton}
+              </ButtonStyle>
+            </Grid>
+            <img src={imgSignIn} alt="" className="eatClean" />
+          </LeftDiv>
+          <LeftBottomDiv>
+            <Stack>
+              <Typography variant="h4" color="success.light">
+                Ăn sạch, sống khoẻ
+              </Typography>
+              <Div>
+                <AiOutlineCheck className="icon" />
+                100+ Công thức Eat Clean
+              </Div>
 
-                <Div>
-                  {" "}
-                  <AiOutlineCheck className="icon" />
-                  Theo dõi lộ trình của bạn
-                </Div>
+              <Div>
+                {" "}
+                <AiOutlineCheck className="icon" />
+                Theo dõi lộ trình của bạn
+              </Div>
 
-                <Div>
-                  {" "}
-                  <AiOutlineCheck className="icon" />
-                  Thiết kế thực đơn phù hợp với bạn
-                </Div>
-              </Stack>
-            </LeftBottomDiv>
-          </Grid>
-          <Grid item xs={6}>
-            <Outlet />
-          </Grid>
+              <Div>
+                {" "}
+                <AiOutlineCheck className="icon" />
+                Thiết kế thực đơn phù hợp với bạn
+              </Div>
+            </Stack>
+          </LeftBottomDiv>
         </Grid>
-        <Grid item xs={2}></Grid>
+        <Grid item xs={6}>
+          <Outlet />
+        </Grid>
       </Grid>
-    </ThemeProvider>
+      <Grid item xs={2}></Grid>
+    </Grid>
   );
 };

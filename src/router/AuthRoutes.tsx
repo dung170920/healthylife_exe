@@ -4,7 +4,7 @@ import { Navigate } from "react-router-dom";
 import { RootState } from "redux/store";
 
 type AuthRoutesProps = {
-  children: React.ReactNode;
+  children: React.ReactElement;
 };
 
 const AuthRoutes = ({ children }: AuthRoutesProps) => {

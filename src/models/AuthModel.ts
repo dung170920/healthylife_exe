@@ -14,6 +14,7 @@ export interface RegisterRequestModel {
   phoneNumber: string;
 }
 
-export interface LoginGoogleRequestModel {
-  idToken: string;
+export interface AuthResponseModel {
+  accessToken: string;
+  refreshToken: string;
 }
