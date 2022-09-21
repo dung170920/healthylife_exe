@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Box,
   Pagination as MUIPagination,
   PaginationItem,
   styled,
@@ -26,7 +25,7 @@ const PaginationContainer = styled(MUIPagination)(({ theme }) => ({
         fontSize: 16,
       },
 
-      ":first-child, :last-child": {
+      ":first-of-type, :last-of-type": {
         "> button": {
           backgroundColor: theme.palette.primary.main,
           padding: "0 20px",
@@ -38,14 +37,14 @@ const PaginationContainer = styled(MUIPagination)(({ theme }) => ({
         },
       },
 
-      ":first-child": {
+      ":first-of-type": {
         marginRight: "20px",
         "> button::after": {
           marginLeft: "10px",
           content: '"Previous"',
         },
       },
-      ":last-child": {
+      ":last-of-type": {
         marginLeft: "20px",
         "> button::before": {
           marginRight: "10px",

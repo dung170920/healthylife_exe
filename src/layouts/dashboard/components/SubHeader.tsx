@@ -17,7 +17,7 @@ type SubHeaderProps = {
 };
 
 type SidebarItemProps = {
-  active: boolean;
+  active: string;
   to?: string;
   component?: React.ElementType;
 };
@@ -25,7 +25,8 @@ type SidebarItemProps = {
 const SidebarItem = styled(MenuItem)<SidebarItemProps>(({ theme, active }) => ({
   gap: "1rem",
   padding: "1rem 1.25rem",
-  color: active ? theme.palette.primary.main : theme.palette.grey[900],
+  color:
+    active === "true" ? theme.palette.primary.main : theme.palette.grey[900],
 
   ":hover": {
     color: theme.palette.primary.main,
@@ -43,9 +44,10 @@ const SidebarItem = styled(MenuItem)<SidebarItemProps>(({ theme, active }) => ({
     height: "2rem",
     left: 0,
     top: "calc(50% - 32px/2)",
-    transform: active
-      ? "scaleY(100%) translateX(0)"
-      : "scaleY(0) translateX(-100%)",
+    transform:
+      active === "true"
+        ? "scaleY(100%) translateX(0)"
+        : "scaleY(0) translateX(-100%)",
     transition: "transform 0.3s ease-in-out",
     background: theme.palette.primary.main,
     borderBottomRightRadius: "100%",
@@ -60,7 +62,10 @@ const SidebarItem = styled(MenuItem)<SidebarItemProps>(({ theme, active }) => ({
     svg: {
       height: "1.5rem",
       width: "1.5rem",
-      color: active ? theme.palette.primary.main : theme.palette.grey[600],
+      color:
+        active === "true"
+          ? theme.palette.primary.main
+          : theme.palette.grey[600],
     },
   },
 }));
@@ -71,7 +76,7 @@ const SubHeader = ({ item, active, onActive }: SubHeaderProps) => {
   return (
     <>
       <SidebarItem
-        active={false}
+        active={"false"}
         onClick={() => {
           setShowSubHeader(!showSubHeader);
         }}
@@ -92,7 +97,7 @@ const SubHeader = ({ item, active, onActive }: SubHeaderProps) => {
           <SidebarItem
             component={Link}
             key={child.name}
-            active={active === child.to}
+            active={active === child.to ? "true" : "false"}
             to={child.to}
             onClick={() => onActive(child.to!)}
           >

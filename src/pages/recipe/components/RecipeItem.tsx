@@ -87,6 +87,7 @@ export const RecipeItem = ({ item }: RecipeItemProps) => {
         onClick={() => navigate("/recipes/recipe/1")}
       >
         <RecipeHeader
+          sx={{ p: 0 }}
           avatar={
             <Avatar variant="rounded" src={item.image} aria-label="recipe" />
           }
@@ -94,8 +95,8 @@ export const RecipeItem = ({ item }: RecipeItemProps) => {
           subheader={item.type}
           type={item.type}
         />
-        <CardContent>
-          <Typography variant="body2" color="grey.800">
+        <CardContent sx={{ px: 0 }}>
+          <Typography variant="body1" color="grey.800">
             {item.description}
           </Typography>
         </CardContent>
