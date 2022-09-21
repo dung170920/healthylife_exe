@@ -85,25 +85,14 @@ const nutritionListArr: NutritionModel[] = [
 ];
 
 const dummyDetailData = {
-  name: "Thịt Chó Mắm Tôm",
+  name: "Bún Đậu Mắm Tôm",
   image:
     "https://www.thatlangon.com/wp-content/uploads/2020/06/bun-dau-7-e1593236905415.jpg",
   description:
     "Ngon đến vị cúi cùng baby oh yeah, ngon lắm nha nấu đi em ahujh aauhdu ijaiji i love you, do you nsjdfnj uasufh",
   time: 60,
   level: "Hard",
-  ingredients: [
-    "con chó",
-    "mắm tôm",
-    "lá mơ",
-    "lá mơ",
-    "lá mơ",
-    "lá mơ",
-    "lá mơ",
-    "lá mơ",
-    "lá mơ",
-    "lá mơ",
-  ],
+  ingredients: ["bún đậu", "mắm tôm", "chả ran", "nem nướng"],
   nutritionList: nutritionListArr,
 };
 

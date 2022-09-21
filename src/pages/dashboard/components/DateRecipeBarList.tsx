@@ -41,20 +41,24 @@ const DateRecipeBarList = ({ recipes }: Props) => {
   return (
     <Stack>
       {recipes.map((recipe) => (
-        <DateRecipeMenuItem direction="row" key={recipe.id}>
+        <DateRecipeMenuItem direction="row" key={recipe.Id}>
           <Stack className="date-recipe-info">
-            <Typography className="date-recipe-name">{recipe.name}</Typography>
+            <Typography className="date-recipe-name">{recipe.Name}</Typography>
             <Stack className="date-recipe-detail" direction="row">
-              <BiTimeFive className="date-recipe-detail-icon" /> {recipe.time}{" "}
-              phút
+              <BiTimeFive className="date-recipe-detail-icon" />{" "}
+              {recipe.TimeCost} phút
             </Stack>
             <Stack className="date-recipe-detail" direction="row">
               <AiOutlineFire className="date-recipe-detail-icon" />
-              {recipe.kcal} calories
+              {recipe.Calorie} calories
             </Stack>
           </Stack>
           <Bowl size={60} sx={{ right: 5, bottom: "20px" }}>
-            <img className="date-recipe-image" src={recipe.image} alt=""></img>
+            <img
+              className="date-recipe-image"
+              src={recipe.PictureUrl}
+              alt=""
+            ></img>
           </Bowl>
         </DateRecipeMenuItem>
       ))}

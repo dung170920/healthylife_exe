@@ -63,7 +63,7 @@ const RecipeTab = ({ recipe, index }: Props) => {
   return (
     <RecipeTabStyle
       direction="column"
-      key={recipe.id}
+      key={recipe.Id}
       sx={{
         ...(index === 0 && { backgroundColor: "info.lighter" }),
         ...(index === 1 && { backgroundColor: "error.lighter" }),
@@ -74,28 +74,28 @@ const RecipeTab = ({ recipe, index }: Props) => {
         size={170}
         sx={{ top: "-40%", right: "50%", transform: "translate(50%)" }}
       >
-        <img src={recipe.image} alt=""></img>
+        <img src={recipe.PictureUrl} alt=""></img>
       </Bowl>
       <Stack className="recipe-info" direction="column">
         <Typography className="recipe-name" fontWeight="bold">
-          {recipe.name}
+          {recipe.Name}
         </Typography>
 
         <Stack direction="row" sx={{ justifyContent: "space-between" }}>
           <Stack direction="column">
             <Stack className="recipe-info-detail" direction="row">
               <GiKnifeFork className="recipe-info-detail__icon" />
-              {recipe.level}
+              {recipe.Difficulty}
             </Stack>
             <Stack className="recipe-info-detail" direction="row">
               <BiTimeFive className="recipe-info-detail__icon" />
-              {recipe.time} phút
+              {recipe.TimeCost} phút
             </Stack>
           </Stack>
 
           <Box className="recipe-info-kcal">
             <Box>
-              <KcalTextStyle>{recipe.kcal}</KcalTextStyle> Kcal
+              <KcalTextStyle>{recipe.Calorie}</KcalTextStyle> Kcal
             </Box>
           </Box>
         </Stack>
