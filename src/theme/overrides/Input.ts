@@ -26,7 +26,7 @@ export default function Input(theme: Theme) {
         },
 
         input: {
-          padding: 0,
+          padding: "0 !important",
           "&::placeholder": {
             opacity: 1,
             color: theme.palette.grey[600],

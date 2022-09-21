@@ -23,19 +23,19 @@ export const Bowl = ({ children, sx, size }: BowlProps) => {
     <BowlStyle sx={{ height: size, width: size, ...sx }}>
       <Box
         sx={{
-          height: size - size * 0.12,
-          width: size - size * 0.12,
+          height: size - size * 0.1,
+          width: size - size * 0.1,
           position: "absolute",
           borderRadius: "inherit",
           opacity: 0.95,
-          border: 8,
+          border: 10,
           borderColor: "grey.100",
         }}
       ></Box>
       <Box
         sx={{
-          height: size - size * 0.2,
-          width: size - size * 0.2,
+          height: size - size * 0.22,
+          width: size - size * 0.22,
           backgroundColor: "white",
           position: "absolute",
           borderRadius: "inherit",
