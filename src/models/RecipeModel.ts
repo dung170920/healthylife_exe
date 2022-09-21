@@ -14,10 +14,10 @@ export interface RecipeModel {
 }
 
 export interface RecipePreviewModel {
-  id: number;
-  image: string;
-  name: string;
-  level: string;
-  time: number;
-  kcal: number;
+  Id: number;
+  PictureUrl: string;
+  Name: string;
+  Difficulty: string;
+  TimeCost: number;
+  Calorie: number;
 }
