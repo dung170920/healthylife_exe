@@ -5,14 +5,35 @@ import axios, {
   AxiosRequestConfig,
   AxiosResponse,
 } from "axios";
-import jwtDecode from "jwt-decode";
 import { setToken } from "redux/slices/AuthSlice";
 import { store } from "redux/store";
 
+declare module "axios" {
+  export interface AxiosInstance {
+    request<T = any>(config: AxiosRequestConfig): Promise<T>;
+    get<T = any>(url: string, config?: AxiosRequestConfig): Promise<T>;
+    delete<T = any>(url: string, config?: AxiosRequestConfig): Promise<T>;
+    head<T = any>(url: string, config?: AxiosRequestConfig): Promise<T>;
+    post<T = any>(
+      url: string,
+      data?: any,
+      config?: AxiosRequestConfig
+    ): Promise<T>;
+    put<T = any>(
+      url: string,
+      data?: any,
+      config?: AxiosRequestConfig
+    ): Promise<T>;
+    patch<T = any>(
+      url: string,
+      data?: any,
+      config?: AxiosRequestConfig
+    ): Promise<T>;
+  }
+}
+
 const onRequest = (config: AxiosRequestConfig): AxiosRequestConfig => {
-  config.headers!["Authorization"] = `Bearer ${
-    store.getState().auth.auth?.accessToken
-  }`;
+  config.baseURL = process.env.REACT_APP_BASE_API_URL;
   return config;
 };
 
@@ -24,7 +45,6 @@ const onRequestError = async (error: AxiosError): Promise<AxiosError> => {
           "Authorization"
         ] = `Bearer ${res.data?.accessToken}`;
         store.dispatch(setToken(res.data?.accessToken));
-        // store.dispatch(setUserInfo(jwtDecode(res?.accessToken)));
         return axiosPrivate(error.config);
       }
     );
@@ -34,7 +54,7 @@ const onRequestError = async (error: AxiosError): Promise<AxiosError> => {
 };
 
 const onResponse = (response: AxiosResponse): AxiosResponse => {
-  return response.data;
+  return response.data?.result;
 };
 
 const onResponseError = (error: AxiosError): Promise<AxiosError> => {
@@ -48,16 +68,12 @@ function setupInterceptors(axiosInstance: AxiosInstance): AxiosInstance {
   return axiosInstance;
 }
 
-export const axiosPublic = setupInterceptors(
-  axios.create({
-    baseURL: process.env.REACT_APP_BASE_API_URL,
-  })
-);
+export const axiosPublic = setupInterceptors(axios);
 
 export const axiosPrivate = setupInterceptors(
   axios.create({
-    baseURL: process.env.REACT_APP_BASE_API_URL,
     headers: {
+      Authorization: `Bearer ${store.getState().auth.auth?.accessToken}`,
       Accept: "application/json",
       "Content-type": "application/json; charset=utf-8",
     },

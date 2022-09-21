@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react";
 import { Loading } from "components";
 import { Navigate, useRoutes } from "react-router-dom";
 import { AuthLayout, DashboardLayout } from "layouts";
+import AuthRoutes from "./AuthRoutes";
 
 const Loadable = (Component: any) => (props: any) => {
   return (
@@ -31,7 +32,11 @@ export default function Router() {
     },
     {
       path: "/",
-      element: <DashboardLayout />,
+      element: (
+        <AuthRoutes>
+          <DashboardLayout />
+        </AuthRoutes>
+      ),
       children: [
         { element: <Dashboard />, index: true },
         {

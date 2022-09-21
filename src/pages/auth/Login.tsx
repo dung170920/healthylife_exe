@@ -4,21 +4,23 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Typography, styled, Alert } from "@mui/material";
+import { Alert, styled } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "config/config";
 import { useDispatch, useSelector } from "react-redux";
 import { authPending, loginFail, loginSuccess } from "redux/slices/AuthSlice";
-//import { postIdToken } from "services/AuthService";
 import jwtDecode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import { postIdToken } from "api/AuthApi";
+import { AuthResponseModel } from "models";
+import { RootState } from "redux/store";
 
-const theme = createTheme();
 const DivContainner = styled("div")(({ theme }) => ({
+  backgroundColor: "white",
+  borderTopRightRadius: "16px",
+  borderBottomRightRadius: "16px",
   width: "100%",
   height: "100%",
   display: "flex",
@@ -52,7 +54,7 @@ const DivForm = styled("div")(({ theme }) => ({
   display: "flex",
   justifyContent: "start",
   alignItems: "center",
-  marginLeft: "20px",
+  margin: "0 20px",
   fontSize: "110%",
 }));
 
@@ -65,31 +67,25 @@ const DivContent = styled("div")(({ theme }) => ({
 }));
 
 const ButtonLogin = styled(Button)(({ theme }) => ({
-  padding: "6px 16px",
-  height: "36px",
-  width: "100%",
-  borderRadius: "4px",
-  border: "1px solid ",
-  backgroundColor: "#1AC073",
-  color: "#FFF",
   marginTop: "24px",
   marginBottom: "16px",
+  backgroundColor: theme.palette.primary.main,
+  color: "white",
+
   ":hover": {
-    backgroundColor: "#B5B5BE",
+    backgroundColor: theme.palette.primary.main,
+    filter: "brightness(90%)",
   },
 }));
 
 const ButtonLoginWithGoogle = styled(Button)(({ theme }) => ({
-  padding: "6px 16px",
-  height: "36px",
-  width: "100%",
-  borderRadius: "4px",
-  backgroundColor: "#FC5A5A",
+  backgroundColor: theme.palette.error.main,
   color: "#FFF",
   marginTop: "24px",
   marginBottom: "16px",
   ":hover": {
-    backgroundColor: "#B5B5BE",
+    backgroundColor: theme.palette.error.main,
+    filter: "brightness(90%)",
   },
 }));
 
@@ -102,31 +98,32 @@ const InstantLogin = styled("div")(({ theme }) => ({
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { error, isLoading } = useSelector((state: any) => state.auth);
+  const { error, isLoading } = useSelector((state: RootState) => state.auth);
 
   const loginGoogle = async () => {
     dispatch(authPending());
     const provider = new GoogleAuthProvider();
     await signInWithPopup(auth, provider)
       .then((result: any) => {
-        postIdToken(result._tokenResponse.idToken).then((res: any) => {
-          console.log(res.result.accessToken);
-          dispatch(
-            loginSuccess({
-              accessToken: res.result.accessToken,
-              refreshToken: res.result.requestToken,
-              user: jwtDecode(res.result.accessToken),
-            })
-          );
-          localStorage.setItem(
-            "authTokens",
-            JSON.stringify({
-              accessToken: res.result.accessToken,
-              refreshToken: res.result.refreshToken,
-            })
-          );
-          navigate("/");
-        });
+        postIdToken(result._tokenResponse.idToken).then(
+          (res: AuthResponseModel) => {
+            dispatch(
+              loginSuccess({
+                accessToken: res.accessToken,
+                refreshToken: res.refreshToken,
+                user: jwtDecode(res.accessToken),
+              })
+            );
+            localStorage.setItem(
+              "authTokens",
+              JSON.stringify({
+                accessToken: res.accessToken,
+                refreshToken: res.refreshToken,
+              })
+            );
+            navigate("/");
+          }
+        );
       })
       .catch((error) => {
         console.log(error);
@@ -134,63 +131,67 @@ const Login = () => {
       });
   };
   return (
-    <ThemeProvider theme={theme}>
-      <DivContainner>
-        <DivHeader>
-          <DivDangNhap>Đăng nhập</DivDangNhap>
-        </DivHeader>
-        <DivContent>
-          <DivForm>
-            <Box component="form" sx={{ m: "0" }}>
-              <label>Email</label>
-              <TextField
-                margin="dense"
-                required
-                fullWidth
-                id="email"
-                placeholder="Nhập email"
-                name="email"
-                autoComplete="email"
-                autoFocus
-              />
-              <label>Mật khẩu</label>
-              <TextField
-                margin="dense"
-                required
-                fullWidth
-                name="password"
-                placeholder="Nhập mật khẩu"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-              />
-              <Grid container>
-                <Grid item xs>
-                  <FormControlLabel
-                    control={<Checkbox value="remember" color="success" />}
-                    label="Nhớ tài khoản"
-                  />
-                </Grid>
-                <Grid item sx={{ display: "flex", alignItems: "center" }}>
-                  <Link href="#" variant="body1">
-                    Quên mật khẩu
-                  </Link>
-                </Grid>
+    <DivContainner>
+      <DivHeader>
+        <DivDangNhap>Đăng nhập</DivDangNhap>
+      </DivHeader>
+      <DivContent>
+        <DivForm>
+          <Box component="form" sx={{ m: "0" }}>
+            <label>Email</label>
+            <TextField
+              margin="dense"
+              required
+              fullWidth
+              id="email"
+              placeholder="Nhập email"
+              name="email"
+              autoComplete="email"
+              autoFocus
+            />
+            <label>Mật khẩu</label>
+            <TextField
+              margin="dense"
+              required
+              fullWidth
+              name="password"
+              placeholder="Nhập mật khẩu"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+            />
+            <Grid container>
+              <Grid item xs>
+                <FormControlLabel
+                  control={<Checkbox value="remember" color="success" />}
+                  label="Nhớ tài khoản"
+                />
               </Grid>
-              <ButtonLogin>Đăng nhập</ButtonLogin>
-              <InstantLogin>
-                ----------------------------Đăng nhập
-                với---------------------------
-              </InstantLogin>
-              <ButtonLoginWithGoogle onClick={loginGoogle} disabled={isLoading}>
-                Đăng nhập với Google
-              </ButtonLoginWithGoogle>
-              {/* {error && <Alert severity="error">{error}</Alert>} */}
-            </Box>
-          </DivForm>
-        </DivContent>
-      </DivContainner>
-    </ThemeProvider>
+              <Grid item sx={{ display: "flex", alignItems: "center" }}>
+                <Link href="#" variant="body1">
+                  Quên mật khẩu
+                </Link>
+              </Grid>
+            </Grid>
+            <ButtonLogin fullWidth disabled={isLoading}>
+              Đăng nhập
+            </ButtonLogin>
+            <InstantLogin>
+              ----------------------------Đăng nhập
+              với---------------------------
+            </InstantLogin>
+            <ButtonLoginWithGoogle
+              fullWidth
+              onClick={loginGoogle}
+              disabled={isLoading}
+            >
+              Đăng nhập với Google
+            </ButtonLoginWithGoogle>
+            {error && <Alert severity="error">{error}</Alert>}
+          </Box>
+        </DivForm>
+      </DivContent>
+    </DivContainner>
   );
 };
 
