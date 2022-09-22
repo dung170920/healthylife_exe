@@ -121,9 +121,9 @@ export const RecipeItem = ({ item }: RecipeItemProps) => {
           </Typography>
         </CardContent>
         <ChefContainer
-          avatar={<Avatar src={item.chef?.image} aria-label="chef" />}
-          title={item.chef?.name}
-          subheader="250 công thức"
+          avatar={<Avatar src={item.chef?.pictureUrl} aria-label="chef" />}
+          title={item.chef?.fullName}
+          subheader={`${item.chef?.foodCount} công thức`}
         />
       </Card>
     </Box>

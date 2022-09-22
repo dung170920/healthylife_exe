@@ -20,17 +20,6 @@ type ChefItemProps = {
 type ChefHeaderType = {
   type?: string;
 };
-
-// const ViewChef = styled(Button)(({ theme }) => ({
-//   backgroundColor: theme.palette.primary.main,
-//   borderRadius: 12,
-//   color: "white",
-//   marginTop: "auto",
-//   padding: 12,
-//   fontSize: 10,
-//   fontWeight: 300,
-//   // paddingLeft: 20,
-// }));
 const ChefHeader = styled(CardHeader)<ChefHeaderType>(({ theme, type }) => ({
   "& .MuiAvatar-root": {
     height: 76,
@@ -85,10 +74,14 @@ export const ChefItem = ({ item }: ChefItemProps) => {
             justifyContent: "center",
           }}
           avatar={
-            <Avatar variant="circular" src={item.image} aria-label="chef" />
+            <Avatar
+              variant="circular"
+              src={item.pictureUrl}
+              aria-label="chef"
+            />
           }
-          title={item.name}
-          subheader={`${item.numberRecipe} Công thức`}
+          title={item.fullName}
+          subheader={`${item.foodCount} Công thức`}
         />
         <CardActions>
           <Button

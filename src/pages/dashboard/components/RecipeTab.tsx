@@ -1,5 +1,5 @@
 import { Stack, Box, styled, Typography } from "@mui/material";
-import { RecipePreviewModel } from "models";
+import { RecipeModel } from "models";
 import { GiKnifeFork } from "react-icons/gi";
 import { BiTimeFive } from "react-icons/bi";
 import { Bowl } from "components";
@@ -14,8 +14,8 @@ const RecipeTabStyle = styled(Stack)(({ theme }) => ({
   cursor: "pointer",
 
   "& img": {
-    width: "120px",
-    height: "120px",
+    width: "180px",
+    height: "180px",
     borderRadius: "inherit",
     objectFit: "cover",
   },
@@ -55,7 +55,7 @@ const KcalTextStyle = styled("span")(({ theme }) => ({
 }));
 
 type Props = {
-  recipe: RecipePreviewModel;
+  recipe: RecipeModel;
   index: number;
 };
 
@@ -63,7 +63,7 @@ const RecipeTab = ({ recipe, index }: Props) => {
   return (
     <RecipeTabStyle
       direction="column"
-      key={recipe.Id}
+      key={recipe.id}
       sx={{
         ...(index === 0 && { backgroundColor: "info.lighter" }),
         ...(index === 1 && { backgroundColor: "error.lighter" }),
@@ -74,28 +74,32 @@ const RecipeTab = ({ recipe, index }: Props) => {
         size={170}
         sx={{ top: "-40%", right: "50%", transform: "translate(50%)" }}
       >
-        <img src={recipe.PictureUrl} alt=""></img>
+        <img src={recipe.pictureUrl} alt=""></img>
       </Bowl>
       <Stack className="recipe-info" direction="column">
         <Typography className="recipe-name" fontWeight="bold">
-          {recipe.Name}
+          {recipe.name}
         </Typography>
 
         <Stack direction="row" sx={{ justifyContent: "space-between" }}>
           <Stack direction="column">
             <Stack className="recipe-info-detail" direction="row">
               <GiKnifeFork className="recipe-info-detail__icon" />
-              {recipe.Difficulty}
+              {recipe.difficulty === 1
+                ? "Dễ"
+                : recipe.difficulty === 2
+                ? "Trung bình"
+                : "Khó"}
             </Stack>
             <Stack className="recipe-info-detail" direction="row">
               <BiTimeFive className="recipe-info-detail__icon" />
-              {recipe.TimeCost} phút
+              {recipe.timeCost} phút
             </Stack>
           </Stack>
 
           <Box className="recipe-info-kcal">
             <Box>
-              <KcalTextStyle>{recipe.Calorie}</KcalTextStyle> Kcal
+              <KcalTextStyle>{recipe.calorie}</KcalTextStyle> Kcal
             </Box>
           </Box>
         </Stack>
