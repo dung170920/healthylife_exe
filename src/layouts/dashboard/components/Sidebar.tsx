@@ -16,7 +16,7 @@ const sidebar: LinkModel[] = [
     icon: <TbClipboardList />,
     children: [
       {
-        name: "Món ăn",
+        name: "Đồ ăn",
         to: "/recipes/foods",
       },
       {

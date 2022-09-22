@@ -1,6 +1,7 @@
 export interface ChefModel {
   id: string;
-  name: string;
-  image: string;
-  numberRecipe?: number;
+  fullName?: string;
+  pictureUrl?: string;
+  email?: string;
+  foodCount?: number;
 }

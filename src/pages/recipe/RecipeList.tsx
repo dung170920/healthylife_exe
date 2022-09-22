@@ -34,7 +34,7 @@ const RecipeList = () => {
       console.log(res);
       setResponse(res);
     });
-  }, [location.pathname, params]);
+  }, [params]);
 
   return (
     <>
