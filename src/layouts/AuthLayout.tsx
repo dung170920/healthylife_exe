@@ -5,6 +5,10 @@ import { LogoIcon } from "assets/icons";
 import imgSignIn from "assets/icons/imgSignIn.svg";
 import { Typography, styled, Stack } from "@mui/material";
 import { AiOutlineCheck } from "react-icons/ai";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Register from "pages/auth/Register";
+import Dashboard from "pages/dashboard/Dashboard";
+import Login from "pages/auth/Login";
 
 const LeftDiv = styled("div")(({ theme }) => ({
   height: "60%",
