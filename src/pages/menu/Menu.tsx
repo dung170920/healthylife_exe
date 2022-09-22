@@ -69,7 +69,7 @@ const ItemContentStyle = styled(Stack)(({ theme }) => ({
   gap: "10px",
 }));
 
-const dummyRecipeData: RecipeModel[] = [
+const dummyRecipeData = [
   {
     id: 1,
     image:

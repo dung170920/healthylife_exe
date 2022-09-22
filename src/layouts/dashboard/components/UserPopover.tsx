@@ -15,9 +15,10 @@ import { BiUser, BiBarChartAlt, BiCog } from "react-icons/bi";
 import { TbLogout } from "react-icons/tb";
 import { MdLeaderboard } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logoutSuccess } from "redux/slices/AuthSlice";
 import { LinkModel } from "models";
+import { RootState } from "redux/store";
 
 const menu: LinkModel[] = [
   {
@@ -41,6 +42,7 @@ const UserPopover = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [open, setOpen] = useState<HTMLButtonElement | null>(null);
+  let user = useSelector((state: RootState) => state.auth.auth?.user);
 
   const handleClose = () => {
     setOpen(null);
@@ -64,7 +66,7 @@ const UserPopover = () => {
         }}
         onClick={handleOpen}
       >
-        <Avatar src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8YXZhdGFyfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60" />
+        <Avatar src={user?.picture_url || ""} />
       </IconButton>
       <Dropdown
         anchorEl={open}
@@ -74,10 +76,10 @@ const UserPopover = () => {
       >
         <Box sx={{ p: 2 }}>
           <Typography noWrap fontSize={16} fontWeight={600}>
-            Nguyen Thi Hoang Dung
+            {user?.full_name || ""}
           </Typography>
           <Typography noWrap fontSize={12} fontWeight={500}>
-            dung.nguyen@gmail.com
+            {user?.email || ""}
           </Typography>
         </Box>
         <Divider

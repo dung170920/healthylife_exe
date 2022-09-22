@@ -8,7 +8,9 @@ import { HiChevronDoubleLeft, HiChevronDoubleRight } from "react-icons/hi";
 
 type PaginationProps = {
   count: number;
+  onChange: (event: React.ChangeEvent<unknown>, page: number) => void;
   sx: Object;
+  page: number;
 };
 
 const PaginationContainer = styled(MUIPagination)(({ theme }) => ({
@@ -20,15 +22,15 @@ const PaginationContainer = styled(MUIPagination)(({ theme }) => ({
       backgroundColor: theme.palette.grey[200],
 
       "> button": {
-        height: 53,
-        minWidth: 53,
+        height: 48,
+        minWidth: 48,
         fontSize: 16,
       },
 
       ":first-of-type, :last-of-type": {
         "> button": {
           backgroundColor: theme.palette.primary.main,
-          padding: "0 20px",
+          padding: "0 32px",
           flexBasis: "100%",
           display: "flex",
           justifyContent: "flex-start",
@@ -55,11 +57,13 @@ const PaginationContainer = styled(MUIPagination)(({ theme }) => ({
   },
 }));
 
-export const Pagination = ({ count, sx }: PaginationProps) => {
+export const Pagination = ({ count, sx, onChange, page }: PaginationProps) => {
   return (
     <PaginationContainer
       count={count}
+      page={page}
       shape="rounded"
+      onChange={onChange}
       sx={{ float: "right", ...sx }}
       renderItem={(item) => (
         <>

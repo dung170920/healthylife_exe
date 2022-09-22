@@ -105,6 +105,8 @@ const Login = () => {
     const provider = new GoogleAuthProvider();
     await signInWithPopup(auth, provider)
       .then((result: any) => {
+        console.log(result._tokenResponse.idToken);
+
         postIdToken(result._tokenResponse.idToken).then(
           (res: AuthResponseModel) => {
             dispatch(

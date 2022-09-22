@@ -8,7 +8,11 @@ export interface AuthState {
     accessToken: string;
     refreshToken: string;
     user: {
-      Role: string;
+      role: string;
+      id: string;
+      full_name: string;
+      email: string;
+      picture_url: string;
     };
   } | null;
 }

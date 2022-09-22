@@ -202,7 +202,12 @@ const Chef = () => {
 
         <FoodList items={foodList} />
 
-        <Pagination count={3} sx={{ marginTop: "50px" }} />
+        <Pagination
+          onChange={(page) => {}}
+          page={1}
+          count={3}
+          sx={{ marginTop: "50px" }}
+        />
       </ChefDetailContentStyles>
     </ChefDetailMainContainer>
   );
