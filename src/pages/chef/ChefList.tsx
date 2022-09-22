@@ -6,56 +6,56 @@ import { ChefItem } from "./components/ChefItem";
 
 const dummyChefData: ChefModel[] = [
   {
-    id: 1,
+    id: "1",
     image:
       "https://media.graphassets.com/resize=w:880,fit:crop,align:faces/compress=metadata:true/output=strip:true,f:webp/quality=value:85/tov4uZpWQMqgBxrP9TbO",
     name: "Gordon Ramsay",
     numberRecipe: 200,
   },
   {
-    id: 2,
+    id: " 2",
     image:
       "https://media.graphassets.com/resize=w:880,fit:crop,align:faces/compress=metadata:true/output=strip:true,f:webp/quality=value:85/tov4uZpWQMqgBxrP9TbO",
     name: "Gordon Ramsay",
     numberRecipe: 200,
   },
   {
-    id: 3,
+    id: "3",
     image:
       "https://media.graphassets.com/resize=w:880,fit:crop,align:faces/compress=metadata:true/output=strip:true,f:webp/quality=value:85/tov4uZpWQMqgBxrP9TbO",
     name: "Gordon Ramsay",
     numberRecipe: 200,
   },
   {
-    id: 4,
+    id: "4",
     image:
       "https://media.graphassets.com/resize=w:880,fit:crop,align:faces/compress=metadata:true/output=strip:true,f:webp/quality=value:85/tov4uZpWQMqgBxrP9TbO",
     name: "Gordon Ramsay",
     numberRecipe: 200,
   },
   {
-    id: 4,
+    id: "4",
     image:
       "https://media.graphassets.com/resize=w:880,fit:crop,align:faces/compress=metadata:true/output=strip:true,f:webp/quality=value:85/tov4uZpWQMqgBxrP9TbO",
     name: "Gordon Ramsay",
     numberRecipe: 200,
   },
   {
-    id: 4,
+    id: "4",
     image:
       "https://media.graphassets.com/resize=w:880,fit:crop,align:faces/compress=metadata:true/output=strip:true,f:webp/quality=value:85/tov4uZpWQMqgBxrP9TbO",
     name: "Gordon Ramsay",
     numberRecipe: 200,
   },
   {
-    id: 4,
+    id: "4",
     image:
       "https://media.graphassets.com/resize=w:880,fit:crop,align:faces/compress=metadata:true/output=strip:true,f:webp/quality=value:85/tov4uZpWQMqgBxrP9TbO",
     name: "Gordon Ramsay",
     numberRecipe: 200,
   },
   {
-    id: 4,
+    id: "4",
     image:
       "https://media.graphassets.com/resize=w:880,fit:crop,align:faces/compress=metadata:true/output=strip:true,f:webp/quality=value:85/tov4uZpWQMqgBxrP9TbO",
     name: "Gordon Ramsay",
@@ -77,7 +77,7 @@ const ChefList = () => {
           </Grid>
         ))}
       </Grid>
-      <Pagination count={10} sx={{ my: 4 }} />
+      <Pagination page={1} onChange={(page) => {}} count={10} sx={{ my: 4 }} />
     </>
   );
 };

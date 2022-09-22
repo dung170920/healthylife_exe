@@ -22,6 +22,8 @@ export default function Card(theme: Theme) {
       },
       styleOverrides: {
         root: {
+          overflow: "hidden",
+          textOverflow: "ellipsis",
           padding: theme.spacing(2),
         },
       },
@@ -29,7 +31,9 @@ export default function Card(theme: Theme) {
     MuiCardContent: {
       styleOverrides: {
         root: {
-          padding: theme.spacing(3),
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          padding: theme.spacing(2),
         },
       },
     },

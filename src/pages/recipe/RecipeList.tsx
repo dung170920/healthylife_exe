@@ -1,67 +1,41 @@
 import { Grid } from "@mui/material";
+import { getRecipeList } from "api";
 import { HeaderBreadcumbs, Pagination } from "components";
-import { RecipeModel } from "models";
-import React from "react";
+import { RecipeModel, RecipeRequestModel } from "models";
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { RecipeItem } from "./components/RecipeItem";
 
-const dummyRecipeData: RecipeModel[] = [
-  {
-    id: 1,
-    image:
-      "https://images.unsplash.com/photo-1482049016688-2d3e1b311543?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OXx8Zm9vZHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60",
-    name: "Trứng cuộn ngũ sắc",
-    chef: {
-      id: 1,
-      name: "Roberto Jr.",
-      image:
-        "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8YXZhdGFyfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60",
-    },
-    description:
-      "Trứng cuộn ngũ sắc vô cùng bắt mắt, lạ miệng là một món cuốn giúp tô điểm thêm ...",
-    type: "Nước uống",
-  },
-  {
-    id: 2,
-    image:
-      "https://images.unsplash.com/photo-1482049016688-2d3e1b311543?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OXx8Zm9vZHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60",
-    name: "Trứng cuộn ngũ sắc",
-    chef: {
-      id: 1,
-      name: "Roberto Jr.",
-      image:
-        "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8YXZhdGFyfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60",
-    },
-    type: "món ăn",
-  },
-  {
-    id: 3,
-    image:
-      "https://images.unsplash.com/photo-1482049016688-2d3e1b311543?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OXx8Zm9vZHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60",
-    name: "Trứng cuộn ngũ sắc",
-    chef: {
-      id: 1,
-      name: "Roberto Jr.",
-      image:
-        "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8YXZhdGFyfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60",
-    },
-    type: "món ăn",
-  },
-  {
-    id: 4,
-    image:
-      "https://images.unsplash.com/photo-1482049016688-2d3e1b311543?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OXx8Zm9vZHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60",
-    name: "Trứng cuộn ngũ sắc",
-    chef: {
-      id: 1,
-      name: "Roberto Jr.",
-      image:
-        "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8YXZhdGFyfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60",
-    },
-    type: "món ăn",
-  },
-];
+type ResponseModel = {
+  items: RecipeModel[];
+  maxPage: number;
+  page: number;
+};
 
 const RecipeList = () => {
+  const location = useLocation();
+  const [response, setResponse] = useState<ResponseModel | null>();
+  const [params, setParams] = useState<RecipeRequestModel>({
+    FilterMode: 2,
+    FoodTypeId: location.pathname.includes("foods") ? 2 : 1,
+    PageSize: 6,
+    Page: 1,
+  });
+
+  function handlePageChange(event: React.ChangeEvent<unknown>, page: number) {
+    setParams({
+      ...params,
+      Page: page,
+    });
+  }
+
+  useEffect(() => {
+    getRecipeList(params).then((res: ResponseModel) => {
+      console.log(res);
+      setResponse(res);
+    });
+  }, [location.pathname, params]);
+
   return (
     <>
       <HeaderBreadcumbs
@@ -69,13 +43,19 @@ const RecipeList = () => {
         links={[{ name: "Trang chủ", to: "/" }, { name: "Danh sách món" }]}
       />
       <Grid container spacing={6}>
-        {dummyRecipeData.map((item) => (
-          <Grid item xs={4} key={item.id}>
-            <RecipeItem item={item} />
-          </Grid>
-        ))}
+        {response?.items &&
+          response.items.map((item) => (
+            <Grid item xs={4} key={item.id}>
+              <RecipeItem item={item} />
+            </Grid>
+          ))}
       </Grid>
-      <Pagination count={10} sx={{ my: 4 }} />
+      <Pagination
+        page={params.Page || 1}
+        onChange={handlePageChange}
+        count={response?.maxPage || 1}
+        sx={{ my: 4 }}
+      />
     </>
   );
 };

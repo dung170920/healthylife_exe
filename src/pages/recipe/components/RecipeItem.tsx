@@ -7,6 +7,7 @@ import {
   styled,
   Typography,
 } from "@mui/material";
+import parse from "html-react-parser";
 import { RecipeModel } from "models";
 import { useNavigate } from "react-router-dom";
 
@@ -15,7 +16,7 @@ type RecipeItemProps = {
 };
 
 type RecipeHeaderType = {
-  type?: string;
+  type: number;
 };
 
 const ChefContainer = styled(CardHeader)(({ theme }) => ({
@@ -49,9 +50,15 @@ const RecipeHeader = styled(CardHeader)<RecipeHeaderType>(
       height: 76,
       width: 76,
       borderRadius: 12,
+      objectFit: "cover",
     },
 
     "& .MuiCardHeader-title": {
+      display: "-webkit-box",
+      WebkitBoxOrient: "vertical",
+      WebkitLineClamp: 2,
+      overflow: "hidden",
+      textOverflow: "ellipsis",
       fontSize: 16,
       fontWeight: 500,
       color: theme.palette.grey[900],
@@ -59,10 +66,9 @@ const RecipeHeader = styled(CardHeader)<RecipeHeaderType>(
 
     "& .MuiCardHeader-subheader": {
       fontSize: 12,
-      fontWeight: 500,
+      fontWeight: 600,
       textTransform: "uppercase",
-      color:
-        type === "món ăn" ? theme.palette.error.main : theme.palette.info.main,
+      color: type === 2 ? theme.palette.error.main : theme.palette.info.main,
     },
   })
 );
@@ -84,20 +90,34 @@ export const RecipeItem = ({ item }: RecipeItemProps) => {
           display: "flex",
           flexDirection: "column",
         }}
-        onClick={() => navigate("/recipes/recipe/1")}
+        onClick={() => navigate(`/recipes/recipe/${item.id}`)}
       >
         <RecipeHeader
           sx={{ p: 0 }}
           avatar={
-            <Avatar variant="rounded" src={item.image} aria-label="recipe" />
+            <Avatar variant="rounded" src={item.pictureUrl} alt="recipe" />
           }
           title={item.name}
-          subheader={item.type}
-          type={item.type}
+          subheader={item.foodType.name}
+          type={item.foodType.id}
         />
-        <CardContent sx={{ px: 0 }}>
-          <Typography variant="body1" color="grey.800">
-            {item.description}
+        <CardContent
+          sx={{
+            px: 0,
+          }}
+        >
+          <Typography
+            variant="body1"
+            color="grey.800"
+            sx={{
+              display: "-webkit-box",
+              WebkitBoxOrient: "vertical",
+              WebkitLineClamp: 5,
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+          >
+            {parse(item.description)}
           </Typography>
         </CardContent>
         <ChefContainer

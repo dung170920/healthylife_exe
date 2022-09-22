@@ -5,7 +5,8 @@ import axios, {
   AxiosRequestConfig,
   AxiosResponse,
 } from "axios";
-import { setToken } from "redux/slices/AuthSlice";
+import { AuthResponseModel } from "models";
+import { refreshFail, setToken } from "redux/slices/AuthSlice";
 import { store } from "redux/store";
 
 declare module "axios" {
@@ -34,22 +35,15 @@ declare module "axios" {
 
 const onRequest = (config: AxiosRequestConfig): AxiosRequestConfig => {
   config.baseURL = process.env.REACT_APP_BASE_API_URL;
+  config.headers = {
+    Authorization: `Bearer ${store.getState().auth.auth?.accessToken}`,
+    Accept: "application/json",
+    "Content-type": "application/json; charset=utf-8",
+  };
   return config;
 };
 
-const onRequestError = async (error: AxiosError): Promise<AxiosError> => {
-  if (error?.response?.status === 401) {
-    await getNewAccessToken(store.getState().auth.auth!.refreshToken).then(
-      (res: AxiosResponse) => {
-        error.config.headers![
-          "Authorization"
-        ] = `Bearer ${res.data?.accessToken}`;
-        store.dispatch(setToken(res.data?.accessToken));
-        return axiosPrivate(error.config);
-      }
-    );
-  }
-
+const onRequestError = (error: AxiosError): Promise<AxiosError> => {
   return Promise.reject(error);
 };
 
@@ -57,8 +51,21 @@ const onResponse = (response: AxiosResponse): AxiosResponse => {
   return response.data?.result;
 };
 
-const onResponseError = (error: AxiosError): Promise<AxiosError> => {
-  console.error(`[response error] [${JSON.stringify(error)}]`);
+const onResponseError = async (error: AxiosError): Promise<AxiosError> => {
+  console.log(error?.response?.status);
+
+  if (error?.response?.status === 401) {
+    await getNewAccessToken(store.getState().auth.auth!.refreshToken)
+      .then((res: AuthResponseModel) => {
+        error.config.headers!["Authorization"] = `Bearer ${res?.accessToken}`;
+        store.dispatch(setToken(res?.accessToken));
+        return error.config;
+      })
+      .catch((err) => {
+        console.log(err);
+        store.dispatch(refreshFail(err.message));
+      });
+  }
   return Promise.reject(error);
 };
 
@@ -68,14 +75,10 @@ function setupInterceptors(axiosInstance: AxiosInstance): AxiosInstance {
   return axiosInstance;
 }
 
-export const axiosPublic = setupInterceptors(axios);
+export const axiosPublic = axios.create({
+  baseURL: process.env.REACT_APP_BASE_API_URL,
+});
 
-export const axiosPrivate = setupInterceptors(
-  axios.create({
-    headers: {
-      Authorization: `Bearer ${store.getState().auth.auth?.accessToken}`,
-      Accept: "application/json",
-      "Content-type": "application/json; charset=utf-8",
-    },
-  })
-);
+axiosPublic.interceptors.response.use((response) => response.data?.result);
+
+export const axiosPrivate = setupInterceptors(axios);
