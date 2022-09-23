@@ -4,3 +4,4 @@ export * from "./LinkModel";
 export * from "./AuthModel";
 export * from "./RecipeModel";
 export * from "./RecipeTypeModel";
+export * from "./UserModel";

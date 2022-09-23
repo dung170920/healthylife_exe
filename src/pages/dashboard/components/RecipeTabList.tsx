@@ -23,7 +23,7 @@ const RecipeTabList = () => {
       spacing={5}
       sx={{ width: "100%", padding: "0 15px" }}
     >
-      {recipes.map((recipe, index) => (
+      {recipes?.map((recipe, index) => (
         <RecipeTab recipe={recipe} key={recipe.id} index={index} />
       ))}
     </Stack>

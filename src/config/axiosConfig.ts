@@ -59,7 +59,7 @@ const onResponseError = async (error: AxiosError): Promise<AxiosError> => {
       .then((res: AuthResponseModel) => {
         error.config.headers!["Authorization"] = `Bearer ${res?.accessToken}`;
         store.dispatch(setToken(res?.accessToken));
-        return error.config;
+        return onRequest(error.config);
       })
       .catch((err) => {
         console.log(err);
