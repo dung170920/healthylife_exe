@@ -17,7 +17,7 @@ const RecipeList = () => {
   const [response, setResponse] = useState<ResponseModel | null>();
   const [params, setParams] = useState<RecipeRequestModel>({
     FilterMode: 2,
-    FoodTypeId: location.pathname.includes("foods") ? 2 : 1,
+    FoodTypeId: 2,
     PageSize: 6,
     Page: 1,
   });
@@ -28,6 +28,13 @@ const RecipeList = () => {
       Page: page,
     });
   }
+
+  useEffect(() => {
+    setParams((params) => ({
+      ...params,
+      FoodTypeId: location.pathname.includes("foods") ? 2 : 1,
+    }));
+  }, [location.pathname]);
 
   useEffect(() => {
     getRecipeList(params).then((res: ResponseModel) => {
