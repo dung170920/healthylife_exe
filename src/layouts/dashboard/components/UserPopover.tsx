@@ -66,7 +66,12 @@ const UserPopover = () => {
         }}
         onClick={handleOpen}
       >
-        <Avatar src={user?.picture_url || ""} />
+        <Avatar
+          src={
+            user?.picture_url ||
+            "https://cdn-icons-png.flaticon.com/512/3177/3177440.png"
+          }
+        />
       </IconButton>
       <Dropdown
         anchorEl={open}

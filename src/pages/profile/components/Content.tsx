@@ -24,6 +24,7 @@ import { useEffect, useState } from "react";
 import { getProfile } from "api";
 import { UserModel } from "models";
 import dayjs from "dayjs";
+import { formatPrice } from "utils/formatPrice";
 
 const ProfileContentStyles = styled(Paper)(({ theme }) => ({
   width: "90%",
@@ -107,7 +108,13 @@ const Content = () => {
       >
         {/* Left Info */}
         <Stack direction="row">
-          <Avatar className="profile_info avt" src={profile?.pictureUrl} />
+          <Avatar
+            className="profile_info avt"
+            src={
+              profile?.pictureUrl ||
+              "https://cdn-icons-png.flaticon.com/512/3177/3177440.png"
+            }
+          />
           <Stack className="profile_info detail">
             <Typography fontWeight="bold" className="profile_info name">
               {profile?.fullName || "-"}
@@ -115,7 +122,7 @@ const Content = () => {
             <Stack direction="row" className="profile_info balance">
               <BiWallet className="profile_info balance icon" />
               <Typography>
-                Số dư: {profile?.balance.toString() || "0"} VND
+                Số dư: {profile?.balance ? formatPrice(profile.balance) : "0 đ"}
               </Typography>
             </Stack>
           </Stack>
