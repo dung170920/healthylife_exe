@@ -19,9 +19,9 @@ const PaginationContainer = styled(MUIPagination)(({ theme }) => ({
 
     li: {
       borderRadius: 6,
-      backgroundColor: theme.palette.grey[200],
 
       "> button": {
+        backgroundColor: theme.palette.grey[200],
         height: 48,
         minWidth: 48,
         fontSize: 16,
