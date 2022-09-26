@@ -4,13 +4,10 @@ import {
   Card,
   CardHeader,
   styled,
-  CardContent,
   CardActions,
   Button,
 } from "@mui/material";
-import { Stack } from "@mui/system";
 import { ChefModel } from "models";
-import { BsBoxArrowInDownLeft } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 
 type ChefItemProps = {
@@ -97,7 +94,7 @@ export const ChefItem = ({ item }: ChefItemProps) => {
                 filter: "brightness(0.9)",
               },
             }}
-            onClick={() => navigate("/chefs/ChefDetail")}
+            onClick={() => navigate(`/chefs/${item.id}`)}
           >
             Xem trang cá nhân
           </Button>

@@ -1,19 +1,17 @@
-import { Stack, styled, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import FoodItem from "pages/chef/components/FoodItem";
-import { RecipePreviewModel } from "models";
-
-const ChefDetailFoodListStyles = styled(Stack)(({ theme }) => ({}));
+import { RecipeModel } from "models";
 
 type Props = {
-  items: RecipePreviewModel[];
+  items: RecipeModel[];
 };
 
 const FoodList = ({ items }: Props) => {
   return (
     <>
-      <Grid container spacing={6}>
-        {items.map((item: any) => (
-          <Grid item xs={4} key={item.Id}>
+      <Grid container spacing={3}>
+        {items.map((item) => (
+          <Grid item xs={4} key={item.id}>
             <FoodItem item={item} />
           </Grid>
         ))}

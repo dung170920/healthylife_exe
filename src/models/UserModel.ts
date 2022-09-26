@@ -6,6 +6,11 @@ export interface UsersRequestModel {
   pageSize?: number;
 }
 
+export interface UserRequestModel {
+  mode: string;
+  userId: string;
+}
+
 export interface UserModel {
   balance?: number;
   birthday?: Date;

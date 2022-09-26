@@ -1,24 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Paper,
   Stack,
   styled,
   Box,
-  Grid,
   Typography,
   Divider,
-  Tooltip,
+  Avatar,
 } from "@mui/material";
-import { LogoIcon } from "../../assets/icons";
+import { LogoIcon } from "assets/icons";
 import FoodList from "pages/chef/components/FoodList";
 import FilterTab from "components/FilterTab";
 import { Pagination } from "components/Pagination";
 
-import { RecipePreviewModel } from "models";
+import { RecipeModel, UserModel } from "models";
+import { getUserById } from "api";
+import { useParams } from "react-router-dom";
 
 const ChefDetailCoverStyles = styled(Stack)(({ theme }) => ({
   width: "120%",
-  height: "336px",
+  height: "400px",
   backgroundColor: theme.palette.primary.lighter,
   justifyContent: "center",
   alignItems: "center",
@@ -30,142 +31,56 @@ const ChefDetailCoverStyles = styled(Stack)(({ theme }) => ({
 
 const ChefDetailMainContainer = styled("div")(({ theme }) => ({
   position: "relative",
-  height: "1500px",
+  height: "1621px",
 }));
 
 const ChefDetailContentStyles = styled(Paper)(({ theme }) => ({
   width: "90%",
   position: "absolute",
-  marginLeft: "auto",
-  marginRight: "auto",
+  margin: "0 auto",
   left: 0,
   right: 0,
-  top: "220px",
-  padding: "25px",
+  top: "17%",
+  padding: "24px",
+  borderRadius: 8,
+  boxShadow: "none",
 
   "& .avt": {
-    width: "70px",
-    height: "70px",
+    width: "80px",
+    height: "80px",
     borderRadius: "100%",
-    marginRight: "15px",
+    marginRight: "16px",
   },
 
-  "& .detail": { gap: "3px" },
+  "& .detail": { gap: "4px" },
 
-  "& .name": { fontSize: "28px", fontWeight: "bold" },
+  "& .name": { fontSize: "32px", fontWeight: 600 },
 }));
-
-const dummyProfileData = {
-  Id: 1,
-  FullName: "Leo Messi",
-  PictureUrl: "https://znews-stc.zdn.vn/static/topic/person/messi.jpg",
-  Balance: 1000,
-  Target: "Ốm như nghiện",
-  Gender: "Nam",
-  Weight: 69,
-  Height: 170,
-  Birthday: "2/9/1987",
-  Email: "messi@gmail.com",
-  ValidUntil: "15/5/2023",
-};
-
-const dummyFoodListData: RecipePreviewModel[] = [
-  {
-    Id: 1,
-    PictureUrl:
-      "https://images.unsplash.com/photo-1482049016688-2d3e1b311543?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OXx8Zm9vZHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60",
-    Name: "Trứng cuộn ngũ sắc",
-    Difficulty: "Easy",
-    TimeCost: 30,
-    Calorie: 587,
-  },
-  {
-    Id: 2,
-    PictureUrl:
-      "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8N3x8Zm9vZHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60",
-    Name: "Trứng cuộn ngũ sắc",
-    Difficulty: "Easy",
-    TimeCost: 30,
-    Calorie: 587,
-  },
-  {
-    Id: 3,
-    PictureUrl:
-      "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8Zm9vZHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60",
-    Name: "Trứng cuộn ngũ sắc",
-    Difficulty: "Easy",
-    TimeCost: 30,
-    Calorie: 587,
-  },
-  {
-    Id: 4,
-    PictureUrl:
-      "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Zm9vZHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60",
-    Name: "Trứng cuộn ngũ sắc",
-    Difficulty: "Easy",
-    TimeCost: 30,
-    Calorie: 587,
-  },
-  {
-    Id: 5,
-    PictureUrl:
-      "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Zm9vZHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60",
-    Name: "Trứng cuộn ngũ sắc",
-    Difficulty: "Easy",
-    TimeCost: 30,
-    Calorie: 587,
-  },
-  {
-    Id: 6,
-    PictureUrl:
-      "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Zm9vZHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60",
-    Name: "Trứng cuộn ngũ sắc",
-    Difficulty: "Easy",
-    TimeCost: 30,
-    Calorie: 587,
-  },
-  {
-    Id: 7,
-    PictureUrl:
-      "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Zm9vZHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60",
-    Name: "Trứng cuộn ngũ sắc",
-    Difficulty: "Easy",
-    TimeCost: 30,
-    Calorie: 587,
-  },
-  {
-    Id: 8,
-    PictureUrl:
-      "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Zm9vZHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60",
-    Name: "Trứng cuộn ngũ sắc",
-    Difficulty: "Easy",
-    TimeCost: 30,
-    Calorie: 587,
-  },
-  {
-    Id: 9,
-    PictureUrl:
-      "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Zm9vZHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60",
-    Name: "Trứng cuộn ngũ sắc",
-    Difficulty: "Easy",
-    TimeCost: 30,
-    Calorie: 587,
-  },
-];
 
 const filterTabValues = [
   { label: "Món ăn", value: 1 },
-  { label: "Đồ uống", value: 2 },
+  { label: "Thức uống", value: 2 },
 ];
 
 const Chef = () => {
-  const [foodList, setFoodList] =
-    useState<RecipePreviewModel[]>(dummyFoodListData);
+  const { chefId } = useParams();
+  const [foodList, setFoodList] = useState<RecipeModel[]>([]);
   const [tab, setTab] = useState(1);
+  const [profile, setProfile] = useState<UserModel | null>();
 
   const handleTabChange = (event: React.SyntheticEvent, value: number) => {
     setTab(value);
   };
+
+  useEffect(() => {
+    if (chefId) {
+      getUserById({ userId: chefId, mode: "Chef" }).then((res) => {
+        // console.log(res);
+        setProfile(res);
+        setFoodList(res?.foods);
+      });
+    }
+  }, [chefId]);
 
   return (
     <ChefDetailMainContainer>
@@ -176,18 +91,19 @@ const Chef = () => {
       <ChefDetailContentStyles elevation={1}>
         <Box className="profile_info">
           <Stack direction="row" alignItems="center">
-            <img
+            <Avatar
               className="profile_info avt"
               src={
-                dummyProfileData.PictureUrl ||
-                "https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
+                profile?.pictureUrl ||
+                "https://cdn-icons-png.flaticon.com/512/3177/3177440.png"
               }
             />
-            <Box className="profile_info detail">
+            <Stack className="profile_info detail">
               <Typography fontWeight="bold" className="profile_info name">
-                {dummyProfileData.FullName || "-"}
+                {profile?.fullName || "-"}
               </Typography>
-            </Box>
+              <Typography>{profile?.foodCount || "0"} công thức</Typography>
+            </Stack>
           </Stack>
         </Box>
 
@@ -202,12 +118,12 @@ const Chef = () => {
 
         <FoodList items={foodList} />
 
-        <Pagination
+        {/* <Pagination
           onChange={(page) => {}}
           page={1}
           count={3}
           sx={{ marginTop: "50px" }}
-        />
+        /> */}
       </ChefDetailContentStyles>
     </ChefDetailMainContainer>
   );

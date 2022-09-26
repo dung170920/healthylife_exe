@@ -1,4 +1,4 @@
-import { RecipePreviewModel } from "models";
+import { RecipeModel } from "models";
 import { Stack, styled, Typography } from "@mui/material";
 import { BiTimeFive } from "react-icons/bi";
 import { AiOutlineFire } from "react-icons/ai";
@@ -34,29 +34,29 @@ const DateRecipeMenuItem = styled(Stack)(({ theme }) => ({
 }));
 
 type Props = {
-  recipes: RecipePreviewModel[];
+  recipes: RecipeModel[];
 };
 
 const DateRecipeBarList = ({ recipes }: Props) => {
   return (
     <Stack>
       {recipes.map((recipe) => (
-        <DateRecipeMenuItem direction="row" key={recipe.Id}>
+        <DateRecipeMenuItem direction="row" key={recipe.id}>
           <Stack className="date-recipe-info">
-            <Typography className="date-recipe-name">{recipe.Name}</Typography>
+            <Typography className="date-recipe-name">{recipe.name}</Typography>
             <Stack className="date-recipe-detail" direction="row">
               <BiTimeFive className="date-recipe-detail-icon" />{" "}
-              {recipe.TimeCost} phút
+              {recipe.timeCost} phút
             </Stack>
             <Stack className="date-recipe-detail" direction="row">
               <AiOutlineFire className="date-recipe-detail-icon" />
-              {recipe.Calorie} calories
+              {recipe.calorie} calories
             </Stack>
           </Stack>
           <Bowl size={60} sx={{ right: 5, bottom: "20px" }}>
             <img
               className="date-recipe-image"
-              src={recipe.PictureUrl}
+              src={recipe.pictureUrl}
               alt=""
             ></img>
           </Bowl>

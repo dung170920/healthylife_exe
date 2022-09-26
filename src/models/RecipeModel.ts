@@ -27,12 +27,3 @@ export interface RecipeRequestModel {
   Page?: number;
   PageSize?: number;
 }
-
-export interface RecipePreviewModel {
-  Id: number;
-  PictureUrl: string;
-  Name: string;
-  Difficulty: string;
-  TimeCost: number;
-  Calorie: number;
-}
