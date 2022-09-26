@@ -7,6 +7,8 @@ export * from "./Bowl";
 export * from "./CustomDialog";
 export * from "./HeaderBreadcumbs";
 export * from "./Pagination";
+export * from "./DataTable";
+export * from "./FilterTab";
 
 export * from "./react-hook-form/RHFForm";
 export * from "./react-hook-form/RHFInput";

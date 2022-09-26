@@ -14,15 +14,15 @@ type ResponseListModel = {
 const ChefList = () => {
   const [chefs, setChefs] = useState<ResponseListModel | null>();
   const [params, setParams] = useState<UsersRequestModel>({
-    mode: 2,
-    page: 1,
-    pageSize: 8,
+    Mode: 2,
+    Page: 1,
+    PageSize: 8,
   });
 
-  function handlePageChange(event: React.ChangeEvent<unknown>, page: number) {
+  function handlePageChange(event: React.ChangeEvent<unknown>, Page: number) {
     setParams({
       ...params,
-      page,
+      Page,
     });
   }
 
@@ -48,7 +48,7 @@ const ChefList = () => {
           ))}
       </Grid>
       <Pagination
-        page={params.page || 1}
+        page={params.Page || 1}
         onChange={handlePageChange}
         count={chefs?.maxPage || 1}
         sx={{ my: 4 }}

@@ -10,8 +10,7 @@ import {
 } from "@mui/material";
 import { LogoIcon } from "assets/icons";
 import FoodList from "pages/chef/components/FoodList";
-import FilterTab from "components/FilterTab";
-import { Pagination } from "components/Pagination";
+import { Pagination, FilterTab } from "components";
 
 import { RecipeModel, UserModel } from "models";
 import { getUserById } from "api";
@@ -111,9 +110,9 @@ const Chef = () => {
 
         <FilterTab
           tabs={filterTabValues}
-          defaultValue={tab}
           sx={{ marginBottom: "40px" }}
           onChangeTab={handleTabChange}
+          defaultValue={tab}
         />
 
         <FoodList items={foodList} />

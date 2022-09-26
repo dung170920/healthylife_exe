@@ -121,6 +121,10 @@ export default function Router() {
           path: "profile",
           element: <Profile />,
         },
+        {
+          path: "users",
+          element: <User />,
+        },
       ],
     },
     {
@@ -165,6 +169,8 @@ const Order = Loadable(lazy(() => import("pages/order/Order")));
 const Upgrade = Loadable(lazy(() => import("pages/upgrade/Upgrade")));
 
 const Profile = Loadable(lazy(() => import("pages/profile/Profile")));
+
+const User = Loadable(lazy(() => import("pages/user/User")));
 
 const PermissionDenied = Loadable(
   lazy(() => import("pages/message/PermissionDenied"))
