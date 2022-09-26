@@ -4,6 +4,7 @@ import Badge from "./Badge";
 import Button from "./Button";
 import Card from "./Card";
 import CssBaseline from "./CssBaseline";
+import FormControlLabel from "./FormControlLabel";
 import Input from "./Input";
 import Pagination from "./Pagination";
 import Paper from "./Paper";
@@ -19,7 +20,8 @@ const Overrides = (theme: Theme) => {
     Popover(theme),
     Input(theme),
     Card(theme),
-    Pagination(theme)
+    Pagination(theme),
+    FormControlLabel(theme)
   );
 };
 
