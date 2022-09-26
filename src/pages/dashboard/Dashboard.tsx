@@ -66,7 +66,7 @@ const Dashboard = () => {
       <Box>
         <Typography
           fontWeight="600"
-          sx={{ fontSize: "24px", marginBottom: "110px" }}
+          sx={{ fontSize: "24px", marginBottom: "110px", marginTop: "40px" }}
         >
           Công thức mới nhất
         </Typography>

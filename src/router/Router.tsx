@@ -54,6 +54,10 @@ export default function Router() {
               path: "add",
               element: <AddRecipe />,
             },
+            {
+              path: "result",
+              element: <RecipeSearchResult />,
+            },
             { path: "", element: <Navigate to="/recipes/foods" replace /> },
           ],
         },
@@ -108,6 +112,9 @@ const Dashboard = Loadable(lazy(() => import("pages/dashboard/Dashboard")));
 const RecipeList = Loadable(lazy(() => import("pages/recipe/RecipeList")));
 const Recipe = Loadable(lazy(() => import("pages/recipe/Recipe")));
 const AddRecipe = Loadable(lazy(() => import("pages/recipe/AddRecipe")));
+const RecipeSearchResult = Loadable(
+  lazy(() => import("pages/recipe/RecipeSearchResult"))
+);
 
 const ChefList = Loadable(lazy(() => import("pages/chef/ChefList")));
 const Chef = Loadable(lazy(() => import("pages/chef/Chef")));

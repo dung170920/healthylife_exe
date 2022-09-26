@@ -43,13 +43,13 @@ const RecipeTabStyle = styled(Stack)(({ theme }) => ({
     fontSize: "14px",
     justifyContent: "center",
     alignItems: "center",
-    marginTop: "33px",
+    marginTop: "8px",
     color: theme.palette.grey[600],
   },
 }));
 
 const KcalTextStyle = styled("span")(({ theme }) => ({
-  fontSize: "20px",
+  fontSize: "15px",
   fontWeight: "bold",
   color: theme.palette.primary.main,
 }));
@@ -81,8 +81,12 @@ const RecipeTab = ({ recipe, index }: Props) => {
           {recipe.name}
         </Typography>
 
-        <Stack direction="row" sx={{ justifyContent: "space-between" }}>
-          <Stack direction="column">
+        <Stack
+          direction="row"
+          spacing={1}
+          sx={{ justifyContent: "space-between" }}
+        >
+          <Stack direction="column" sx={{ width: "60%" }}>
             <Stack className="recipe-info-detail" direction="row">
               <GiKnifeFork className="recipe-info-detail__icon" />
               {recipe.difficulty === 1
@@ -97,7 +101,7 @@ const RecipeTab = ({ recipe, index }: Props) => {
             </Stack>
           </Stack>
 
-          <Box className="recipe-info-kcal">
+          <Box className="recipe-info-kcal" sx={{ width: "40%" }}>
             <Box>
               <KcalTextStyle>{recipe.calorie}</KcalTextStyle> Kcal
             </Box>
