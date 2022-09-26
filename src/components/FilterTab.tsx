@@ -1,6 +1,6 @@
 import { Tabs, Tab, Stack } from "@mui/material";
 
-const FilterTab = ({
+export const FilterTab = ({
   tabs,
   sx,
   defaultValue,
@@ -14,12 +14,10 @@ const FilterTab = ({
   return (
     <Stack sx={sx}>
       <Tabs onChange={onChangeTab} value={defaultValue}>
-        {tabs.map((tab) => (
-          <Tab label={tab.label} value={tab.value} />
+        {tabs.map((tab, i) => (
+          <Tab key={i} label={tab.label} value={tab.value} />
         ))}
       </Tabs>
     </Stack>
   );
 };
-
-export default FilterTab;

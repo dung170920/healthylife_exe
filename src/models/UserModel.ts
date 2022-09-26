@@ -1,9 +1,9 @@
-export interface UsersRequestModel {
-  email?: string;
-  mode: number;
-  searchKey?: string;
-  page?: number;
-  pageSize?: number;
+import { PagingModel } from "./PagingModel";
+
+export interface UsersRequestModel extends PagingModel {
+  Email?: string;
+  Mode: number;
+  SearchKey?: string;
 }
 
 export interface UserRequestModel {
