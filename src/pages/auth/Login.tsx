@@ -1,12 +1,7 @@
 import React from "react";
 import Button from "@mui/material/Button";
-import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import { Alert, styled } from "@mui/material";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "config/config";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,13 +11,14 @@ import { useNavigate } from "react-router-dom";
 import { postIdToken } from "api/AuthApi";
 import { AuthResponseModel } from "models";
 import { RootState } from "redux/store";
+import LoginForm from "./components/LoginForm";
 
 const DivContainner = styled("div")(({ theme }) => ({
   backgroundColor: "white",
   borderTopRightRadius: "16px",
   borderBottomRightRadius: "16px",
   width: "100%",
-  height: "100%",
+  height: "110%",
   display: "flex",
   justifyContent: "center",
   flexDirection: "column",
@@ -51,9 +47,6 @@ const DivDangNhap = styled("div")(({ theme }) => ({
 const DivForm = styled("div")(({ theme }) => ({
   width: "100%",
   height: "100%",
-  display: "flex",
-  justifyContent: "start",
-  alignItems: "center",
   margin: "0 20px",
   fontSize: "110%",
 }));
@@ -66,23 +59,11 @@ const DivContent = styled("div")(({ theme }) => ({
   alignItems: "center",
 }));
 
-const ButtonLogin = styled(Button)(({ theme }) => ({
-  marginTop: "24px",
-  marginBottom: "16px",
-  backgroundColor: theme.palette.primary.main,
-  color: "white",
-
-  ":hover": {
-    backgroundColor: theme.palette.primary.main,
-    filter: "brightness(90%)",
-  },
-}));
-
 const ButtonLoginWithGoogle = styled(Button)(({ theme }) => ({
   backgroundColor: theme.palette.error.main,
   color: "#FFF",
-  marginTop: "24px",
-  marginBottom: "16px",
+  marginTop: "16px",
+  marginBottom: "8px",
   ":hover": {
     backgroundColor: theme.palette.error.main,
     filter: "brightness(90%)",
@@ -139,45 +120,8 @@ const Login = () => {
       </DivHeader>
       <DivContent>
         <DivForm>
-          <Box component="form" sx={{ m: "0" }}>
-            <label>Email</label>
-            <TextField
-              margin="dense"
-              required
-              fullWidth
-              id="email"
-              placeholder="Nhập email"
-              name="email"
-              autoComplete="email"
-              autoFocus
-            />
-            <label>Mật khẩu</label>
-            <TextField
-              margin="dense"
-              required
-              fullWidth
-              name="password"
-              placeholder="Nhập mật khẩu"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-            <Grid container>
-              <Grid item xs>
-                <FormControlLabel
-                  control={<Checkbox value="remember" color="success" />}
-                  label="Nhớ tài khoản"
-                />
-              </Grid>
-              <Grid item sx={{ display: "flex", alignItems: "center" }}>
-                <Link href="#" variant="body1">
-                  Quên mật khẩu
-                </Link>
-              </Grid>
-            </Grid>
-            <ButtonLogin fullWidth disabled={isLoading}>
-              Đăng nhập
-            </ButtonLogin>
+          <Box>
+            <LoginForm isLoading={isLoading} />
             <InstantLogin>
               ----------------------------Đăng nhập
               với---------------------------
