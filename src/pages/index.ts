@@ -16,3 +16,8 @@ export * from "./order/OrderList";
 export * from "./order/Order";
 
 export * from "./profile/Profile";
+
+export * from "./profile/Profile";
+
+export * from "./message/PermissionDenied";
+export * from "./message/NotFound";

@@ -3,6 +3,8 @@ import { chefCooking } from "assets/images";
 import NormalAccountInfo from "./components/NormalAccountInfo";
 import MemberAccountInfo from "./components/MemberAccountInfo";
 import RecipeTabList from "./components/RecipeTabList";
+import { useSelector } from "react-redux";
+import { RootState } from "redux/store";
 
 const TopMain = styled("div")({
   display: "flex",
@@ -32,6 +34,8 @@ const RightInfoStyle = styled(Box)(({ theme }) => ({
 }));
 
 const Dashboard = () => {
+  const user = useSelector((state: RootState) => state.auth.auth?.user);
+
   return (
     <>
       <TopMain>
@@ -57,8 +61,11 @@ const Dashboard = () => {
 
         {/* Right Info */}
         <RightInfoStyle>
-          {/* <NormalAccountInfo /> */}
-          <MemberAccountInfo />
+          {user?.role === "Membership" ? (
+            <MemberAccountInfo />
+          ) : (
+            <NormalAccountInfo />
+          )}
         </RightInfoStyle>
       </TopMain>
 
