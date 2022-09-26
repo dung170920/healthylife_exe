@@ -3,6 +3,8 @@ import { Loading } from "components";
 import { Navigate, useRoutes } from "react-router-dom";
 import { AuthLayout, DashboardLayout } from "layouts";
 import AuthRoutes from "./AuthRoutes";
+import ProtectedRoutes from "./ProtectedRoutes";
+import MessageLayout from "layouts/MessageLayout";
 
 const Loadable = (Component: any) => (props: any) => {
   return (
@@ -38,13 +40,17 @@ export default function Router() {
         </AuthRoutes>
       ),
       children: [
-        { element: <Dashboard />, index: true },
+        {
+          element: <Dashboard />,
+          index: true,
+        },
         {
           path: "recipes",
           children: [
             {
               path: ":type",
               element: <RecipeList />,
+              index: true,
             },
             {
               path: "recipe/:recipeId",
@@ -52,7 +58,11 @@ export default function Router() {
             },
             {
               path: "add",
-              element: <AddRecipe />,
+              element: (
+                <ProtectedRoutes roles={["Admin", "Chef"]}>
+                  <AddRecipe />
+                </ProtectedRoutes>
+              ),
             },
             {
               path: "result",
@@ -76,7 +86,11 @@ export default function Router() {
         },
         {
           path: "menu",
-          element: <Menu />,
+          element: (
+            <ProtectedRoutes roles={["Membership"]}>
+              <Menu />
+            </ProtectedRoutes>
+          ),
         },
         {
           path: "upgrade",
@@ -86,12 +100,20 @@ export default function Router() {
           path: "orders",
           children: [
             {
-              element: <OrderList />,
+              element: (
+                <ProtectedRoutes roles={["Admin", "Membership", "Customer"]}>
+                  <OrderList />
+                </ProtectedRoutes>
+              ),
               index: true,
             },
             {
               path: ":orderId",
-              element: <Order />,
+              element: (
+                <ProtectedRoutes roles={["Admin", "Membership", "Customer"]}>
+                  <Order />
+                </ProtectedRoutes>
+              ),
             },
           ],
         },
@@ -101,6 +123,22 @@ export default function Router() {
         },
       ],
     },
+    {
+      path: "/message",
+      element: <MessageLayout />,
+      children: [
+        {
+          path: "permission-denied",
+          element: <PermissionDenied />,
+        },
+        {
+          path: "not-found",
+          element: <NotFound />,
+        },
+        { path: "", element: <Navigate to="/message/not-found" replace /> },
+      ],
+    },
+    { path: "*", element: <Navigate to="/message/not-found" replace /> },
   ]);
 }
 
@@ -127,3 +165,8 @@ const Order = Loadable(lazy(() => import("pages/order/Order")));
 const Upgrade = Loadable(lazy(() => import("pages/upgrade/Upgrade")));
 
 const Profile = Loadable(lazy(() => import("pages/profile/Profile")));
+
+const PermissionDenied = Loadable(
+  lazy(() => import("pages/message/PermissionDenied"))
+);
+const NotFound = Loadable(lazy(() => import("pages/message/NotFound")));
