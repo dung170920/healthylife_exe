@@ -105,6 +105,7 @@ export default function Router() {
                   <OrderList />
                 </ProtectedRoutes>
               ),
+              index: true,
             },
             {
               path: ":orderId",
@@ -125,6 +126,7 @@ export default function Router() {
                   <Users />
                 </ProtectedRoutes>
               ),
+              index: true,
             },
             {
               path: ":userId",

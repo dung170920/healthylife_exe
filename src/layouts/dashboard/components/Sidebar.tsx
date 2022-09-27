@@ -61,7 +61,6 @@ const sidebarAdmin: LinkModel[] = [
     //   },
     // ],
   },
-  { name: "Thực đơn", icon: <HiOutlineCalendar />, to: "/menu" },
   { name: "Lịch sử giao dịch", icon: <InvoiceIcon />, to: "/orders" },
   { name: "Danh sách người dùng", icon: <HiUsers />, to: "/users" },
 ];
