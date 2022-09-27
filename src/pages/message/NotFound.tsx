@@ -15,7 +15,7 @@ const NotFound = () => {
         Không Tìm Thấy Trang
       </Typography>
       <Typography fontSize={20}>
-        Có vẻ trang bạn đang tìm kiếm đang không đúng.
+        Có vẻ trang bạn đang tìm kiếm đang không tồn tại.
       </Typography>
       <Button
         onClick={() => navigate("/")}

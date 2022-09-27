@@ -29,6 +29,7 @@ const ChefHeader = styled(CardHeader)<ChefHeaderType>(({ theme, type }) => ({
   },
 
   "& .MuiCardHeader-title": {
+    textAlign: "center",
     paddingTop: 21,
     fontSize: 18,
     fontWeight: 600,
@@ -94,12 +95,11 @@ export const ChefItem = ({ item }: ChefItemProps) => {
                 filter: "brightness(0.9)",
               },
             }}
-            onClick={() => navigate(`/chefs/${item.id}`)}
+            onClick={() => navigate(`/users/${item.id}`)}
           >
             Xem trang cá nhân
           </Button>
         </CardActions>
-        {/* <ViewChef title="Xem trang cá nhân" /> */}
       </Card>
     </Box>
   );

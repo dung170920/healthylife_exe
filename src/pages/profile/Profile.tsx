@@ -12,7 +12,6 @@ const Profile = () => {
   return (
     <ProfileMainContainer>
       <Cover />
-
       <Content />
     </ProfileMainContainer>
   );

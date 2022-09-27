@@ -24,4 +24,5 @@ export interface UserModel {
   targetName?: string;
   weight?: number;
   foodCount?: number;
+  role?: string;
 }
