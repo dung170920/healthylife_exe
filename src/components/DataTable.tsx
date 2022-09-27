@@ -20,12 +20,12 @@ const containerDataGrid = {
     borderTopRightRadius: "10px",
   },
 
-  "& .MuiInputBase-root": { padding: "7px" },
+  // "& .MuiInputBase-root": { padding: "7px" },
 
   "& .MuiDataGrid-footerContainer": {
-    "& .MuiTablePagination-select": { marginRight: "40px" },
+    "& .MuiSelect-nativeInput": { marginRight: "50px" },
 
-    "& .MuiInputBase-colorPrimary": { width: "60px" },
+    "& .MuiInputBase-colorPrimary": { width: "50px", height: "40px" },
   },
 
   // "& .MuiDataGrid-row": { padding: "10px 0 10px" },
