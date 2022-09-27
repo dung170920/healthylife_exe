@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { authPending, loginFail, loginSuccess } from "redux/slices/AuthSlice";
 import jwtDecode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
-import { postIdToken } from "api/AuthApi";
+import { postIdToken } from "api/ExternalAuthApi";
 import { AuthResponseModel } from "models";
 import { RootState } from "redux/store";
 import LoginForm from "./components/LoginForm";
@@ -18,7 +18,7 @@ const DivContainner = styled("div")(({ theme }) => ({
   borderTopRightRadius: "16px",
   borderBottomRightRadius: "16px",
   width: "100%",
-  height: "110%",
+  height: "115%",
   display: "flex",
   justifyContent: "center",
   flexDirection: "column",
@@ -26,7 +26,7 @@ const DivContainner = styled("div")(({ theme }) => ({
 
 const DivHeader = styled("div")(({ theme }) => ({
   width: "100%",
-  height: "15%",
+  height: "12%",
   display: "flex",
   justifyContent: "start",
   alignItems: "center",
@@ -118,10 +118,16 @@ const Login = () => {
       <DivHeader>
         <DivDangNhap>Đăng nhập</DivDangNhap>
       </DivHeader>
+
       <DivContent>
         <DivForm>
           <Box>
-            <LoginForm isLoading={isLoading} />
+            {error && (
+              <Alert severity="error" sx={{ mb: 1 }}>
+                {error}
+              </Alert>
+            )}
+            <LoginForm />
             <InstantLogin>
               ----------------------------Đăng nhập
               với---------------------------
@@ -133,7 +139,6 @@ const Login = () => {
             >
               Đăng nhập với Google
             </ButtonLoginWithGoogle>
-            {error && <Alert severity="error">{error}</Alert>}
           </Box>
         </DivForm>
       </DivContent>

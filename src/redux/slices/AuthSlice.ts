@@ -41,6 +41,9 @@ export const authSlice = createSlice({
     authPending: (state) => {
       state.isLoading = true;
     },
+    clearMessage: (state) => {
+      state.error = "";
+    },
     loginSuccess: (state, action) => {
       state.auth = action.payload;
       state.isLoading = false;
@@ -79,6 +82,7 @@ export const {
   logoutSuccess,
   setToken,
   refreshFail,
+  clearMessage,
 } = authSlice.actions;
 
 export default authSlice.reducer;
