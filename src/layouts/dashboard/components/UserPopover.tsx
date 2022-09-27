@@ -20,29 +20,29 @@ import { logoutSuccess } from "redux/slices/AuthSlice";
 import { LinkModel } from "models";
 import { RootState } from "redux/store";
 
-const menu: LinkModel[] = [
-  {
-    icon: <BiUser />,
-    name: "Thông tin cá nhân",
-    to: "/profile",
-  },
-  {
-    icon: <BiBarChartAlt />,
-    name: "Thống kê",
-    to: "/report",
-  },
-  {
-    icon: <BiCog />,
-    name: "Cài đặt",
-    to: "/settings",
-  },
-];
-
 const UserPopover = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [open, setOpen] = useState<HTMLButtonElement | null>(null);
   let user = useSelector((state: RootState) => state.auth.auth?.user);
+
+  const menu: LinkModel[] = [
+    {
+      icon: <BiUser />,
+      name: "Thông tin cá nhân",
+      to: `/users/${user!.id}`,
+    },
+    {
+      icon: <BiBarChartAlt />,
+      name: "Thống kê",
+      to: "/report",
+    },
+    {
+      icon: <BiCog />,
+      name: "Cài đặt",
+      to: "/settings",
+    },
+  ];
 
   const handleClose = () => {
     setOpen(null);
@@ -112,27 +112,33 @@ const UserPopover = () => {
               </ListItemText>
             </MenuItem>
           ))}
-          <Divider
-            sx={{
-              mx: 2,
-              color: "grey.400",
-            }}
-          />
-          <MenuItem
-            to="/upgrade"
-            component={Link}
-            onClick={handleClose}
-            sx={{ p: 1.5, color: "primary.main", borderRadius: "12px" }}
-          >
-            <ListItemIcon sx={{ fontSize: 24, color: "primary.main" }}>
-              <MdLeaderboard />
-            </ListItemIcon>
-            <ListItemText>
-              <Typography sx={{ fontSize: 14, fontWeight: 600 }}>
-                Nâng cấp tài khoản
-              </Typography>
-            </ListItemText>
-          </MenuItem>
+
+          {user?.role === "Customer" && (
+            <>
+              <Divider
+                sx={{
+                  mx: 2,
+                  color: "grey.400",
+                }}
+              />
+              <MenuItem
+                to="/upgrade"
+                component={Link}
+                onClick={handleClose}
+                sx={{ p: 1.5, color: "primary.main", borderRadius: "12px" }}
+              >
+                <ListItemIcon sx={{ fontSize: 24, color: "primary.main" }}>
+                  <MdLeaderboard />
+                </ListItemIcon>
+                <ListItemText>
+                  <Typography sx={{ fontSize: 14, fontWeight: 600 }}>
+                    Nâng cấp tài khoản
+                  </Typography>
+                </ListItemText>
+              </MenuItem>
+            </>
+          )}
+
           <Divider
             sx={{
               mx: 2,

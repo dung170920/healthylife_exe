@@ -8,7 +8,6 @@ export * from "./recipe/Recipe";
 export * from "./recipe/AddRecipe";
 
 export * from "./chef/ChefList";
-export * from "./chef/Chef";
 
 export * from "./menu/Menu";
 

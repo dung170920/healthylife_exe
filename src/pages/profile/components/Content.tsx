@@ -21,10 +21,15 @@ import {
   Avatar,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import { getProfile } from "api";
-import { UserModel } from "models";
+import { getProfile, getUserById } from "api";
+import { RecipeModel, UserModel } from "models";
 import dayjs from "dayjs";
 import { formatPrice } from "utils/formatPrice";
+import { RootState } from "redux/store";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { FilterTab } from "components";
+import FoodList from "./FoodList";
 
 const ProfileContentStyles = styled(Paper)(({ theme }) => ({
   width: "90%",
@@ -88,15 +93,38 @@ const ProfileNumberDetail = styled(Grid)(({ theme }) => ({
   "& .profile_number_text": { fontWeight: "bold" },
 }));
 
+const filterTabValues = [
+  { label: "Món ăn", value: 1 },
+  { label: "Thức uống", value: 2 },
+];
+
 const Content = () => {
+  const { userId } = useParams();
+  const [foodList, setFoodList] = useState<RecipeModel[]>([]);
+  const [tab, setTab] = useState(1);
+  let user = useSelector((state: RootState) => state.auth.auth?.user);
   const [profile, setProfile] = useState<UserModel | null>();
+  const isProfile = userId === user!.id;
 
   useEffect(() => {
-    getProfile().then((response: UserModel) => {
-      //console.log("response:", response);
-      setProfile(response);
-    });
-  }, []);
+    if (isProfile) {
+      getProfile().then((response: UserModel) => {
+        //console.log("response:", response);
+        setProfile(response);
+      });
+    } else {
+      userId &&
+        getUserById({ userId, mode: "Chef" }).then((res) => {
+          // console.log(res);
+          setProfile(res);
+          setFoodList(res?.foods);
+        });
+    }
+  }, [isProfile, userId]);
+
+  const handleTabChange = (event: React.SyntheticEvent, value: number) => {
+    setTab(value);
+  };
 
   return (
     <ProfileContentStyles elevation={1}>
@@ -119,104 +147,133 @@ const Content = () => {
             <Typography fontWeight="bold" className="profile_info name">
               {profile?.fullName || "-"}
             </Typography>
-            <Stack direction="row" className="profile_info balance">
-              <BiWallet className="profile_info balance icon" />
-              <Typography>
-                Số dư: {profile?.balance ? formatPrice(profile.balance) : "0 đ"}
-              </Typography>
-            </Stack>
+            {isProfile &&
+              (user?.role === "Membership" || user?.role === "Customer") && (
+                <Stack direction="row" className="profile_info balance">
+                  <BiWallet className="profile_info balance icon" />
+                  <Typography>
+                    Số dư:{" "}
+                    {profile?.balance ? formatPrice(profile.balance) : "0 đ"}
+                  </Typography>
+                </Stack>
+              )}
+            {profile?.role === "Chef" && (
+              <Typography>{profile?.foodCount || "0"} công thức</Typography>
+            )}
           </Stack>
         </Stack>
 
         {/* Right Info */}
-        <RightIconGroup direction="row" spacing="32px">
-          <Tooltip
-            title={`Gói hội viên còn thời hạn đến: ${profile?.fullName}`}
-            placement="bottom"
-            arrow
-          >
-            <CrownIcon className="icons crown_icon" />
-          </Tooltip>
-          <IconButton onClick={() => {}} className="icons rest_icon">
-            <DollarIcon fontSize={24} />
-          </IconButton>
-          <IconButton onClick={() => {}} className="icons rest_icon">
-            <AiOutlineEdit fontSize={24} />
-          </IconButton>
-        </RightIconGroup>
+        {isProfile && (
+          <RightIconGroup direction="row" spacing="32px">
+            {user?.role === "Membership" && (
+              <Tooltip
+                title={`Gói hội viên còn thời hạn đến: ${profile?.fullName}`}
+                placement="bottom"
+                arrow
+              >
+                <CrownIcon className="icons crown_icon" />
+              </Tooltip>
+            )}
+            {(user?.role === "Membership" || user?.role === "Customer") && (
+              <IconButton onClick={() => {}} className="icons rest_icon">
+                <DollarIcon fontSize={24} />
+              </IconButton>
+            )}
+            <IconButton onClick={() => {}} className="icons rest_icon">
+              <AiOutlineEdit fontSize={24} />
+            </IconButton>
+          </RightIconGroup>
+        )}
       </Stack>
 
       <Divider sx={{ marginBottom: "30px", marginTop: "30px" }} />
 
       {/* Bottom Detail */}
-      <Grid container rowSpacing={3} columnSpacing={12}>
-        <ProfileNumberDetail item xs={4}>
-          <Typography className="profile_number_title">Cân nặng</Typography>
-          <Stack direction="row" alignContent="center">
-            <SpeedometerIcon className="profile_number_icon" />
-            <Typography className="profile_number_text">
-              {profile?.weight || "-"} kg
-            </Typography>
-          </Stack>
-        </ProfileNumberDetail>
+      {(profile?.role === "Customer" || profile?.role === "Membership") && (
+        <Grid container rowSpacing={3} columnSpacing={12}>
+          <ProfileNumberDetail item xs={4}>
+            <Typography className="profile_number_title">Cân nặng</Typography>
+            <Stack direction="row" alignContent="center">
+              <SpeedometerIcon className="profile_number_icon" />
+              <Typography className="profile_number_text">
+                {profile?.weight || "-"} kg
+              </Typography>
+            </Stack>
+          </ProfileNumberDetail>
 
-        <ProfileNumberDetail item xs={4}>
-          <Typography className="profile_number_title">Chiều cao</Typography>
-          <Stack direction="row" alignContent="center">
-            <MdHeight className="profile_number_icon" />
-            <Typography className="profile_number_text">
-              {profile?.height || "-"} cm
-            </Typography>
-          </Stack>
-        </ProfileNumberDetail>
+          <ProfileNumberDetail item xs={4}>
+            <Typography className="profile_number_title">Chiều cao</Typography>
+            <Stack direction="row" alignContent="center">
+              <MdHeight className="profile_number_icon" />
+              <Typography className="profile_number_text">
+                {profile?.height || "-"} cm
+              </Typography>
+            </Stack>
+          </ProfileNumberDetail>
 
-        <ProfileNumberDetail item xs={4}>
-          <Typography className="profile_number_title">Giới tính</Typography>
-          <Stack direction="row" alignContent="center">
-            {(profile?.gender === "Nam" ? (
-              <BsGenderMale className="profile_number_icon" />
-            ) : (
-              <BsGenderFemale className="profile_number_icon" />
-            )) || "-"}
+          <ProfileNumberDetail item xs={4}>
+            <Typography className="profile_number_title">Giới tính</Typography>
+            <Stack direction="row" alignContent="center">
+              {(profile?.gender === "Nam" ? (
+                <BsGenderMale className="profile_number_icon" />
+              ) : (
+                <BsGenderFemale className="profile_number_icon" />
+              )) || "-"}
 
-            <Typography className="profile_number_text">
-              {profile?.gender || "-"}
-            </Typography>
-          </Stack>
-        </ProfileNumberDetail>
+              <Typography className="profile_number_text">
+                {profile?.gender || "-"}
+              </Typography>
+            </Stack>
+          </ProfileNumberDetail>
 
-        <ProfileNumberDetail item xs={4}>
-          <Typography className="profile_number_title">Email</Typography>
-          <Stack direction="row" alignContent="center">
-            <AiOutlineMail className="profile_number_icon" />
-            <Typography className="profile_number_text">
-              {profile?.email || "-"}
-            </Typography>
-          </Stack>
-        </ProfileNumberDetail>
+          <ProfileNumberDetail item xs={4}>
+            <Typography className="profile_number_title">Email</Typography>
+            <Stack direction="row" alignContent="center">
+              <AiOutlineMail className="profile_number_icon" />
+              <Typography className="profile_number_text">
+                {profile?.email || "-"}
+              </Typography>
+            </Stack>
+          </ProfileNumberDetail>
 
-        <ProfileNumberDetail item xs={4}>
-          <Typography className="profile_number_title">Mục tiêu</Typography>
-          <Stack direction="row" alignContent="center">
-            <TargetIcon className="profile_number_icon" />
-            <Typography className="profile_number_text">
-              {profile?.targetName || "-"}
-            </Typography>
-          </Stack>
-        </ProfileNumberDetail>
+          <ProfileNumberDetail item xs={4}>
+            <Typography className="profile_number_title">Mục tiêu</Typography>
+            <Stack direction="row" alignContent="center">
+              <TargetIcon className="profile_number_icon" />
+              <Typography className="profile_number_text">
+                {profile?.targetName || "-"}
+              </Typography>
+            </Stack>
+          </ProfileNumberDetail>
 
-        <ProfileNumberDetail item xs={4}>
-          <Typography className="profile_number_title">Ngày sinh</Typography>
-          <Stack direction="row" alignContent="center">
-            <CakeIcon className="profile_number_icon" />
-            <Typography className="profile_number_text">
-              {(profile?.birthday &&
-                dayjs(profile.birthday).locale("vi").format("DD MMMM, YYYY")) ||
-                "-"}
-            </Typography>
-          </Stack>
-        </ProfileNumberDetail>
-      </Grid>
+          <ProfileNumberDetail item xs={4}>
+            <Typography className="profile_number_title">Ngày sinh</Typography>
+            <Stack direction="row" alignContent="center">
+              <CakeIcon className="profile_number_icon" />
+              <Typography className="profile_number_text">
+                {(profile?.birthday &&
+                  dayjs(profile.birthday)
+                    .locale("vi")
+                    .format("DD MMMM, YYYY")) ||
+                  "-"}
+              </Typography>
+            </Stack>
+          </ProfileNumberDetail>
+        </Grid>
+      )}
+      {profile?.role === "Chef" && (
+        <>
+          <FilterTab
+            tabs={filterTabValues}
+            sx={{ marginBottom: "40px" }}
+            onChangeTab={handleTabChange}
+            defaultValue={tab}
+          />
+
+          <FoodList items={foodList} />
+        </>
+      )}
     </ProfileContentStyles>
   );
 };

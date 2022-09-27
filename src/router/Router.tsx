@@ -75,12 +75,12 @@ export default function Router() {
           path: "chefs",
           children: [
             {
-              element: <ChefList />,
+              element: (
+                <ProtectedRoutes roles={["Admin", "Customer", "Membership"]}>
+                  <ChefList />
+                </ProtectedRoutes>
+              ),
               index: true,
-            },
-            {
-              path: ":chefId",
-              element: <Chef />,
             },
           ],
         },
@@ -105,7 +105,6 @@ export default function Router() {
                   <OrderList />
                 </ProtectedRoutes>
               ),
-              index: true,
             },
             {
               path: ":orderId",
@@ -118,12 +117,24 @@ export default function Router() {
           ],
         },
         {
-          path: "profile",
-          element: <Profile />,
-        },
-        {
           path: "users",
-          element: <User />,
+          children: [
+            {
+              element: (
+                <ProtectedRoutes roles={["Admin"]}>
+                  <Users />
+                </ProtectedRoutes>
+              ),
+            },
+            {
+              path: ":userId",
+              element: (
+                <ProtectedRoutes roles={["Chef", "Customer", "Membership"]}>
+                  <Profile />
+                </ProtectedRoutes>
+              ),
+            },
+          ],
         },
       ],
     },
@@ -159,7 +170,6 @@ const RecipeSearchResult = Loadable(
 );
 
 const ChefList = Loadable(lazy(() => import("pages/chef/ChefList")));
-const Chef = Loadable(lazy(() => import("pages/chef/Chef")));
 
 const Menu = Loadable(lazy(() => import("pages/menu/Menu")));
 
@@ -170,7 +180,7 @@ const Upgrade = Loadable(lazy(() => import("pages/upgrade/Upgrade")));
 
 const Profile = Loadable(lazy(() => import("pages/profile/Profile")));
 
-const User = Loadable(lazy(() => import("pages/user/User")));
+const Users = Loadable(lazy(() => import("pages/user/Users")));
 
 const PermissionDenied = Loadable(
   lazy(() => import("pages/message/PermissionDenied"))

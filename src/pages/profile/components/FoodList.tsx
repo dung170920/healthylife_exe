@@ -1,5 +1,5 @@
 import { Grid } from "@mui/material";
-import FoodItem from "pages/chef/components/FoodItem";
+import FoodItem from "pages/profile/components/FoodItem";
 import { RecipeModel } from "models";
 
 type Props = {
