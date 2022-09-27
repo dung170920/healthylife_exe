@@ -8,7 +8,7 @@ const NutritionList: React.FC<{ nutritionList: NutritionModel[] }> = ({
 }) => {
   return (
     <Stack direction="row" gap={4} sx={{ marginTop: "10px" }}>
-      {nutritionList.map((item, i) => (
+      {nutritionList?.map((item, i) => (
         <NutritionItem key={i} nutrition={item} />
       ))}
     </Stack>

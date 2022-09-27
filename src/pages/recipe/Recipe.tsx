@@ -7,7 +7,12 @@ import { NutritionModel } from "models/NutritionModel";
 import { AiFillEye } from "react-icons/ai";
 import { IoMdList } from "react-icons/io";
 import { Bowl, CustomDialog } from "components";
-import { useState } from "react";
+import { useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { getRecipeById } from "api/RecipeApi";
+import { parseJsonStringToArray } from "utils/parseJsonStringToArray";
+import { convertDifficultyToString } from "utils/convertDifficultyToString";
+import parse from "html-react-parser";
 
 const DetailStyle = styled(Paper)(({ theme }) => ({
   width: "70%",
@@ -77,82 +82,86 @@ const DescriptionStyle = styled(Stack)(({ theme }) => ({
   },
 }));
 
-const nutritionListArr: NutritionModel[] = [
-  { amount: 100, name: "Calories", unit: "kcal" },
-  { amount: 100, name: "Calories", unit: "kcal" },
-  { amount: 100, name: "Calories", unit: "kcal" },
-  { amount: 100, name: "Calories", unit: "kcal" },
-];
+const Recipe = () => {
+  type ResponseModel = {
+    id: string;
+    name: string;
+    pictureUrl: string;
+    description: string;
+    instruction: string;
+    calorie: number;
+    ingredient: string;
+    timeCost: number;
+    difficulty: number;
+    chef: { fullName: string; pictureUrl: string; email: string; id: string };
+    recipes: {
+      foodId: string;
+      recipeId: number;
+      recipeName: string;
+      amount: number;
+      unit: string;
+    }[];
+  };
 
-const dummyDetailData = {
-  name: "Bún Đậu Mắm Tôm",
-  image:
-    "https://www.thatlangon.com/wp-content/uploads/2020/06/bun-dau-7-e1593236905415.jpg",
-  description:
-    "Ngon đến vị cúi cùng baby oh yeah, ngon lắm nha nấu đi em ahujh aauhdu ijaiji i love you, do you nsjdfnj uasufh",
-  time: 60,
-  level: "Hard",
-  ingredients: ["bún đậu", "mắm tôm", "chả ran", "nem nướng"],
-  nutritionList: nutritionListArr,
-};
+  const { recipeId } = useParams();
+  const [isMakingDialogOpen, setIsMakingDialogOpen] = useState(false);
+  const [response, setResponse] = useState<ResponseModel | null>();
 
-const makingDialogContent = () => {
-  return (
-    <Stack
-      direction="row"
-      sx={{
-        "& .icon": { fontSize: "50px", marginRight: "15px" },
-      }}
-    >
-      <IoMdList className="icon" />
-      <Box>
-        {/* Ingredient */}
-        <Box sx={{ marginBottom: "10px" }}>
+  const makingDialogContent = () => {
+    return (
+      <Stack
+        direction="row"
+        sx={{
+          "& .icon": { fontSize: "50px", marginRight: "15px" },
+        }}
+      >
+        <IoMdList className="icon" />
+        <Box>
+          {/* Ingredient */}
+          <Box sx={{ marginBottom: "10px" }}>
+            <Typography
+              fontWeight="bold"
+              sx={{ marginBottom: "10px", marginTop: "10px" }}
+            >
+              Nguyên liệu
+            </Typography>
+            <IngredientList ingredients={response?.recipes} />
+          </Box>
+
           <Typography
             fontWeight="bold"
             sx={{ marginBottom: "10px", marginTop: "10px" }}
           >
-            Nguyên liệu
+            Cách làm
           </Typography>
-          <IngredientList ingredients={dummyDetailData.ingredients} />
+          <Typography>{parse(`${response?.instruction}`)}</Typography>
         </Box>
-
-        <Typography
-          fontWeight="bold"
-          sx={{ marginBottom: "10px", marginTop: "10px" }}
-        >
-          Cách làm
-        </Typography>
-        <Typography>
-          1. Đánh trứng <br /> Lần lượt đập 2 quả trứng xong bỏ vô máy xay sinh
-          tố xay nhiễn, Sau đó bỏ 1 thìa ca phê và 1 thìa đường. Khuấy thật đều
-          trong 5 phút <br />
-          <br />
-          2. Sơ chế nguyên liệu <br />
-          Nêm thêm 1/2 thìa muối cho ngon.
-        </Typography>
-      </Box>
-    </Stack>
-  );
-};
-
-const Recipe = () => {
-  const [isMakingDialogOpen, setIsMakingDialogOpen] = useState(false);
+      </Stack>
+    );
+  };
 
   const makingDialogOpenCloseHandler = () => {
     setIsMakingDialogOpen(!isMakingDialogOpen);
   };
+
+  const fetchFoodDetailData = async () => {
+    const foodDetail: ResponseModel = await getRecipeById(recipeId);
+
+    setResponse(foodDetail);
+  };
+
+  useEffect(() => {
+    fetchFoodDetailData();
+  }, []);
 
   return (
     <>
       <DetailStyle elevation={3} sx={{}}>
         {/* Intro */}
         <IntroStyle>
-          <Typography className="intro_title">
-            {dummyDetailData.name}
-          </Typography>
+          <Typography className="intro_title">{response?.name}</Typography>
           <Typography className="intro_desc">
-            {dummyDetailData.description}
+            {parse(`${response?.description}`)}
           </Typography>
         </IntroStyle>
 
@@ -160,12 +169,12 @@ const Recipe = () => {
         <Bowl
           size={500}
           sx={{
-            bottom: "70px",
+            bottom: "30%",
             right: "-70%",
             transform: "translateX(-50%)",
           }}
         >
-          <ImageFoodStyle src={dummyDetailData.image} />
+          <ImageFoodStyle src={response?.pictureUrl} />
         </Bowl>
 
         {/* Description */}
@@ -176,13 +185,13 @@ const Recipe = () => {
             <Stack className="recipe_time_difficulty--item" direction="row">
               <BiTimeFive className="item_icon" />
               <Typography className="item_text">
-                {dummyDetailData.time} Phút
+                {response?.timeCost} Phút
               </Typography>
             </Stack>
             <Stack className="recipe_time_difficulty--item" direction="row">
               <BiDish className="item_icon" />
               <Typography className="item_text">
-                {dummyDetailData.level}
+                {convertDifficultyToString(response?.difficulty)}
               </Typography>
             </Stack>
           </Stack>
@@ -190,12 +199,14 @@ const Recipe = () => {
           <Stack className="recipe_chef" direction="row">
             <img
               className="recipe_chef--image"
-              src="https://suckhoedoisong.qltns.mediacdn.vn/324455921873985536/2022/5/15/photo-1652629284797-1652629285007183004729.jpg"
+              src={response?.chef?.pictureUrl}
               alt=""
             ></img>
 
             <Stack>
-              <Typography className="recipe_chef--name">Roberto Jr</Typography>
+              <Typography className="recipe_chef--name">
+                {response?.chef.fullName}
+              </Typography>
               <Typography>Chef</Typography>
             </Stack>
           </Stack>
@@ -203,7 +214,9 @@ const Recipe = () => {
 
         {/* Nutrition Information */}
         <Typography className="title-text">Thông tin dinh dưỡng</Typography>
-        <NutritionList nutritionList={dummyDetailData.nutritionList} />
+        <NutritionList
+          nutritionList={parseJsonStringToArray(response?.ingredient)}
+        />
 
         {/* Button Group */}
         <Stack direction="row" sx={{ marginTop: "20px" }}>
@@ -237,7 +250,7 @@ const Recipe = () => {
         onClose={makingDialogOpenCloseHandler}
         children={makingDialogContent()}
         title="Cách làm"
-        sx={{ "& .MuiDialog-paper": { width: "70%", height: "60%" } }}
+        sx={{ "& .MuiDialog-paper": { width: "70%", height: "80%" } }}
       />
     </>
   );
