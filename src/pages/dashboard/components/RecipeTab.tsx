@@ -3,6 +3,8 @@ import { RecipeModel } from "models";
 import { GiKnifeFork } from "react-icons/gi";
 import { BiTimeFive } from "react-icons/bi";
 import { Bowl } from "components";
+import { getRecipeById } from "api/RecipeApi";
+import { Link } from "react-router-dom";
 
 const RecipeTabStyle = styled(Stack)(({ theme }) => ({
   backgroundColor: theme.palette.primary.lighter,
@@ -60,55 +62,63 @@ type Props = {
 };
 
 const RecipeTab = ({ recipe, index }: Props) => {
+  // const navigate = useNavigate();
+  // const redirectToFoodDetail = () => {
+  //   navigate(`/api/v1/foods/${recipe.id}`);
+  // };
+
   return (
-    <RecipeTabStyle
-      direction="column"
-      key={recipe.id}
-      sx={{
-        ...(index === 0 && { backgroundColor: "info.lighter" }),
-        ...(index === 1 && { backgroundColor: "error.lighter" }),
-        ...(index === 2 && { backgroundColor: "warning.lighter" }),
-      }}
-    >
-      <Bowl
-        size={170}
-        sx={{ top: "-40%", right: "50%", transform: "translate(50%)" }}
+    <Link to={`recipes/recipe/${recipe.id}`}>
+      <RecipeTabStyle
+        // onClick={redirectToFoodDetail}
+        direction="column"
+        key={recipe.id}
+        sx={{
+          ...(index === 0 && { backgroundColor: "info.lighter" }),
+          ...(index === 1 && { backgroundColor: "error.lighter" }),
+          ...(index === 2 && { backgroundColor: "warning.lighter" }),
+        }}
       >
-        <img src={recipe.pictureUrl} alt=""></img>
-      </Bowl>
-      <Stack className="recipe-info" direction="column">
-        <Typography className="recipe-name" fontWeight="bold">
-          {recipe.name}
-        </Typography>
-
-        <Stack
-          direction="row"
-          spacing={1}
-          sx={{ justifyContent: "space-between" }}
+        <Bowl
+          size={170}
+          sx={{ top: "-40%", right: "50%", transform: "translate(50%)" }}
         >
-          <Stack direction="column" sx={{ width: "60%" }}>
-            <Stack className="recipe-info-detail" direction="row">
-              <GiKnifeFork className="recipe-info-detail__icon" />
-              {recipe.difficulty === 1
-                ? "Dễ"
-                : recipe.difficulty === 2
-                ? "Trung bình"
-                : "Khó"}
-            </Stack>
-            <Stack className="recipe-info-detail" direction="row">
-              <BiTimeFive className="recipe-info-detail__icon" />
-              {recipe.timeCost} phút
-            </Stack>
-          </Stack>
+          <img src={recipe.pictureUrl} alt=""></img>
+        </Bowl>
+        <Stack className="recipe-info" direction="column">
+          <Typography className="recipe-name" fontWeight="bold">
+            {recipe.name}
+          </Typography>
 
-          <Box className="recipe-info-kcal" sx={{ width: "40%" }}>
-            <Box>
-              <KcalTextStyle>{recipe.calorie}</KcalTextStyle> Kcal
+          <Stack
+            direction="row"
+            spacing={1}
+            sx={{ justifyContent: "space-between" }}
+          >
+            <Stack direction="column" sx={{ width: "60%" }}>
+              <Stack className="recipe-info-detail" direction="row">
+                <GiKnifeFork className="recipe-info-detail__icon" />
+                {recipe.difficulty === 1
+                  ? "Dễ"
+                  : recipe.difficulty === 2
+                  ? "Trung bình"
+                  : "Khó"}
+              </Stack>
+              <Stack className="recipe-info-detail" direction="row">
+                <BiTimeFive className="recipe-info-detail__icon" />
+                {recipe.timeCost} phút
+              </Stack>
+            </Stack>
+
+            <Box className="recipe-info-kcal" sx={{ width: "40%" }}>
+              <Box>
+                <KcalTextStyle>{recipe.calorie}</KcalTextStyle> Kcal
+              </Box>
             </Box>
-          </Box>
+          </Stack>
         </Stack>
-      </Stack>
-    </RecipeTabStyle>
+      </RecipeTabStyle>
+    </Link>
   );
 };
 

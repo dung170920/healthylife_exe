@@ -36,7 +36,9 @@ const NutritionStyle = styled(Stack)(({ theme }) => ({
 const NutritionItem = ({ nutrition }: Props) => {
   return (
     <NutritionStyle gap={1}>
-      <Typography className="nutrition_amount">{nutrition.amount}</Typography>
+      <Typography className="nutrition_amount">
+        {Math.round(nutrition.amount)}
+      </Typography>
       <Typography className="nutrition_name">{nutrition.name}</Typography>
       <Typography className="nutrition_unit">{nutrition.unit}</Typography>
     </NutritionStyle>
