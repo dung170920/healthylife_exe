@@ -5,9 +5,11 @@ import { LogoIcon } from "assets/icons";
 import imgSignIn from "assets/icons/imgSignIn.svg";
 import { Typography, styled, Stack } from "@mui/material";
 import { AiOutlineCheck } from "react-icons/ai";
+import { useDispatch } from "react-redux";
+import { clearMessage } from "redux/slices/AuthSlice";
 
 const LeftDiv = styled("div")(({ theme }) => ({
-  height: "70%",
+  height: "75%",
   backgroundColor: "#EFEFEF",
   position: "relative",
   width: "100%",
@@ -63,6 +65,7 @@ export const AuthLayout = () => {
   const navigate = useNavigate();
   var urlRoute = location.pathname;
   var contentButton = "";
+  const dispatch = useDispatch();
   if (urlRoute === "/auth/login") contentButton = "Đăng ký";
   if (urlRoute === "/auth/register") contentButton = "Đăng nhập";
 
@@ -71,10 +74,10 @@ export const AuthLayout = () => {
       container
       component="main"
       alignItems={"center"}
-      sx={{ height: "100vh" }}
+      sx={{ minHeight: "100vh" }}
     >
       <Grid item xs={2}></Grid>
-      <Grid item xs={8} display="flex" sx={{ height: "70vh" }}>
+      <Grid item xs={8} display="flex">
         <Grid item xs={6}>
           <LeftDiv>
             <Grid
@@ -83,17 +86,18 @@ export const AuthLayout = () => {
               sx={{
                 display: "flex",
                 justifyContent: "space-between",
-                p: "10px",
+                p: "12px",
                 alignItems: "center",
               }}
             >
               <LogoIcon />
               <ButtonStyle
-                onClick={() =>
-                  urlRoute === "/auth/login"
+                onClick={() => {
+                  dispatch(clearMessage());
+                  return urlRoute === "/auth/login"
                     ? navigate("/auth/register")
-                    : navigate("/auth/login")
-                }
+                    : navigate("/auth/login");
+                }}
               >
                 {contentButton}
               </ButtonStyle>

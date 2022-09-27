@@ -6,7 +6,7 @@ export default function Input(theme: Theme) {
       styleOverrides: {
         root: {
           backgroundColor: theme.palette.background.default,
-          padding: "12px",
+          padding: "0",
           fontWeight: 400,
           borderRadius: "12px",
           border: `2px solid transparent`,
@@ -20,13 +20,21 @@ export default function Input(theme: Theme) {
               border: "none",
             },
           },
+          "&.Mui-error": {
+            border: `2px solid ${theme.palette.error.main}`,
+            backgroundColor: "#fff",
+            "& .MuiOutlinedInput-notchedOutline": {
+              border: "none",
+            },
+          },
           "& .MuiOutlinedInput-notchedOutline, & .Mui-hovered": {
             border: "none",
           },
         },
 
         input: {
-          padding: "0 !important",
+          outline: "0",
+          padding: "12px !important",
           "&::placeholder": {
             opacity: 1,
             color: theme.palette.grey[600],

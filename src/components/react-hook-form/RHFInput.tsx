@@ -6,6 +6,7 @@ type RHFInputProps = {
   label: string;
   control: Control<any>;
   placeholder: string;
+  type?: string;
 };
 
 export const RHFInput = ({
@@ -13,6 +14,7 @@ export const RHFInput = ({
   label,
   name,
   placeholder,
+  type = "text",
   ...props
 }: RHFInputProps) => {
   const {
@@ -24,7 +26,7 @@ export const RHFInput = ({
   });
 
   return (
-    <FormControl sx={{ mb: 3 }} fullWidth>
+    <FormControl sx={{ mb: 2 }} fullWidth>
       <InputLabel
         sx={{
           cursor: "pointer",
@@ -44,12 +46,10 @@ export const RHFInput = ({
         name={name}
         placeholder={placeholder}
         id={name}
+        type={type}
         error={!!errors[name]}
         helperText={errors[name]?.message?.toString()}
       />
-      {/* {errors[props.name]?.message && (
-    <Typography>{props.name && errors[props.name]?.message}</Typography>
-  )} */}
     </FormControl>
   );
 };

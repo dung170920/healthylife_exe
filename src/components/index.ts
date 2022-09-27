@@ -10,5 +10,5 @@ export * from "./Pagination";
 export * from "./DataTable";
 export * from "./FilterTab";
 
-export * from "./react-hook-form/RHFForm";
 export * from "./react-hook-form/RHFInput";
+export * from "./react-hook-form/RHFRadio";

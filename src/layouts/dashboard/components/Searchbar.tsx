@@ -31,7 +31,7 @@ const Searchbar = () => {
       inputRef={searchRef}
       onKeyDown={handleKeyDown}
       startAdornment={
-        <InputAdornment position="start">
+        <InputAdornment position="start" sx={{ ml: 1 }}>
           <RiSearchLine fontSize={24} />
         </InputAdornment>
       }

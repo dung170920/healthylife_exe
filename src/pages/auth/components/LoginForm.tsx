@@ -2,12 +2,14 @@ import { Box, Button, styled } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { RHFInput } from "components";
-
-type LoginFormProps = {
-  isLoading: boolean;
-};
+import { LoginRequestModel } from "models";
+import { login } from "api";
+import { useDispatch, useSelector } from "react-redux";
+import { authPending, loginFail, loginSuccess } from "redux/slices/AuthSlice";
+import jwtDecode from "jwt-decode";
+import { RootState } from "redux/store";
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string()
@@ -17,7 +19,6 @@ const LoginSchema = Yup.object().shape({
 });
 
 const ButtonLogin = styled(Button)(({ theme }) => ({
-  marginTop: "16px",
   marginBottom: "8px",
   backgroundColor: theme.palette.primary.main,
   color: "white",
@@ -28,12 +29,44 @@ const ButtonLogin = styled(Button)(({ theme }) => ({
   },
 }));
 
-const LoginForm = ({ isLoading }: LoginFormProps) => {
+const LoginForm = () => {
+  const defaultValues: LoginRequestModel = {
+    email: "",
+    password: "",
+  };
+  const { isLoading } = useSelector((state: RootState) => state.auth);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { handleSubmit, control } = useForm({
     resolver: yupResolver(LoginSchema),
+    defaultValues,
   });
 
-  function onSubmit() {}
+  const onSubmit = async (data: LoginRequestModel) => {
+    dispatch(authPending());
+    console.log(data);
+    login(data)
+      .then((res) => {
+        dispatch(
+          loginSuccess({
+            accessToken: res.token.accessToken,
+            refreshToken: res.token.refreshToken,
+            user: jwtDecode(res.token.accessToken),
+          })
+        );
+        localStorage.setItem(
+          "authTokens",
+          JSON.stringify({
+            accessToken: res.token.accessToken,
+            refreshToken: res.token.refreshToken,
+          })
+        );
+        navigate("/");
+      })
+      .catch((error) => {
+        dispatch(loginFail("Email hoặc mật khẩu không đúng"));
+      });
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -48,6 +81,7 @@ const LoginForm = ({ isLoading }: LoginFormProps) => {
         label="Mật khẩu"
         control={control}
         placeholder="Nhập mật khẩu"
+        type="password"
       />
       <Box sx={{ float: "right", fontSize: 14 }}>
         <Link to="#">Quên mật khẩu</Link>
