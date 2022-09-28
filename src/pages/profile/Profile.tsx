@@ -5,7 +5,7 @@ import Cover from "./components/Cover";
 
 const ProfileMainContainer = styled("div")(({ theme }) => ({
   position: "relative",
-  height: "689px",
+  height: "1621px",
 }));
 
 const Profile = () => {
