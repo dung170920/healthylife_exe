@@ -21,14 +21,14 @@ import {
   Avatar,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import { getProfile, getUserById } from "api";
-import { RecipeModel, UserModel } from "models";
+import { getProfile, getRecipeList, getUserById } from "api";
+import { RecipeModel, RecipeRequestModel, UserModel } from "models";
 import dayjs from "dayjs";
 import { formatPrice } from "utils/formatPrice";
 import { RootState } from "redux/store";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { FilterTab } from "components";
+import { FilterTab, Pagination } from "components";
 import FoodList from "./FoodList";
 
 const ProfileContentStyles = styled(Paper)(({ theme }) => ({
@@ -39,7 +39,7 @@ const ProfileContentStyles = styled(Paper)(({ theme }) => ({
   margin: "0 auto",
   left: 0,
   right: 0,
-  top: "37%",
+  top: "17%",
   padding: "24px",
   boxShadow: "none",
 
@@ -94,22 +94,34 @@ const ProfileNumberDetail = styled(Grid)(({ theme }) => ({
 }));
 
 const filterTabValues = [
-  { label: "Món ăn", value: 1 },
-  { label: "Thức uống", value: 2 },
+  { label: "Món ăn", value: 2 },
+  { label: "Thức uống", value: 1 },
 ];
+
+type ResponseModel = {
+  items: RecipeModel[];
+  maxPage: number;
+  page: number;
+};
 
 const Content = () => {
   const { userId } = useParams();
-  const [foodList, setFoodList] = useState<RecipeModel[] | undefined>();
-  const [tab, setTab] = useState(1);
+  const [response, setResponse] = useState<ResponseModel | null>();
+  //const [tab, setTab] = useState(1);
+  const [params, setParams] = useState<RecipeRequestModel>({
+    FilterMode: 2,
+    FoodTypeId: 1,
+    PageSize: 9,
+    Page: 1,
+  });
   let user = useSelector((state: RootState) => state.auth.auth?.user);
-  const [profile, setProfile] = useState<UserModel | null>();
+  const [profile, setProfile] = useState<UserModel | undefined>();
   const isProfile = userId === user!.id;
 
   useEffect(() => {
     if (isProfile) {
       getProfile().then((response: UserModel) => {
-        //console.log("response:", response);
+        console.log("response:", response);
         setProfile(response);
       });
     } else {
@@ -117,13 +129,25 @@ const Content = () => {
         getUserById({ userId, mode: "Chef" }).then((res) => {
           // console.log(res);
           setProfile(res);
-          setFoodList(res?.foods);
+          getRecipeList(params).then((value) => {
+            setResponse(value);
+          });
         });
     }
-  }, [isProfile, userId]);
+  }, [isProfile, userId, params]);
+
+  function handlePageChange(event: React.ChangeEvent<unknown>, page: number) {
+    setParams({
+      ...params,
+      Page: page,
+    });
+  }
 
   const handleTabChange = (event: React.SyntheticEvent, value: number) => {
-    setTab(value);
+    setParams({
+      ...params,
+      FoodTypeId: value,
+    });
   };
 
   return (
@@ -157,7 +181,7 @@ const Content = () => {
                   </Typography>
                 </Stack>
               )}
-            {foodList && (
+            {!profile?.foodCount && (
               <Typography>{profile?.foodCount || "0"} công thức</Typography>
             )}
           </Stack>
@@ -190,7 +214,7 @@ const Content = () => {
       <Divider sx={{ marginBottom: "30px", marginTop: "30px" }} />
 
       {/* Bottom Detail */}
-      {!foodList ? (
+      {profile?.foodCount ? (
         <Grid container rowSpacing={3} columnSpacing={12}>
           <ProfileNumberDetail item xs={4}>
             <Typography className="profile_number_title">Cân nặng</Typography>
@@ -267,11 +291,17 @@ const Content = () => {
             tabs={filterTabValues}
             sx={{ marginBottom: "40px" }}
             onChangeTab={handleTabChange}
-            defaultValue={tab}
+            defaultValue={params.FoodTypeId || 1}
           />
-          <FoodList items={foodList} />
+          <FoodList items={response?.items ? response.items : []} />
         </>
       )}
+      <Pagination
+        page={params.Page || 1}
+        onChange={handlePageChange}
+        count={response?.maxPage || 1}
+        sx={{ my: 6 }}
+      />
     </ProfileContentStyles>
   );
 };

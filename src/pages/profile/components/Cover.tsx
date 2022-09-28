@@ -10,7 +10,7 @@ const ProfileCoverStyles = styled(Stack)(({ theme }) => ({
   alignItems: "center",
   position: "absolute",
   left: "-13%",
-  top: "-12%",
+  top: "-50px",
   "& .logo_icon": { width: "297px", height: "166px" },
 }));
 
