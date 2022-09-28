@@ -1,14 +1,13 @@
-import { Button, styled } from "@mui/material";
+import { Button, MenuItem, styled } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
-import { RHFInput, RHFRadio } from "components";
+import { RHFInput, RHFRadio, RHFSelect } from "components";
 import { RegisterRequestModel } from "models";
 import { register } from "api";
 import { useDispatch, useSelector } from "react-redux";
-import { authPending, loginFail, loginSuccess } from "redux/slices/AuthSlice";
-import jwtDecode from "jwt-decode";
+import { authPending, loginFail } from "redux/slices/AuthSlice";
 import { RootState } from "redux/store";
 
 const CreateAccount = styled(Button)(({ theme }) => ({

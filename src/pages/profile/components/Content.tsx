@@ -33,7 +33,7 @@ import FoodList from "./FoodList";
 
 const ProfileContentStyles = styled(Paper)(({ theme }) => ({
   width: "90%",
-  height: "353px",
+  height: "auto",
   position: "absolute",
   borderRadius: 8,
   margin: "0 auto",
@@ -100,7 +100,7 @@ const filterTabValues = [
 
 const Content = () => {
   const { userId } = useParams();
-  const [foodList, setFoodList] = useState<RecipeModel[]>([]);
+  const [foodList, setFoodList] = useState<RecipeModel[] | undefined>();
   const [tab, setTab] = useState(1);
   let user = useSelector((state: RootState) => state.auth.auth?.user);
   const [profile, setProfile] = useState<UserModel | null>();
@@ -157,7 +157,7 @@ const Content = () => {
                   </Typography>
                 </Stack>
               )}
-            {profile?.role === "Chef" && (
+            {foodList && (
               <Typography>{profile?.foodCount || "0"} công thức</Typography>
             )}
           </Stack>
@@ -190,7 +190,7 @@ const Content = () => {
       <Divider sx={{ marginBottom: "30px", marginTop: "30px" }} />
 
       {/* Bottom Detail */}
-      {(profile?.role === "Customer" || profile?.role === "Membership") && (
+      {!foodList ? (
         <Grid container rowSpacing={3} columnSpacing={12}>
           <ProfileNumberDetail item xs={4}>
             <Typography className="profile_number_title">Cân nặng</Typography>
@@ -261,8 +261,7 @@ const Content = () => {
             </Stack>
           </ProfileNumberDetail>
         </Grid>
-      )}
-      {profile?.role === "Chef" && (
+      ) : (
         <>
           <FilterTab
             tabs={filterTabValues}
@@ -270,7 +269,6 @@ const Content = () => {
             onChangeTab={handleTabChange}
             defaultValue={tab}
           />
-
           <FoodList items={foodList} />
         </>
       )}
