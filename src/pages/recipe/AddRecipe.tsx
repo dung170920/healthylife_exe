@@ -1,7 +1,12 @@
 import React from "react";
+import { UserForm } from "pages/upgrade/UserForm";
 
 const AddRecipe = () => {
-  return <div>AddRecipe</div>;
+  return (
+    <div>
+      <UserForm></UserForm>
+    </div>
+  );
 };
 
 export default AddRecipe;
