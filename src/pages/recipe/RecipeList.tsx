@@ -38,7 +38,7 @@ const RecipeList = () => {
 
   useEffect(() => {
     getRecipeList(params).then((res: ResponseModel) => {
-      console.log(res);
+
       setResponse(res);
     });
   }, [params]);

@@ -38,6 +38,13 @@ const RecipeList = () => {
   }
 
   useEffect(() => {
+    setParams((pre) => ({
+      ...pre,
+      SearchKey: `${searchKey?.replaceAll("-", " ")}`,
+    }));
+  }, [window.location.search]);
+
+  useEffect(() => {
     getRecipesData();
   }, [params]);
 
