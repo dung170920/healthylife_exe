@@ -24,6 +24,7 @@ export interface RecipeRequestModel {
   FilterMode: number;
   FoodTypeId?: number;
   SearchKey?: string;
+  RecipeName?: string;
   Page?: number;
   PageSize?: number;
 }

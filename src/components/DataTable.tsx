@@ -23,9 +23,11 @@ const containerDataGrid = {
   // "& .MuiInputBase-root": { padding: "7px" },
 
   "& .MuiDataGrid-footerContainer": {
-    "& .MuiSelect-nativeInput": { marginRight: "50px" },
+    // "& .MuiSelect-nativeInput": { marginRight: "50px" },
 
     "& .MuiInputBase-colorPrimary": { width: "50px", height: "40px" },
+
+    "& .MuiTablePagination-select": { paddingRight: "20px !important" },
   },
 
   // "& .MuiDataGrid-row": { padding: "10px 0 10px" },
