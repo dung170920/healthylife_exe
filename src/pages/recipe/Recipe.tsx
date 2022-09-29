@@ -207,7 +207,7 @@ const Recipe = () => {
               <Typography className="recipe_chef--name">
                 {response?.chef.fullName}
               </Typography>
-              <Typography>Chef</Typography>
+              <Typography>Đầu bếp</Typography>
             </Stack>
           </Stack>
         </DescriptionStyle>
