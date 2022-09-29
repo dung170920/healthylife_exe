@@ -46,11 +46,12 @@ const RecipeList = () => {
       ...pre,
       SearchKey: `${searchKey?.replaceAll("-", " ")}`,
       recipeName: `${recipeName?.replaceAll("-", " ")}`,
+      Page: 1,
     }));
   }, [window.location.search]);
 
   useEffect(() => {
-    setParams((pre) => ({ ...pre, FilterMode: filterMode }));
+    setParams((pre) => ({ ...pre, FilterMode: filterMode, Page: 1 }));
   }, [filterMode]);
 
   useEffect(() => {
