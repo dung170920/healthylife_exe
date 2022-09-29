@@ -26,7 +26,7 @@ const User = () => {
         width: 70,
       },
       {
-        headerName: "",
+        headerName: "Ảnh đại diện",
         field: "pictureUrl",
         type: "string",
         width: 120,
@@ -49,16 +49,16 @@ const User = () => {
         },
       },
       {
-        headerName: "Full Name",
+        headerName: "Tên khách hàng",
         field: "fullName",
-        width: 420,
+        width: 450,
       },
 
       {
         headerName: "Email",
         field: "email",
         type: "string",
-        width: 420,
+        width: 450,
       },
     ],
     pageState: pageState,

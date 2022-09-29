@@ -89,7 +89,7 @@ const OrderList = () => {
         width: 30,
       },
       {
-        headerName: "Order ID",
+        headerName: "Mã đơn hàng",
         field: "id",
         type: "string",
 
@@ -97,26 +97,26 @@ const OrderList = () => {
       },
 
       {
-        headerName: "Date",
+        headerName: "Ngày giao dịch",
         field: "date",
         type: "string",
         width: 250,
       },
       {
-        headerName: "Customer Name",
+        headerName: "Tên khách hàng",
         field: "fullName",
         type: "string",
         width: 400,
       },
       {
-        headerName: "Price",
+        headerName: "Tổng tiền",
         field: "price",
         type: "number",
         align: "right",
         width: 100,
       },
       {
-        headerName: "Status",
+        headerName: "Trạng thái",
         field: "status",
         type: "string",
         align: "center",
