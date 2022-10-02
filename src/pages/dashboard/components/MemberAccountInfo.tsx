@@ -2,6 +2,8 @@ import DateBar from "./DateBar";
 import DateRecipeBarList from "./DateRecipeBarList";
 import { Stack } from "@mui/material";
 import { RecipeModel } from "models";
+import { useEffect, useState } from "react";
+import { getMenuByDate } from "api/MenuApi";
 
 const dummyRecipeData: RecipeModel[] = [
   // {
@@ -43,10 +45,16 @@ const dummyRecipeData: RecipeModel[] = [
 ];
 
 const MemberAccountInfo = () => {
+  const [foods, setFoods] = useState<RecipeModel[]>([]);
+
+  const getFoodMenu = (foods: any) => {
+    setFoods(foods);
+  };
+
   return (
     <Stack sx={{ backgroundColor: "white", p: 3, borderRadius: "25px" }}>
-      <DateBar />
-      <DateRecipeBarList recipes={dummyRecipeData} />
+      <DateBar onGetMenuByDate={getFoodMenu} />
+      <DateRecipeBarList recipes={foods} />
     </Stack>
   );
 };
