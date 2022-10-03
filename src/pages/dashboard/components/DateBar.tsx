@@ -1,5 +1,7 @@
 import { Stack, Box, styled, Typography } from "@mui/material";
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { getMenuByDate } from "api/MenuApi";
+import moment from "moment";
 
 const DateBarStyle = styled(Stack)(({ theme }) => ({
   marginBottom: "10px",
@@ -7,49 +9,79 @@ const DateBarStyle = styled(Stack)(({ theme }) => ({
   color: theme.palette.grey[900],
 }));
 const DateBarItemStyle = styled(Box)(({ theme }) => ({
-  borderRadius: "15px",
+  borderRadius: "18px",
+  padding: "6px",
   textAlign: "center",
 }));
 
-// const DateRecipeBarItemStyle = {
-//   0: { color: "#879497" },
-//   1: { color: "#57696D" },
-//   2: { color: "#273E43" },
-//   3: { color: "#FFFF", backgroundColor: "#1AC073" },
-//   4: { color: "#273E43" },
-//   5: { color: "#57696D" },
-//   6: { color: "#879497" },
-// };
-
-const ActiveDateItem = {
-  color: "#FFFF",
-  backgroundColor: "#1AC073",
-  padding: "10px",
-  borderRadius: "15px",
+const StringOfDay = (dayNumber: number) => {
+  switch (dayNumber) {
+    case 0:
+      return "Sun";
+    case 1:
+      return "Mon";
+    case 2:
+      return "Tue";
+    case 3:
+      return "Wed";
+    case 4:
+      return "Thu";
+    case 5:
+      return "Fri";
+    case 6:
+      return "Sat";
+  }
 };
 
-const DateBar = () => {
-  const dummyDateData = [
-    { date: 17, day: "T5" },
-    { date: 18, day: "T6" },
-    { date: 18, day: "T7" },
-    { date: 19, day: "CN" },
-    { date: 20, day: "T2" },
-    { date: 21, day: "T3" },
-    { date: 22, day: "T4" },
-  ];
+const DateBar = ({ onGetMenuByDate }: any) => {
+  const currentDay = moment().utc().local();
+  const [dateTab, setDateTab] = useState<any>(currentDay);
+  const dateData = [];
+  const startOfWeek = moment().utc().local().startOf("week").toDate();
+
+  for (let i = 0; i < 6; i++) {
+    dateData.push(moment(startOfWeek).add(i, "day"));
+  }
+
+  const FetchMenuData = async () => {
+    const res = await getMenuByDate(dateTab.toISOString());
+
+    onGetMenuByDate(res.foods);
+  };
+
+  useEffect(() => {
+    FetchMenuData();
+  }, [dateTab]);
 
   return (
     <DateBarStyle
       direction="row"
-      spacing={3}
+      spacing={1.5}
       alignItems="center"
       justifyContent="center"
     >
-      {dummyDateData.map((d) => (
-        <DateBarItemStyle key={d.day}>
-          <Typography fontSize={14}>{d.date}</Typography>
-          <Typography fontSize={14}>{d.day}</Typography>
+      {dateData.map((d, i) => (
+        <DateBarItemStyle
+          key={i}
+          onClick={(e) => {
+            setDateTab(d.utc().local());
+            console.log("click date: ", d.toISOString());
+          }}
+          sx={{
+            color: `${
+              dateTab?.get("date") === d.utc().local().get("date")
+                ? "#FFFF !important"
+                : ""
+            }`,
+            backgroundColor: `${
+              dateTab?.get("date") === d.utc().local().get("date")
+                ? "#1AC073 !important"
+                : ""
+            }`,
+          }}
+        >
+          <Typography fontSize={14}>{d.get("date")}</Typography>
+          <Typography fontSize={14}>{StringOfDay(d.get("day"))}</Typography>
         </DateBarItemStyle>
       ))}
     </DateBarStyle>

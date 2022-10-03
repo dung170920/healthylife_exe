@@ -3,6 +3,7 @@ import { RecipeModel } from "models";
 import { Stack } from "@mui/material";
 import { useEffect, useState } from "react";
 import { getRecipeList } from "api";
+import moment from "moment";
 
 const RecipeTabList = () => {
   const [recipes, setRecipes] = useState<RecipeModel[]>([]);
@@ -11,7 +12,6 @@ const RecipeTabList = () => {
     getRecipeList({
       FilterMode: 1,
     }).then((res: RecipeModel[]) => {
-      console.log(res);
       setRecipes(res);
     });
   }, []);
