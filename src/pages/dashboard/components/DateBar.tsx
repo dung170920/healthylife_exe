@@ -39,10 +39,16 @@ const DateBar = ({ onGetMenuByDate, dates }: any) => {
     moment(currentDay).add(1, "days")
   );
 
-  console.log("dates: ", dates);
   const FetchMenuData = async () => {
-    const res = await getMenuByDate(dateTab.toISOString());
-    onGetMenuByDate(res.foods);
+    let res = null;
+
+    if (moment().add(1, "days").get("dates") == dateTab.get("dates")) {
+      res = await getMenuByDate(moment().toISOString());
+    } else {
+      res = await getMenuByDate(dateTab.toISOString());
+    }
+
+    onGetMenuByDate(res?.foods);
   };
 
   useEffect(() => {
