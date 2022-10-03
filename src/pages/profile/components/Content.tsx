@@ -107,10 +107,9 @@ type ResponseModel = {
 const Content = () => {
   const { userId } = useParams();
   const [response, setResponse] = useState<ResponseModel | null>();
-  //const [tab, setTab] = useState(1);
   const [params, setParams] = useState<RecipeRequestModel>({
     FilterMode: 2,
-    FoodTypeId: 1,
+    FoodTypeId: 2,
     PageSize: 9,
     Page: 1,
   });
@@ -171,18 +170,19 @@ const Content = () => {
             <Typography fontWeight="bold" className="profile_info name">
               {profile?.fullName || "-"}
             </Typography>
-            {isProfile &&
-              (user?.role === "Membership" || user?.role === "Customer") && (
-                <Stack direction="row" className="profile_info balance">
-                  <BiWallet className="profile_info balance icon" />
-                  <Typography>
-                    Số dư:{" "}
-                    {profile?.balance ? formatPrice(profile.balance) : "0 đ"}
-                  </Typography>
-                </Stack>
-              )}
-            {!profile?.foodCount && (
-              <Typography>{profile?.foodCount || "0"} công thức</Typography>
+            {isProfile && profile?.balance !== undefined && (
+              <Stack direction="row" className="profile_info balance">
+                <BiWallet className="profile_info balance icon" />
+                <Typography>
+                  Số dư:{" "}
+                  {profile?.balance ? formatPrice(profile?.balance) : "0 đ"}
+                </Typography>
+              </Stack>
+            )}
+            {profile?.foodCount !== undefined && (
+              <Typography color={"grey.700"}>
+                {profile?.foodCount || "0"} công thức
+              </Typography>
             )}
           </Stack>
         </Stack>
@@ -214,7 +214,7 @@ const Content = () => {
       <Divider sx={{ marginBottom: "30px", marginTop: "30px" }} />
 
       {/* Bottom Detail */}
-      {profile?.foodCount ? (
+      {profile?.balance !== undefined && (
         <Grid container rowSpacing={3} columnSpacing={12}>
           <ProfileNumberDetail item xs={4}>
             <Typography className="profile_number_title">Cân nặng</Typography>
@@ -285,23 +285,24 @@ const Content = () => {
             </Stack>
           </ProfileNumberDetail>
         </Grid>
-      ) : (
+      )}
+      {profile?.foodCount !== undefined && (
         <>
           <FilterTab
             tabs={filterTabValues}
             sx={{ marginBottom: "40px" }}
             onChangeTab={handleTabChange}
-            defaultValue={params.FoodTypeId || 1}
+            defaultValue={params.FoodTypeId || 2}
           />
           <FoodList items={response?.items ? response.items : []} />
+          <Pagination
+            page={params.Page || 1}
+            onChange={handlePageChange}
+            count={response?.maxPage || 1}
+            sx={{ my: 6 }}
+          />
         </>
       )}
-      <Pagination
-        page={params.Page || 1}
-        onChange={handlePageChange}
-        count={response?.maxPage || 1}
-        sx={{ my: 6 }}
-      />
     </ProfileContentStyles>
   );
 };

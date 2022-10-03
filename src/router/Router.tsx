@@ -136,6 +136,14 @@ export default function Router() {
                 </ProtectedRoutes>
               ),
             },
+            {
+              path: "settings",
+              element: (
+                <ProtectedRoutes roles={["Chef", "Customer", "Membership"]}>
+                  <Settings />
+                </ProtectedRoutes>
+              ),
+            },
           ],
         },
       ],
@@ -181,6 +189,7 @@ const Order = Loadable(lazy(() => import("pages/order/Order")));
 const Upgrade = Loadable(lazy(() => import("pages/upgrade/Upgrade")));
 
 const Profile = Loadable(lazy(() => import("pages/profile/Profile")));
+const Settings = Loadable(lazy(() => import("pages/profile/Settings")));
 
 const Users = Loadable(lazy(() => import("pages/user/Users")));
 
