@@ -40,7 +40,7 @@ const UserPopover = () => {
     {
       icon: <BiCog />,
       name: "Cài đặt",
-      to: "/settings",
+      to: "/users/settings",
     },
   ];
 
