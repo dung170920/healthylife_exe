@@ -34,20 +34,23 @@ const StringOfDay = (dayNumber: number) => {
 };
 
 const DateBar = ({ onGetMenuByDate }: any) => {
-  const currentDay = moment();
+  const currentDay = moment().utc().local();
   const [dateTab, setDateTab] = useState<any>(currentDay);
   const dateData = [];
-  const startOfWeek = moment().startOf("week").toDate();
+  const startOfWeek = moment().utc().local().startOf("week").toDate();
 
   for (let i = 0; i < 6; i++) {
     dateData.push(moment(startOfWeek).add(i, "day"));
   }
 
-  useEffect(() => {
-    const dateNow = new Date().toISOString();
-    const res = getMenuByDate(dateNow);
+  const FetchMenuData = async () => {
+    const res = await getMenuByDate(dateTab.toISOString());
 
-    onGetMenuByDate([]);
+    onGetMenuByDate(res.foods);
+  };
+
+  useEffect(() => {
+    FetchMenuData();
   }, [dateTab]);
 
   return (
@@ -61,14 +64,19 @@ const DateBar = ({ onGetMenuByDate }: any) => {
         <DateBarItemStyle
           key={i}
           onClick={(e) => {
-            setDateTab(d);
+            setDateTab(d.utc().local());
+            console.log("click date: ", d.toISOString());
           }}
           sx={{
             color: `${
-              dateTab?.get("date") === d.get("date") ? "#FFFF !important" : ""
+              dateTab?.get("date") === d.utc().local().get("date")
+                ? "#FFFF !important"
+                : ""
             }`,
             backgroundColor: `${
-              dateTab?.get("date") === d.get("date") ? "#1AC073 !important" : ""
+              dateTab?.get("date") === d.utc().local().get("date")
+                ? "#1AC073 !important"
+                : ""
             }`,
           }}
         >
