@@ -12,7 +12,7 @@ const TopMain = styled("div")({
 });
 
 const LeftInfoStyle = styled(Stack)(({ theme }) => ({
-  width: "70%",
+  width: "65%",
   height: "475px",
   color: "white",
   borderRadius: "15px",
@@ -30,7 +30,7 @@ const LeftInfoStyle = styled(Stack)(({ theme }) => ({
 }));
 
 const RightInfoStyle = styled(Box)(({ theme }) => ({
-  width: "30%",
+  width: "35%",
   paddingLeft: "20px",
 }));
 

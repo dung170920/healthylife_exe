@@ -1,6 +1,6 @@
 import { Stack, Box, styled, Typography } from "@mui/material";
 import React, { useState, useEffect } from "react";
-import { getMenuByDate } from "api/MenuApi";
+import { getMenuByDate, getCurrentWeekMenu } from "api/MenuApi";
 import moment from "moment";
 
 const DateBarStyle = styled(Stack)(({ theme }) => ({
@@ -33,19 +33,15 @@ const StringOfDay = (dayNumber: number) => {
   }
 };
 
-const DateBar = ({ onGetMenuByDate }: any) => {
-  const currentDay = moment().utc().local();
-  const [dateTab, setDateTab] = useState<any>(currentDay);
-  const dateData = [];
-  const startOfWeek = moment().utc().local().startOf("week").toDate();
+const DateBar = ({ onGetMenuByDate, dates }: any) => {
+  const currentDay = new Date();
+  const [dateTab, setDateTab] = useState<any>(
+    moment(currentDay).add(1, "days")
+  );
 
-  for (let i = 0; i < 6; i++) {
-    dateData.push(moment(startOfWeek).add(i, "day"));
-  }
-
+  console.log("dates: ", dates);
   const FetchMenuData = async () => {
     const res = await getMenuByDate(dateTab.toISOString());
-
     onGetMenuByDate(res.foods);
   };
 
@@ -60,28 +56,30 @@ const DateBar = ({ onGetMenuByDate }: any) => {
       alignItems="center"
       justifyContent="center"
     >
-      {dateData.map((d, i) => (
+      {dates?.map((d: any, i: number) => (
         <DateBarItemStyle
           key={i}
           onClick={(e) => {
-            setDateTab(d.utc().local());
-            console.log("click date: ", d.toISOString());
+            setDateTab(moment(d).add(1, "days"));
+            console.log("click date: ", d);
           }}
           sx={{
             color: `${
-              dateTab?.get("date") === d.utc().local().get("date")
+              moment(dateTab).get("dates") ===
+              moment(d).add(1, "days").get("dates")
                 ? "#FFFF !important"
                 : ""
             }`,
             backgroundColor: `${
-              dateTab?.get("date") === d.utc().local().get("date")
+              moment(dateTab).get("dates") ===
+              moment(d).add(1, "days").get("dates")
                 ? "#1AC073 !important"
                 : ""
             }`,
           }}
         >
-          <Typography fontSize={14}>{d.get("date")}</Typography>
-          <Typography fontSize={14}>{StringOfDay(d.get("day"))}</Typography>
+          <Typography fontSize={14}>{d.getDate()}</Typography>
+          <Typography fontSize={14}>{StringOfDay(d.getDay())}</Typography>
         </DateBarItemStyle>
       ))}
     </DateBarStyle>
