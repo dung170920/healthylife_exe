@@ -40,7 +40,7 @@ type Props = {
 
 const DateRecipeBarList = ({ recipes }: any) => {
   return (
-    <Stack sx={{ height: "410px", overflow: "scroll" }}>
+    <Stack sx={{ height: "400px", overflowY: "scroll" }}>
       {recipes.map((recipe: any) => (
         <DateRecipeMenuItem direction="row" key={recipe.food.id}>
           <Stack className="date-recipe-info">
