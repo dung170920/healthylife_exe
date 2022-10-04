@@ -163,6 +163,9 @@ export default function Router() {
         { path: "", element: <Navigate to="/message/not-found" replace /> },
       ],
     },
+    {
+      path: "/nganluong_197ac665ee5385ecbe4f1f96496f1626.html",
+    },
     { path: "*", element: <Navigate to="/message/not-found" replace /> },
   ]);
 }
