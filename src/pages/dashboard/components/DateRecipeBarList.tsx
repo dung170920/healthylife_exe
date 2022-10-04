@@ -2,7 +2,7 @@ import { RecipeModel } from "models";
 import { Stack, styled, Typography } from "@mui/material";
 import { BiTimeFive } from "react-icons/bi";
 import { AiOutlineFire } from "react-icons/ai";
-import moment from "moment";
+import { Link } from "react-router-dom";
 import { Bowl } from "components";
 
 const DateRecipeMenuItem = styled(Stack)(({ theme }) => ({
@@ -42,28 +42,30 @@ const DateRecipeBarList = ({ recipes }: any) => {
   return (
     <Stack sx={{ height: "400px", overflowY: "scroll" }}>
       {recipes.map((recipe: any) => (
-        <DateRecipeMenuItem direction="row" key={recipe.food.id}>
-          <Stack className="date-recipe-info">
-            <Typography className="date-recipe-name">
-              {recipe.food.name}
-            </Typography>
-            <Stack className="date-recipe-detail" direction="row">
-              <BiTimeFive className="date-recipe-detail-icon" />{" "}
-              {recipe.food.timeCost} phút
+        <Link to={`/recipes/recipe/${recipe.food.id}`}>
+          <DateRecipeMenuItem direction="row" key={recipe.food.id}>
+            <Stack className="date-recipe-info">
+              <Typography className="date-recipe-name">
+                {recipe.food.name}
+              </Typography>
+              <Stack className="date-recipe-detail" direction="row">
+                <BiTimeFive className="date-recipe-detail-icon" />{" "}
+                {recipe.food.timeCost} phút
+              </Stack>
+              <Stack className="date-recipe-detail" direction="row">
+                <AiOutlineFire className="date-recipe-detail-icon" />
+                {recipe.food.calorie} calories
+              </Stack>
             </Stack>
-            <Stack className="date-recipe-detail" direction="row">
-              <AiOutlineFire className="date-recipe-detail-icon" />
-              {recipe.food.calorie} calories
-            </Stack>
-          </Stack>
-          <Bowl size={60} sx={{ right: 5, bottom: "20px" }}>
-            <img
-              className="date-recipe-image"
-              src={recipe.food.pictureUrl}
-              alt=""
-            ></img>
-          </Bowl>
-        </DateRecipeMenuItem>
+            <Bowl size={60} sx={{ right: 5, bottom: "20px" }}>
+              <img
+                className="date-recipe-image"
+                src={recipe.food.pictureUrl}
+                alt=""
+              ></img>
+            </Bowl>
+          </DateRecipeMenuItem>
+        </Link>
       ))}
     </Stack>
   );

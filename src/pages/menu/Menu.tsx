@@ -1,5 +1,5 @@
 import { Bowl, HeaderBreadcumbs } from "components";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
 import {
   Box,
@@ -13,6 +13,9 @@ import {
 import { RecipeModel } from "models";
 import { BiTimeFive } from "react-icons/bi";
 import { AiOutlineFire } from "react-icons/ai";
+import moment from "moment";
+import { getMenuByDate } from "api/MenuApi";
+import { Link } from "react-router-dom";
 
 const StaticDatePickerStyle = styled(StaticDatePicker)(({ theme }) => ({
   padding: "16px",
@@ -55,6 +58,7 @@ const RecipeMenuItem = styled(Stack)(({ theme }) => ({
   justifyContent: "space-between",
   borderBottom: `1px solid ${theme.palette.grey[200]}`,
   position: "relative",
+  cursor: "pointer",
 
   ":last-child": {
     borderBottom: "none",
@@ -69,48 +73,18 @@ const ItemContentStyle = styled(Stack)(({ theme }) => ({
   gap: "10px",
 }));
 
-const dummyRecipeData = [
-  {
-    id: 1,
-    image:
-      "https://cdn.tgdd.vn/2021/07/CookRecipe/Avatar/trung-cuon-ngu-sac-chien-thumbnail-1.jpg",
-    name: "Trứng cuộn ngũ sắc",
-    level: "Easy",
-    time: 30,
-    kcal: 587,
-  },
-  {
-    id: 2,
-    image:
-      "https://cdn.tgdd.vn/2021/07/CookRecipe/Avatar/trung-cuon-ngu-sac-chien-thumbnail-1.jpg",
-    name: "Trứng cuộn ngũ sắc",
-    level: "Easy",
-    time: 30,
-    kcal: 587,
-  },
-  {
-    id: 3,
-    image:
-      "https://cdn.tgdd.vn/2021/07/CookRecipe/Avatar/trung-cuon-ngu-sac-chien-thumbnail-1.jpg",
-    name: "Trứng cuộn ngũ sắc",
-    level: "Easy",
-    time: 30,
-    kcal: 587,
-  },
-  {
-    id: 4,
-    image:
-      "https://cdn.tgdd.vn/2021/07/CookRecipe/Avatar/trung-cuon-ngu-sac-chien-thumbnail-1.jpg",
-    name: "Trứng cuộn ngũ sắc",
-    level: "Easy",
-    time: 30,
-    kcal: 587,
-  },
-];
-
 const Menu = () => {
   const [today, setToday] = useState(new Date());
+  const [foods, setFoods] = useState([]);
 
+  const GetMenuByDate = async () => {
+    const res = await getMenuByDate(today.toISOString());
+
+    setFoods(res.foods);
+  };
+  useEffect(() => {
+    GetMenuByDate();
+  }, [today]);
   return (
     <>
       <HeaderBreadcumbs
@@ -126,6 +100,10 @@ const Menu = () => {
               value={today}
               onChange={(newValue: any) => {
                 setToday(newValue);
+                console.log(
+                  "date value: ",
+                  moment(newValue.$d).format("DD/MM/YYYY")
+                );
               }}
               toolbarTitle="chọn ngày"
               dayOfWeekFormatter={(day) => day}
@@ -140,28 +118,34 @@ const Menu = () => {
         </Grid>
         <Grid item xs={5}>
           <BoxStyle>
-            {dummyRecipeData.map((recipe) => (
-              <RecipeMenuItem direction="row" key={recipe.id}>
-                <Stack>
-                  <Typography sx={{ fontSize: "18px", fontWeight: 600 }}>
-                    {recipe.name}
-                  </Typography>
+            {foods.map((food: any) => (
+              <Link to={`/recipes/recipe/${food.food.id}`}>
+                <RecipeMenuItem direction="row" key={food.food.id}>
+                  <Stack>
+                    <Typography sx={{ fontSize: "18px", fontWeight: 600 }}>
+                      {food.food.name}
+                    </Typography>
 
-                  <ItemContentStyle direction="row">
-                    <BiTimeFive fontSize={24} /> {recipe.time} phút
-                  </ItemContentStyle>
-                  <ItemContentStyle direction="row">
-                    <AiOutlineFire fontSize={24} />
-                    {recipe.kcal} calories
-                  </ItemContentStyle>
-                </Stack>
-                <Bowl size={60} sx={{ right: "20px", bottom: "20px" }}>
-                  <Avatar
-                    src={recipe.image}
-                    sx={{ width: "40px", height: "40px", borderRadius: "50%" }}
-                  ></Avatar>
-                </Bowl>
-              </RecipeMenuItem>
+                    <ItemContentStyle direction="row">
+                      <BiTimeFive fontSize={24} /> {food.food.timeCost} phút
+                    </ItemContentStyle>
+                    <ItemContentStyle direction="row">
+                      <AiOutlineFire fontSize={24} />
+                      {Math.round(food.food.calorie)} calories
+                    </ItemContentStyle>
+                  </Stack>
+                  <Bowl size={60} sx={{ right: "20px", bottom: "20px" }}>
+                    <Avatar
+                      src={food.food.pictureUrl}
+                      sx={{
+                        width: "40px",
+                        height: "40px",
+                        borderRadius: "50%",
+                      }}
+                    ></Avatar>
+                  </Bowl>
+                </RecipeMenuItem>
+              </Link>
             ))}
           </BoxStyle>
         </Grid>
