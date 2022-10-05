@@ -48,7 +48,7 @@ const onRequestError = (error: AxiosError): Promise<AxiosError> => {
 };
 
 const onResponse = (response: AxiosResponse): AxiosResponse => {
-  return response.data?.result;
+  return response?.data?.result;
 };
 
 const onResponseError = async (error: AxiosError): Promise<AxiosError> => {

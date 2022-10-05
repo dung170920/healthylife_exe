@@ -62,7 +62,7 @@ const Dashboard = () => {
 
         {/* Right Info */}
         <RightInfoStyle>
-          {user?.role === "Membership" ? (
+          {user?.role.includes("Membership") ? (
             <MemberAccountInfo />
           ) : (
             <NormalAccountInfo />
