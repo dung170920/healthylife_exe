@@ -11,7 +11,7 @@ type ProtectedRoutesProps = {
 const ProtectedRoutes = ({ children, roles }: ProtectedRoutesProps) => {
   const user = useSelector((state: RootState) => state.auth.auth?.user);
 
-  if (!roles.includes(user!.role)) {
+  if (!roles.some((r) => user?.role.includes(r))) {
     return <Navigate to="/message/permission-denied" />;
   }
 
