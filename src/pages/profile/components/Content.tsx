@@ -19,8 +19,13 @@ import {
   Tooltip,
   IconButton,
   Avatar,
+  FormLabel,
+  DialogActions,
+  Button,
+  Box,
+  TextField,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getProfile, getRecipeList, getUserById } from "api";
 import { RecipeModel, RecipeRequestModel, UserModel } from "models";
 import dayjs from "dayjs";
@@ -30,6 +35,8 @@ import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { FilterTab, Pagination } from "components";
 import FoodList from "./FoodList";
+import { CustomDialog } from "components";
+import { sendRequestPayment } from "api/PaymentApi";
 
 const ProfileContentStyles = styled(Paper)(({ theme }) => ({
   width: "90%",
@@ -106,6 +113,8 @@ type ResponseModel = {
 
 const Content = () => {
   const { userId } = useParams();
+  const [isPayDialogOpen, setIsPayDialogOpen] = useState(false);
+  const [money, setMoney] = useState(0);
   const [response, setResponse] = useState<ResponseModel | null>();
   const [params, setParams] = useState<RecipeRequestModel>({
     FilterMode: 2,
@@ -120,7 +129,6 @@ const Content = () => {
   useEffect(() => {
     if (isProfile) {
       getProfile().then((response: UserModel) => {
-        console.log("response:", response);
         setProfile(response);
       });
     } else {
@@ -134,6 +142,53 @@ const Content = () => {
         });
     }
   }, [isProfile, userId, params]);
+
+  const payDialogHandler = () => {
+    setIsPayDialogOpen(!isPayDialogOpen);
+  };
+
+  const loadMoney = async () => {
+    sendRequestPayment(money);
+  };
+
+  const moneyChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setMoney(Number(event.target.value));
+  };
+
+  const payDialogContent = () => {
+    return (
+      <Stack>
+        <Stack direction="column" sx={{ marginBottom: "20px" }}>
+          <FormLabel
+            htmlFor="roomId"
+            sx={{
+              fontWeight: "600",
+              color: "neutral.800",
+              marginBottom: "10px",
+            }}
+          >
+            Tiền muốn nạp
+          </FormLabel>
+          <TextField type="number" onChange={moneyChangeHandler} />
+        </Stack>
+        <DialogActions sx={{ marginTop: "auto" }}>
+          <Button onClick={payDialogHandler}>Cancel</Button>
+          <Button
+            sx={{
+              backgroundColor: "primary.main",
+              "&:hover": { backgroundColor: "primary.dark" },
+            }}
+            type="submit"
+            variant="contained"
+            autoFocus
+            onClick={loadMoney}
+          >
+            Nạp tiền
+          </Button>
+        </DialogActions>
+      </Stack>
+    );
+  };
 
   function handlePageChange(event: React.ChangeEvent<unknown>, page: number) {
     setParams({
@@ -190,7 +245,7 @@ const Content = () => {
         {/* Right Info */}
         {isProfile && (
           <RightIconGroup direction="row" spacing="32px">
-            {user?.role === "Membership" && (
+            {user?.role.includes("Membership") && (
               <Tooltip
                 title={`Gói hội viên còn thời hạn đến: ${profile?.fullName}`}
                 placement="bottom"
@@ -199,8 +254,11 @@ const Content = () => {
                 <CrownIcon className="icons crown_icon" />
               </Tooltip>
             )}
-            {(user?.role === "Membership" || user?.role === "Customer") && (
-              <IconButton onClick={() => {}} className="icons rest_icon">
+            {user?.role.includes("Customer") && (
+              <IconButton
+                onClick={payDialogHandler}
+                className="icons rest_icon"
+              >
                 <DollarIcon fontSize={24} />
               </IconButton>
             )}
@@ -210,6 +268,15 @@ const Content = () => {
           </RightIconGroup>
         )}
       </Stack>
+
+      {/* Pay Dialog */}
+      <CustomDialog
+        isOpen={isPayDialogOpen}
+        onClose={payDialogHandler}
+        children={payDialogContent()}
+        title="Nạp tiền vào ví Heli"
+        sx={{ "& .MuiDialog-paper": { width: "60%", height: "40%" } }}
+      />
 
       <Divider sx={{ marginBottom: "30px", marginTop: "30px" }} />
 
@@ -246,7 +313,7 @@ const Content = () => {
               )) || "-"}
 
               <Typography className="profile_number_text">
-                {profile?.gender || "-"}
+                {profile?.gender === "Female" ? "Nữ" : "Nam" || "-"}
               </Typography>
             </Stack>
           </ProfileNumberDetail>

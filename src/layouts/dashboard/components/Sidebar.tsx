@@ -11,7 +11,7 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/store";
 
-const sidebar: LinkModel[] = [
+const sidebarMembership: LinkModel[] = [
   { name: "Trang chủ", icon: <TbLayout2 />, to: "/" },
   {
     name: "Danh sách món",
@@ -33,6 +33,30 @@ const sidebar: LinkModel[] = [
     to: "/chefs",
   },
   { name: "Thực đơn", icon: <HiOutlineCalendar />, to: "/menu" },
+  { name: "Lịch sử giao dịch", icon: <InvoiceIcon />, to: "/orders" },
+];
+
+const sidebarCustomer: LinkModel[] = [
+  { name: "Trang chủ", icon: <TbLayout2 />, to: "/" },
+  {
+    name: "Danh sách món",
+    icon: <TbClipboardList />,
+    children: [
+      {
+        name: "Đồ ăn",
+        to: "/recipes/foods",
+      },
+      {
+        name: "Thức uống",
+        to: "/recipes/drinks",
+      },
+    ],
+  },
+  {
+    name: "Danh sách đầu bếp",
+    icon: <FoodCoverIcon />,
+    to: "/chefs",
+  },
   { name: "Lịch sử giao dịch", icon: <InvoiceIcon />, to: "/orders" },
 ];
 
@@ -79,24 +103,41 @@ export const Sidebar = () => {
     <SidebarContainer>
       <Logo sx={{ p: 6 }} />
       <MenuList sx={{ gap: 1.5, pt: 8 }}>
-        {(user?.role === "Customer" || user?.role === "Membership") &&
-          sidebar.map((item, index) =>
-            item.children ? (
-              <SubHeader
-                item={item}
-                key={index}
-                active={active}
-                onActive={setActive}
-              />
-            ) : (
-              <SidebarItem
-                item={item}
-                key={index}
-                active={active}
-                onActive={setActive}
-              />
+        {user?.role.includes("Membership")
+          ? sidebarMembership.map((item, index) =>
+              item.children ? (
+                <SubHeader
+                  item={item}
+                  key={index}
+                  active={active}
+                  onActive={setActive}
+                />
+              ) : (
+                <SidebarItem
+                  item={item}
+                  key={index}
+                  active={active}
+                  onActive={setActive}
+                />
+              )
             )
-          )}
+          : sidebarCustomer.map((item, index) =>
+              item.children ? (
+                <SubHeader
+                  item={item}
+                  key={index}
+                  active={active}
+                  onActive={setActive}
+                />
+              ) : (
+                <SidebarItem
+                  item={item}
+                  key={index}
+                  active={active}
+                  onActive={setActive}
+                />
+              )
+            )}
         {user?.role === "Chef" &&
           sidebarChef.map((item, index) =>
             item.children ? (

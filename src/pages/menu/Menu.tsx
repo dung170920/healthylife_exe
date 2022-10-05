@@ -9,6 +9,7 @@ import {
   TextField,
   Typography,
   Avatar,
+  Paper,
 } from "@mui/material";
 import { RecipeModel } from "models";
 import { BiTimeFive } from "react-icons/bi";
@@ -75,12 +76,18 @@ const ItemContentStyle = styled(Stack)(({ theme }) => ({
 
 const Menu = () => {
   const [today, setToday] = useState(new Date());
+  const [isMenuNotFound, setIsMenuNotFound] = useState(false);
   const [foods, setFoods] = useState([]);
 
   const GetMenuByDate = async () => {
-    const res = await getMenuByDate(today.toISOString());
+    try {
+      const res = await getMenuByDate(today.toISOString());
+      setIsMenuNotFound(false);
 
-    setFoods(res.foods);
+      setFoods(res?.foods);
+    } catch (err: any) {
+      if (err.code === "ERR_BAD_REQUEST") setIsMenuNotFound(true);
+    }
   };
   useEffect(() => {
     GetMenuByDate();
@@ -100,10 +107,6 @@ const Menu = () => {
               value={today}
               onChange={(newValue: any) => {
                 setToday(newValue);
-                console.log(
-                  "date value: ",
-                  moment(newValue.$d).format("DD/MM/YYYY")
-                );
               }}
               toolbarTitle="chọn ngày"
               dayOfWeekFormatter={(day) => day}
@@ -118,35 +121,50 @@ const Menu = () => {
         </Grid>
         <Grid item xs={5}>
           <BoxStyle>
-            {foods.map((food: any) => (
-              <Link to={`/recipes/recipe/${food.food.id}`}>
-                <RecipeMenuItem direction="row" key={food.food.id}>
-                  <Stack>
-                    <Typography sx={{ fontSize: "18px", fontWeight: 600 }}>
-                      {food.food.name}
-                    </Typography>
+            {isMenuNotFound ? (
+              <Paper
+                elevation={1}
+                sx={{
+                  borderRadius: "10px",
+                  height: "384px",
+                  textAlign: "center",
+                }}
+              >
+                <Typography variant="h5" sx={{ padding: "180px 20px 20px" }}>
+                  This day has not have menu yet
+                </Typography>
+              </Paper>
+            ) : (
+              foods?.map((food: any) => (
+                <Link to={`/recipes/recipe/${food.food.id}`}>
+                  <RecipeMenuItem direction="row" key={food.food.id}>
+                    <Stack>
+                      <Typography sx={{ fontSize: "18px", fontWeight: 600 }}>
+                        {food.food.name}
+                      </Typography>
 
-                    <ItemContentStyle direction="row">
-                      <BiTimeFive fontSize={24} /> {food.food.timeCost} phút
-                    </ItemContentStyle>
-                    <ItemContentStyle direction="row">
-                      <AiOutlineFire fontSize={24} />
-                      {Math.round(food.food.calorie)} calories
-                    </ItemContentStyle>
-                  </Stack>
-                  <Bowl size={60} sx={{ right: "20px", bottom: "20px" }}>
-                    <Avatar
-                      src={food.food.pictureUrl}
-                      sx={{
-                        width: "40px",
-                        height: "40px",
-                        borderRadius: "50%",
-                      }}
-                    ></Avatar>
-                  </Bowl>
-                </RecipeMenuItem>
-              </Link>
-            ))}
+                      <ItemContentStyle direction="row">
+                        <BiTimeFive fontSize={24} /> {food.food.timeCost} phút
+                      </ItemContentStyle>
+                      <ItemContentStyle direction="row">
+                        <AiOutlineFire fontSize={24} />
+                        {Math.round(food.food.calorie)} calories
+                      </ItemContentStyle>
+                    </Stack>
+                    <Bowl size={60} sx={{ right: "20px", bottom: "20px" }}>
+                      <Avatar
+                        src={food.food.pictureUrl}
+                        sx={{
+                          width: "40px",
+                          height: "40px",
+                          borderRadius: "50%",
+                        }}
+                      ></Avatar>
+                    </Bowl>
+                  </RecipeMenuItem>
+                </Link>
+              ))
+            )}
           </BoxStyle>
         </Grid>
       </Grid>

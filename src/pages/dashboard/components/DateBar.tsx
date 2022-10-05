@@ -17,19 +17,19 @@ const DateBarItemStyle = styled(Box)(({ theme }) => ({
 const StringOfDay = (dayNumber: number) => {
   switch (dayNumber) {
     case 0:
-      return "Sun";
+      return "CN";
     case 1:
-      return "Mon";
+      return "T2";
     case 2:
-      return "Tue";
+      return "T3";
     case 3:
-      return "Wed";
+      return "T4";
     case 4:
-      return "Thu";
+      return "T5";
     case 5:
-      return "Fri";
+      return "T6";
     case 6:
-      return "Sat";
+      return "T7";
   }
 };
 
