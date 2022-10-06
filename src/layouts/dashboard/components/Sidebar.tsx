@@ -103,41 +103,45 @@ export const Sidebar = () => {
     <SidebarContainer>
       <Logo sx={{ p: 6 }} />
       <MenuList sx={{ gap: 1.5, pt: 8 }}>
-        {user?.role.includes("Membership")
-          ? sidebarMembership.map((item, index) =>
-              item.children ? (
-                <SubHeader
-                  item={item}
-                  key={index}
-                  active={active}
-                  onActive={setActive}
-                />
-              ) : (
-                <SidebarItem
-                  item={item}
-                  key={index}
-                  active={active}
-                  onActive={setActive}
-                />
-              )
+        {user?.role.includes("Membership") &&
+          sidebarMembership.map((item, index) =>
+            item.children ? (
+              <SubHeader
+                item={item}
+                key={index}
+                active={active}
+                onActive={setActive}
+              />
+            ) : (
+              <SidebarItem
+                item={item}
+                key={index}
+                active={active}
+                onActive={setActive}
+              />
             )
-          : sidebarCustomer.map((item, index) =>
-              item.children ? (
-                <SubHeader
-                  item={item}
-                  key={index}
-                  active={active}
-                  onActive={setActive}
-                />
-              ) : (
-                <SidebarItem
-                  item={item}
-                  key={index}
-                  active={active}
-                  onActive={setActive}
-                />
-              )
-            )}
+          )}
+
+        {user?.role.includes("Customer") &&
+          !user?.role.includes("Membership") &&
+          sidebarCustomer.map((item, index) =>
+            item.children ? (
+              <SubHeader
+                item={item}
+                key={index}
+                active={active}
+                onActive={setActive}
+              />
+            ) : (
+              <SidebarItem
+                item={item}
+                key={index}
+                active={active}
+                onActive={setActive}
+              />
+            )
+          )}
+
         {user?.role === "Chef" &&
           sidebarChef.map((item, index) =>
             item.children ? (
