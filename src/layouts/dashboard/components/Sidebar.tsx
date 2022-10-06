@@ -141,7 +141,6 @@ export const Sidebar = () => {
               />
             )
           )}
-
         {user?.role === "Chef" &&
           sidebarChef.map((item, index) =>
             item.children ? (
