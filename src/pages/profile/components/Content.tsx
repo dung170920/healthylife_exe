@@ -22,10 +22,15 @@ import {
   FormLabel,
   DialogActions,
   Button,
-  Box,
+
+  Input,
+  ToggleButton,
+  ToggleButtonGroup,
+  FormControl,
   TextField,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
+
 import { getProfile, getRecipeList, getUserById } from "api";
 import { RecipeModel, RecipeRequestModel, UserModel } from "models";
 import dayjs from "dayjs";
@@ -33,10 +38,15 @@ import { formatPrice } from "utils/formatPrice";
 import { RootState } from "redux/store";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { FilterTab, Pagination } from "components";
+import { FilterTab, Pagination, CustomSnackBar } from "components";
 import FoodList from "./FoodList";
 import { CustomDialog } from "components";
-import { sendRequestPayment } from "api/PaymentApi";
+import {
+  sendRequestPayment,
+  sendRequestToNganLuong,
+  completePayment,
+} from "api/PaymentApi";
+
 
 const ProfileContentStyles = styled(Paper)(({ theme }) => ({
   width: "90%",
@@ -113,8 +123,20 @@ type ResponseModel = {
 
 const Content = () => {
   const { userId } = useParams();
+  const [isLoading, setIsLoading] = useState(false);
+  const [alert, setAlert] = useState<any>({
+    message: "",
+    status: false,
+    type: "success",
+  });
   const [isPayDialogOpen, setIsPayDialogOpen] = useState(false);
-  const [money, setMoney] = useState(0);
+  const [nganLuongParams, setNganLuongParams] = useState({
+    userId,
+    orderCode: "",
+    price: 0,
+    secureCode: "",
+  });
+
   const [response, setResponse] = useState<ResponseModel | null>();
   const [params, setParams] = useState<RecipeRequestModel>({
     FilterMode: 2,
@@ -126,6 +148,15 @@ const Content = () => {
   const [profile, setProfile] = useState<UserModel | undefined>();
   const isProfile = userId === user!.id;
 
+  const payDialogHandler = async () => {
+    setIsPayDialogOpen(!isPayDialogOpen);
+    setNganLuongParams((pre: any) => ({ ...pre, price: 0 }));
+  };
+
+  const moneyChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    // setMoney(Number(event.target.value));
+  };
+
   useEffect(() => {
     if (isProfile) {
       getProfile().then((response: UserModel) => {
@@ -134,7 +165,6 @@ const Content = () => {
     } else {
       userId &&
         getUserById({ userId, mode: "Chef" }).then((res) => {
-          // console.log(res);
           setProfile(res);
           getRecipeList(params).then((value) => {
             setResponse(value);
@@ -143,36 +173,129 @@ const Content = () => {
     }
   }, [isProfile, userId, params]);
 
-  const payDialogHandler = () => {
-    setIsPayDialogOpen(!isPayDialogOpen);
+  //////////////////////////////// Start Payment Section ///////////////////////////////
+
+  const processPayment = async () => {
+    await sendRequestToNganLuong(nganLuongParams);
+    await completePayment(nganLuongParams.orderCode);
   };
 
-  const loadMoney = async () => {
-    sendRequestPayment(money);
+  const topUp = async () => {
+    setIsLoading(true);
+    setAlert({});
+
+    if (nganLuongParams.price < 1000) {
+      setAlert({
+        message: "Số tiền nạp vào ít nhất là 1000 !!!",
+        status: true,
+        type: "error",
+      });
+      setIsLoading(false);
+      return;
+    }
+
+    const res = await sendRequestPayment(nganLuongParams.price);
+
+    setNganLuongParams((pre: any) => ({
+      ...pre,
+      orderCode: res.id,
+      userId: user?.id,
+    }));
+
+    try {
+      // await processPayment();
+
+      payDialogHandler();
+
+      setAlert({
+        message: "Nạp tiền thành công !!!",
+        status: true,
+        type: "success",
+      });
+      setIsLoading(false);
+    } catch (err: any) {
+      setIsLoading(false);
+
+      setAlert({
+        message: "Nạp tiền thất bại !!!",
+        status: true,
+        type: "error",
+      });
+    }
   };
 
-  const moneyChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setMoney(Number(event.target.value));
-  };
+  //////////////////////////////// End Payment Section ///////////////////////////////
+
 
   const payDialogContent = () => {
     return (
       <Stack>
         <Stack direction="column" sx={{ marginBottom: "20px" }}>
-          <FormLabel
-            htmlFor="roomId"
-            sx={{
-              fontWeight: "600",
-              color: "neutral.800",
-              marginBottom: "10px",
-            }}
-          >
-            Tiền muốn nạp
-          </FormLabel>
-          <TextField type="number" onChange={moneyChangeHandler} />
+          <FormControl>
+            <FormLabel
+              htmlFor="roomId"
+              sx={{
+                fontWeight: "600",
+                color: "neutral.800",
+                marginBottom: "10px",
+              }}
+            >
+              Tiền muốn nạp
+            </FormLabel>
+            <TextField
+              type="number"
+              onChange={(e) => {
+                setNganLuongParams((pre: any) => ({
+                  ...pre,
+                  price: Number(e.target.value),
+                }));
+              }}
+              value={nganLuongParams.price}
+            />
+          </FormControl>
         </Stack>
+
+        <Stack
+          direction="row"
+          justifyContent="center"
+          sx={{ marginBottom: "20px" }}
+        >
+          <ToggleButtonGroup
+            color="primary"
+            sx={{ border: `0px` }}
+            // value={nganLuongParams.price}
+            // exclusive
+            onChange={(event: React.MouseEvent<HTMLElement>, price: any) => {
+              setNganLuongParams((pre: any) => ({
+                ...pre,
+                price: Number(price[0]),
+              }));
+            }}
+            aria-label="Platform"
+          >
+            <ToggleButton
+              value="50000"
+              sx={{ border: "1px solid #1AC073", color: "#1AC073" }}
+            >
+              {formatPrice(50000)}
+            </ToggleButton>
+            <ToggleButton
+              value="100000"
+              sx={{ border: "1px solid #1AC073", color: "#1AC073" }}
+            >
+              {formatPrice(100000)}
+            </ToggleButton>
+            <ToggleButton
+              value="500000"
+              sx={{ border: "1px solid #1AC073", color: "#1AC073" }}
+            >
+              {formatPrice(500000)}
+            </ToggleButton>
+          </ToggleButtonGroup>
+        </Stack>
+
         <DialogActions sx={{ marginTop: "auto" }}>
-          <Button onClick={payDialogHandler}>Cancel</Button>
+          <Button onClick={payDialogHandler}>Hủy</Button>
           <Button
             sx={{
               backgroundColor: "primary.main",
@@ -180,8 +303,9 @@ const Content = () => {
             }}
             type="submit"
             variant="contained"
+            disabled={isLoading}
             autoFocus
-            onClick={loadMoney}
+            onClick={topUp}
           >
             Nạp tiền
           </Button>
@@ -275,7 +399,7 @@ const Content = () => {
         onClose={payDialogHandler}
         children={payDialogContent()}
         title="Nạp tiền vào ví Heli"
-        sx={{ "& .MuiDialog-paper": { width: "60%", height: "40%" } }}
+        sx={{ "& .MuiDialog-paper": { width: "60%", height: "50%" } }}
       />
 
       <Divider sx={{ marginBottom: "30px", marginTop: "30px" }} />
@@ -369,6 +493,15 @@ const Content = () => {
             sx={{ my: 6 }}
           />
         </>
+      )}
+
+      {/* Alert message */}
+      {alert?.status && (
+        <CustomSnackBar
+          message={alert.message}
+          status={alert.status}
+          type={alert.type}
+        />
       )}
     </ProfileContentStyles>
   );

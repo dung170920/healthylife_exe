@@ -94,7 +94,12 @@ export default function Router() {
         },
         {
           path: "upgrade",
-          element: <Upgrade />,
+
+          element: (
+            <ProtectedRoutes roles={["Customer"]}>
+              <Upgrade />
+            </ProtectedRoutes>
+          ),
         },
         {
           path: "orders",
@@ -131,7 +136,9 @@ export default function Router() {
             {
               path: ":userId",
               element: (
-                <ProtectedRoutes roles={["Chef", "Customer", "Membership"]}>
+                <ProtectedRoutes
+                  roles={["Chef", "Customer", "Membership", "Admin"]}
+                >
                   <Profile />
                 </ProtectedRoutes>
               ),
