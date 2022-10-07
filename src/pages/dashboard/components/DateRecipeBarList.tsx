@@ -40,7 +40,7 @@ type Props = {
 
 const DateRecipeBarList = ({ recipes }: any) => {
   return (
-    <Stack sx={{ height: "300px" }}>
+    <Stack>
       {recipes.map((recipe: any) => (
         <Link to={`/recipes/recipe/${recipe.food.id}`}>
           <DateRecipeMenuItem direction="row" key={recipe.food.id}>

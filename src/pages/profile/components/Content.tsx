@@ -22,7 +22,6 @@ import {
   FormLabel,
   DialogActions,
   Button,
-
   Input,
   ToggleButton,
   ToggleButtonGroup,
@@ -46,7 +45,6 @@ import {
   sendRequestToNganLuong,
   completePayment,
 } from "api/PaymentApi";
-
 
 const ProfileContentStyles = styled(Paper)(({ theme }) => ({
   width: "90%",
@@ -133,7 +131,7 @@ const Content = () => {
   const [nganLuongParams, setNganLuongParams] = useState({
     userId,
     orderCode: "",
-    price: 0,
+    price: 1000,
     secureCode: "",
   });
 
@@ -150,11 +148,7 @@ const Content = () => {
 
   const payDialogHandler = async () => {
     setIsPayDialogOpen(!isPayDialogOpen);
-    setNganLuongParams((pre: any) => ({ ...pre, price: 0 }));
-  };
-
-  const moneyChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    // setMoney(Number(event.target.value));
+    setNganLuongParams((pre: any) => ({ ...pre, price: 1000 }));
   };
 
   useEffect(() => {
@@ -226,7 +220,6 @@ const Content = () => {
 
   //////////////////////////////// End Payment Section ///////////////////////////////
 
-
   const payDialogContent = () => {
     return (
       <Stack>
@@ -244,6 +237,8 @@ const Content = () => {
             </FormLabel>
             <TextField
               type="number"
+              // placeholder="Nhập tối thiểu 1000"
+              autoFocus={true}
               onChange={(e) => {
                 setNganLuongParams((pre: any) => ({
                   ...pre,
