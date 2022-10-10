@@ -1,4 +1,9 @@
-import { UserRequestModel, UsersRequestModel } from "models";
+import {
+  UserRequestModel,
+  UsersRequestModel,
+  UserInfoUpdateRequestModel,
+  HealthInfoUpdateRequestModel,
+} from "models";
 import { axiosPrivate } from "config/axiosConfig";
 import queryString from "query-string";
 
@@ -16,4 +21,14 @@ export const getUserById = async (params: UserRequestModel) => {
   return await axiosPrivate.get(
     `${apiPath}/info?${queryString.stringify(params)}`
   );
+};
+
+export const updateUserInfo = async (params: UserInfoUpdateRequestModel) => {
+  return await axiosPrivate.post(`${apiPath}/profile`, params);
+};
+
+export const updateHealthInfo = async (
+  params: HealthInfoUpdateRequestModel
+) => {
+  return await axiosPrivate.post(`${apiPath}/health-status`, params);
 };

@@ -13,9 +13,20 @@ type RHFRadioProps = {
   label: string;
   control: Control<any>;
   options: any[];
+  defaultValue?: number | string;
+  value?: any;
+  onChangeValue?: (e: any) => void;
 };
 
-export const RHFRadio = ({ control, label, name, options }: RHFRadioProps) => {
+export const RHFRadio = ({
+  control,
+  label,
+  name,
+  options,
+  defaultValue,
+  onChangeValue,
+  value,
+}: RHFRadioProps) => {
   const {
     field,
     formState: { errors },

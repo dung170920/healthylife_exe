@@ -63,6 +63,7 @@
     ]
   },
   "devDependencies": {
-    "@types/crypto-js": "^4.1.1"
+    "@types/crypto-js": "^4.1.1",
+    "@types/uuid": "^8.3.4"
   }
 }

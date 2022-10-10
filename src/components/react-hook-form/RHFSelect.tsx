@@ -6,7 +6,8 @@ type RHFSelectProps = {
   name: string;
   label: string;
   children: ReactNode;
-  control: Control<any>;
+  defaultValue?: string | number;
+  control?: Control<any>;
 };
 
 export const RHFSelect = ({
@@ -14,6 +15,7 @@ export const RHFSelect = ({
   children,
   control,
   label,
+  defaultValue,
 }: RHFSelectProps) => {
   const {
     field,
@@ -41,6 +43,7 @@ export const RHFSelect = ({
       <TextField
         {...field}
         id={name}
+        defaultValue={defaultValue}
         name={name}
         select
         fullWidth

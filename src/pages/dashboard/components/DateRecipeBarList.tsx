@@ -34,10 +34,6 @@ const DateRecipeMenuItem = styled(Stack)(({ theme }) => ({
   },
 }));
 
-type Props = {
-  recipes: RecipeModel[];
-};
-
 const DateRecipeBarList = ({ recipes }: any) => {
   return (
     <Stack>
