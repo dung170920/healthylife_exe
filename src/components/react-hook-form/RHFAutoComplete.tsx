@@ -18,7 +18,6 @@ type RHFAutoCompleteProps = {
     option: any
   ) => ReactNode;
   getOptionLabel: (option: any) => string;
-  onChange: (event: any, newValue: string) => void;
 };
 
 export const RHFAutoComplete = ({
@@ -28,7 +27,6 @@ export const RHFAutoComplete = ({
   label,
   renderOption,
   getOptionLabel,
-  onChange,
 }: RHFAutoCompleteProps) => {
   const {
     field,
@@ -59,13 +57,17 @@ export const RHFAutoComplete = ({
         autoHighlight
         getOptionLabel={getOptionLabel}
         {...field}
-        onChange={onChange}
+        value={list.find((item) => item.id === field.value)}
+        onChange={(event: any, newValue: any) =>
+          field.onChange(event.target.value)
+        }
         renderOption={renderOption}
         renderInput={(params) => (
           <TextField
             {...params}
             inputProps={{
               ...params.inputProps,
+              autoComplete: "disabled",
             }}
           />
         )}
