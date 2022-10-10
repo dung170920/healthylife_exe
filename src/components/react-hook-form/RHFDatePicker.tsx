@@ -1,30 +1,27 @@
 import { FormControl, InputLabel, TextField } from "@mui/material";
 import { useController, Control } from "react-hook-form";
+import dayjs from "dayjs";
 
 type RHFInputProps = {
   name: string;
-  label?: string;
-  control?: Control<any>;
-  placeholder?: string;
-  type?: string;
-  disabled?: boolean;
-  InputProps?: Object;
-  onChange?: (e: any) => void;
+  label: string;
+  control: Control<any>;
+  defaultValue?: Date;
+  //   disableFuture?: boolean;
+  //   value: Date | undefined;
+  //   onChangeDate: (e: any) => void;
 };
 
-export const RHFInput = ({
+export const RHFDatePicker = ({
   control,
   label,
   name,
-  placeholder,
-  type = "text",
-  disabled,
-  // readOnly,
+  defaultValue,
   ...props
 }: RHFInputProps) => {
   const {
     field,
-    fieldState: { error },
+    formState: { errors },
   } = useController({
     name,
     control,
@@ -40,7 +37,6 @@ export const RHFInput = ({
           transform: "none",
           position: "relative",
           fontSize: 14,
-          color: "grey.900",
         }}
         htmlFor={name}
       >
@@ -50,13 +46,9 @@ export const RHFInput = ({
         {...field}
         {...props}
         name={name}
-        placeholder={placeholder}
         id={name}
-        disabled={disabled || false}
-        // reaOnly={readOnly}{readOnly && false}
-        type={type}
-        error={!!error}
-        helperText={error?.message?.toString()}
+        type="date"
+        defaultValue={dayjs(defaultValue).format("YYYY-MM-DD")}
       />
     </FormControl>
   );

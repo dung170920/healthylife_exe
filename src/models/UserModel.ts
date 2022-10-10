@@ -25,3 +25,18 @@ export interface UserModel {
   weight?: number;
   foodCount?: number;
 }
+
+export interface UserInfoUpdateRequestModel {
+  pictureUrl?: string;
+  userId?: string;
+  fullName?: string;
+  email?: string;
+  birthday?: Date;
+  gender?: string;
+}
+
+export interface HealthInfoUpdateRequestModel {
+  target: string | undefined;
+  weight: number | undefined;
+  height: number | undefined;
+}
