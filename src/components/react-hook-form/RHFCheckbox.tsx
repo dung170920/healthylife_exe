@@ -1,32 +1,26 @@
 import {
+  Checkbox,
   FormControl,
   FormControlLabel,
+  FormGroup,
   FormHelperText,
-  FormLabel,
-  Radio,
-  RadioGroup,
+  InputLabel,
 } from "@mui/material";
 import { useController, Control } from "react-hook-form";
 
-type RHFRadioProps = {
+type RHFCheckboxProps = {
   name: string;
   label: string;
   control: Control<any>;
-  options: any[];
-  defaultValue?: number | string;
-  value?: any;
-  onChangeValue?: (e: any) => void;
+  list: string[];
 };
 
-export const RHFRadio = ({
+export const RHFCheckbox = ({
   control,
   label,
   name,
-  options,
-  defaultValue,
-  onChangeValue,
-  value,
-}: RHFRadioProps) => {
+  list,
+}: RHFCheckboxProps) => {
   const {
     field,
     fieldState: { error },
@@ -36,30 +30,33 @@ export const RHFRadio = ({
   });
 
   return (
-    <FormControl sx={{ mb: 1.5 }} fullWidth>
-      <FormLabel
-        htmlFor={name}
+    <FormControl sx={{ mb: 2 }} fullWidth>
+      <InputLabel
         sx={{
           cursor: "pointer",
           pointerEvents: "unset",
+          mb: 1,
           transform: "none",
           position: "relative",
           fontSize: 14,
           color: "grey.900",
         }}
+        htmlFor={name}
       >
         {label}
-      </FormLabel>
-      <RadioGroup {...field} row>
-        {options.map((option, index) => (
+      </InputLabel>
+      <FormGroup>
+        {list?.map((item) => (
           <FormControlLabel
-            key={option.id}
-            value={option.value}
-            control={<Radio sx={{ color: "grey.600", p: "6px" }} />}
-            label={option.label}
+            name={name}
+            control={<Checkbox {...field} />}
+            label={item}
+            key={item}
+            sx={{ whiteSpace: "noWrap" }}
           />
         ))}
-      </RadioGroup>
+      </FormGroup>
+
       {!!error && (
         <FormHelperText error sx={{ mt: 0 }}>
           {error?.message?.toString()}

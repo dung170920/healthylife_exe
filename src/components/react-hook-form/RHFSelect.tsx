@@ -19,7 +19,7 @@ export const RHFSelect = ({
 }: RHFSelectProps) => {
   const {
     field,
-    formState: { errors },
+    fieldState: { error },
   } = useController({
     name,
     control,
@@ -35,6 +35,7 @@ export const RHFSelect = ({
           transform: "none",
           position: "relative",
           fontSize: 14,
+          color: "grey.900",
         }}
         htmlFor={name}
       >
@@ -47,8 +48,8 @@ export const RHFSelect = ({
         name={name}
         select
         fullWidth
-        error={!!errors[name]}
-        helperText={errors[name]?.message?.toString()}
+        error={!!error}
+        helperText={error?.message?.toString()}
       >
         {children}
       </TextField>
