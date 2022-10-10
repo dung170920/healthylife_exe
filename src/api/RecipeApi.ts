@@ -11,3 +11,7 @@ export const getRecipeList = async (params: RecipeRequestModel) => {
 export const getRecipeById = async (params: string | undefined) => {
   return await axiosPrivate.get(`${apiPath}/${params}`);
 };
+
+export const addRecipe = async (params: any) => {
+  return await axiosPrivate.post(`${apiPath}`, params);
+};

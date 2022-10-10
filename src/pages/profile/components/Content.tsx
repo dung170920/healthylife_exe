@@ -28,7 +28,7 @@ import {
   FormControl,
   TextField,
 } from "@mui/material";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 
 import { getProfile, getRecipeList, getUserById } from "api";
 import { RecipeModel, RecipeRequestModel, UserModel } from "models";
@@ -46,7 +46,7 @@ import {
   completePayment,
 } from "api/PaymentApi";
 
-const ProfileContentStyles = styled(Paper)(({ theme }) => ({
+const ProfileContentStyles = styled(Paper)(({ theme }: any) => ({
   width: "90%",
   height: "auto",
   position: "absolute",
@@ -79,7 +79,7 @@ const ProfileContentStyles = styled(Paper)(({ theme }) => ({
   },
 }));
 
-const RightIconGroup = styled(Stack)(({ theme }) => ({
+const RightIconGroup = styled(Stack)(({ theme }: any) => ({
   justifyContent: "center",
   alignItems: "center",
 
@@ -96,7 +96,7 @@ const RightIconGroup = styled(Stack)(({ theme }) => ({
   },
 }));
 
-const ProfileNumberDetail = styled(Grid)(({ theme }) => ({
+const ProfileNumberDetail = styled(Grid)(() => ({
   minWidth: 269,
 
   "& .profile_number_title": {

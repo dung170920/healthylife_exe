@@ -5,8 +5,10 @@ type RHFInputProps = {
   name: string;
   label: string;
   control: Control<any>;
-  placeholder: string;
+  placeholder?: string;
   type?: string;
+  InputProps?: Object;
+  onChange?: (e: any) => void;
 };
 
 export const RHFInput = ({
@@ -19,7 +21,7 @@ export const RHFInput = ({
 }: RHFInputProps) => {
   const {
     field,
-    formState: { errors },
+    fieldState: { error },
   } = useController({
     name,
     control,
@@ -35,6 +37,7 @@ export const RHFInput = ({
           transform: "none",
           position: "relative",
           fontSize: 14,
+          color: "grey.900",
         }}
         htmlFor={name}
       >
@@ -47,8 +50,8 @@ export const RHFInput = ({
         placeholder={placeholder}
         id={name}
         type={type}
-        error={!!errors[name]}
-        helperText={errors[name]?.message?.toString()}
+        error={!!error}
+        helperText={error?.message?.toString()}
       />
     </FormControl>
   );
