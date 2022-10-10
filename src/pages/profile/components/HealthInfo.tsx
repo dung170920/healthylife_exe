@@ -89,10 +89,8 @@ const HealthInfo = ({ userData }: PropsType) => {
           </InputLabel>
           <Select
             name="target"
-            // value={userInfo?.targetName}
             defaultValue={userInfo?.target}
             sx={{ width: "auto", paddingRight: "17px" }}
-            // label="Mode"
             onChange={handleTargetChange}
           >
             <MenuItem value={"GainWeight"}>Tăng cân</MenuItem>
