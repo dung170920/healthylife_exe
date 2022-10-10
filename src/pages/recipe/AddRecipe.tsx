@@ -99,7 +99,7 @@ const ImgStyle = styled("img")(() => ({
 
 const AddRecipe = () => {
   const [ingredients, setIngredients] = useState([]);
-  const { handleSubmit, control, setValue } = useForm({
+  const { handleSubmit, control } = useForm({
     resolver: yupResolver(AddRecipeSchema),
     defaultValues,
   });
@@ -297,9 +297,6 @@ const AddRecipe = () => {
               >
                 <RHFAutoComplete
                   name={`recipes[${index}].recipeId`}
-                  onChange={(event: any, newValue: string) => {
-                    setValue(`recipes.${index}.recipeId`, event.target.value);
-                  }}
                   label="Loại nguyên liệu"
                   control={control}
                   getOptionLabel={(option: any) => option.name || ""}

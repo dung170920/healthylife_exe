@@ -1,6 +1,7 @@
 import { FormControl, FormHelperText, InputLabel } from "@mui/material";
 import { useController, Control } from "react-hook-form";
 import { Editor } from "@tinymce/tinymce-react";
+import { useRef, useState } from "react";
 
 type RHFEditorProps = {
   name: string;
@@ -23,6 +24,7 @@ export const RHFEditor = ({
     name,
     control,
   });
+  const editorRef = useRef<any | null>(null);
 
   return (
     <FormControl sx={{ mb: 2 }} fullWidth>
@@ -43,23 +45,39 @@ export const RHFEditor = ({
       <Editor
         id={name}
         {...field}
-        value={field.value}
-        onEditorChange={(a, editor) => {
-          field.onChange(editor.getContent());
+        onChange={(e: any) => {
+          if (editorRef.current) {
+            field.onChange(editorRef.current.getContent());
+          }
         }}
+        onInit={(evt, editor) => (editorRef.current = editor)}
         apiKey={process.env.REACT_APP_TINYMCE_API_KEY}
         init={{
           placeholder,
           height: 400,
           menubar: false,
           plugins: [
-            "preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help charmap quickbars emoticons",
+            "advlist",
+            "autolink",
+            "lists",
+            "link",
+            "image",
+            "charmap",
+            "anchor",
+            "searchreplace",
+            "visualblocks",
+            "code",
+            "fullscreen",
+            "insertdatetime",
+            "media",
+            "table",
+            "preview",
+            "wordcount",
+            "quickbars",
+            "autoresize",
           ],
           toolbar:
-            "formatselect | " +
-            "bold italic backcolor forecolor| alignleft aligncenter " +
-            "alignright alignjustify | bullist numlist outdent indent | " +
-            "removeformat | help | codesample | link image | undo redo | code",
+            "formatselect | bold italic underline strikethrough | backcolor forecolor  | alignleft aligncenter alignright alignjustify | fontfamily fontsize blocks  | bullist numlist outdent indent | pagebreak | undo redo",
           content_style:
             "body { font-family:Helvetica,Arial,sans-serif; font-size:14px; resixe:none; }",
         }}
