@@ -13,4 +13,8 @@ export * from "./FilterTab";
 export * from "./react-hook-form/RHFInput";
 export * from "./react-hook-form/RHFRadio";
 export * from "./react-hook-form/RHFSelect";
+export * from "./react-hook-form/RHFEditor";
+export * from "./react-hook-form/RHFAutoComplete";
+export * from "./react-hook-form/RHFCheckbox";
+
 export * from "./CustomSnackBar";

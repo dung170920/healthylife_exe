@@ -1,6 +1,7 @@
 import { Theme } from "@mui/material";
 import Accordion from "./Accordion";
 import Alert from "./Alert";
+import Autocomplete from "./Autocomplete";
 import Badge from "./Badge";
 import Button from "./Button";
 import Card from "./Card";
@@ -23,7 +24,8 @@ const Overrides = (theme: Theme) => {
     Card(theme),
     Pagination(theme),
     FormControlLabel(theme),
-    Alert(theme)
+    Alert(theme),
+    Autocomplete(theme)
   );
 };
 

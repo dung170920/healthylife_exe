@@ -38,7 +38,7 @@ const FormSchema = Yup.object().shape({
   target: Yup.string().required("Vui lòng chọn mục tiêu"),
 });
 
-const ButtonSubmit = styled(Button)(({ theme }) => ({
+const ButtonSubmit = styled(Button)(({ theme }: any) => ({
   marginTop: "16px",
   marginBottom: "8px",
   backgroundColor: theme.palette.primary.main,
