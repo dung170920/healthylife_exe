@@ -49,8 +49,9 @@ const HealthInfo = ({ userData }: PropsType) => {
     setUserInfo((pre) => ({ ...pre, target: event.target.value }));
   };
 
-  const sendUpdateHealthInfo = async () => {
+  const sendUpdateHealthInfo = async (e: any) => {
     try {
+      e.preventDefault();
       console.log("user inforrrr: ", userInfo);
       await updateHealthInfo(userInfo);
 
