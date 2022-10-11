@@ -74,16 +74,7 @@ const sidebarAdmin: LinkModel[] = [
   {
     name: "Danh sách món",
     icon: <TbClipboardList />,
-    // children: [
-    //   {
-    //     name: "Đồ ăn",
-    //     to: "/recipes/foods",
-    //   },
-    //   {
-    //     name: "Thức uống",
-    //     to: "/recipes/drinks",
-    //   },
-    // ],
+    to: "recipes",
   },
   { name: "Lịch sử giao dịch", icon: <InvoiceIcon />, to: "/orders" },
   { name: "Danh sách người dùng", icon: <HiUsers />, to: "/users" },

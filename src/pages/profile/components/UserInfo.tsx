@@ -1,12 +1,4 @@
-import {
-  Box,
-  Button,
-  Typography,
-  TextField,
-  InputLabel,
-  FormControl,
-  Input,
-} from "@mui/material";
+import { Box, Button, Typography, TextField } from "@mui/material";
 import { Stack } from "@mui/system";
 import { RHFInput, RHFRadio, RHFDatePicker } from "components";
 import { useForm } from "react-hook-form";
@@ -222,4 +214,4 @@ const UserInfo = ({ userData }: PropsType) => {
   );
 };
 
-export default React.memo(UserInfo);
+export default UserInfo;

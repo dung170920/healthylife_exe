@@ -187,4 +187,4 @@ const HealthInfo = ({ userData }: PropsType) => {
   );
 };
 
-export default React.memo(HealthInfo);
+export default HealthInfo;
