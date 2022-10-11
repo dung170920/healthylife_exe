@@ -11,14 +11,11 @@ import {
   InputAdornment,
   Button,
 } from "@mui/material";
-import React, { useState, useEffect } from "react";
-import { RHFInput } from "components";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
+import React, { useState } from "react";
 import * as Yup from "yup";
 import { updateHealthInfo } from "api/UserApi";
 import { CustomSnackBar } from "components";
-import { UserModel, HealthInfoUpdateRequestModel } from "models/UserModel";
+import { UserModel } from "models/UserModel";
 
 const convertVNToEn = (targetName: string | undefined) => {
   switch (targetName) {
@@ -50,9 +47,10 @@ const HealthInfo = ({ userData }: PropsType) => {
   };
 
   const sendUpdateHealthInfo = async (e: any) => {
+    setAlert({});
+
     try {
       e.preventDefault();
-      console.log("user inforrrr: ", userInfo);
       await updateHealthInfo(userInfo);
 
       setAlert({

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   Box,
   Button,
@@ -9,6 +9,8 @@ import {
   Stack,
   styled,
   Typography,
+  InputLabel,
+  TextField,
 } from "@mui/material";
 import { TbAlignLeft } from "react-icons/tb";
 import {
@@ -18,12 +20,16 @@ import {
   RHFInput,
   RHFSelect,
 } from "components";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { storage } from "config/config";
+import { BsUpload } from "react-icons/bs";
 import { useFieldArray, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { FoodCoverIcon } from "assets/icons";
 import { HiPlus, HiOutlineMinusCircle } from "react-icons/hi";
 import { addRecipe, getIngredientList } from "api";
+import { useNavigate } from "react-router-dom";
 
 const AddRecipeSchema = Yup.object().shape({
   name: Yup.string().required("Vui lòng nhập tên"),
@@ -98,6 +104,11 @@ const ImgStyle = styled("img")(() => ({
 }));
 
 const AddRecipe = () => {
+  const navigate = useNavigate();
+  const uploadImgFoodRef = useRef<any>();
+  const imgRef = useRef<any>();
+  const [pictureUrl, setPictureUrl] = useState<string>();
+  const [isUploaded, setIsUploaded] = useState(false);
   const [ingredients, setIngredients] = useState([]);
   const { handleSubmit, control } = useForm({
     resolver: yupResolver(AddRecipeSchema),
@@ -134,31 +145,68 @@ const AddRecipe = () => {
     });
   };
 
+  let filesList = [];
+  let uploadPic: string = "";
+
+  const imagePreviewHandler = (files: any) => {
+    filesList = files;
+    let reader = new FileReader();
+    reader.addEventListener("load", () => {
+      imgRef.current.style.display = "block";
+      imgRef.current.src = reader.result;
+    });
+    reader.readAsDataURL(filesList[0]);
+
+    setIsUploaded(true);
+  };
+
+  const uploadImage = async () => {
+    const filePath = `avt-images/`;
+
+    const file = uploadImgFoodRef?.current.files[0];
+    const name = file.name;
+    const storageRef = await ref(
+      storage,
+      `${filePath}/${name}-${new Date().toISOString()}`
+    );
+    const metadata = {
+      contentType: file.type,
+    };
+    const uploadTask = uploadBytesResumable(storageRef, file);
+    await uploadTask.on(
+      "state_changed",
+      (snapshot) => {},
+      (error) => {
+        console.log(error);
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          // setPictureUrl(downloadURL);
+          uploadPic = downloadURL;
+        });
+      }
+    );
+  };
+
   useEffect(() => {
     fetchIngredientList();
   }, []);
 
   const onSubmit = async (data: any) => {
-    console.log("data: ", data);
-    // addRecipe({
-    //   name: data.name,
-    //   pictureUrl: "",
-    //   description: data.description,
-    //   calorie: data.calorie,
-    //   ingredients: [
-    //     { name: "protein", amount: data.protein, unit: "g" },
-    //     { name: "fat", amount: data.fat, unit: "g" },
-    //     { name: "carbs", amount: data.carbs, unit: "g" },
-    //   ],
-    //   timeCost: data.timeCost,
-    //   difficulty: data.difficulty,
-    //   foodType: data.foodType,
-    //   isMembershipOnly: false,
-    //   recipes: fields,
-    //   instruction: fieldsMake,
-    // })
-    //   .then((res) => {})
-    //   .catch((err) => {});
+    try {
+      await uploadImage();
+      // data.pictureUrl = uploadPic;
+      // await addRecipe(data);
+      setTimeout(async () => {
+        console.log("food pic: ", uploadPic);
+        data.pictureUrl = uploadPic;
+        await addRecipe(data);
+
+        navigate("/recipes/foods");
+      }, 8000);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -265,8 +313,81 @@ const AddRecipe = () => {
                 />
               </Stack>
             </Stack>
+
+            <InputLabel
+              sx={{
+                cursor: "pointer",
+                pointerEvents: "unset",
+                mb: 1,
+                transform: "none",
+                position: "relative",
+                fontSize: 14,
+                color: "grey.900",
+              }}
+              htmlFor="picFood"
+            >
+              Hình ảnh
+            </InputLabel>
+            <Stack
+              id="picFood"
+              justifyContent="center"
+              alignItems="center"
+              sx={{
+                height: "250px",
+                width: "100%",
+                backgroundColor: "#F4F4F4",
+                borderRadius: "15px",
+                position: "relative",
+
+                "& img": {
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  borderRadius: "15px",
+                },
+              }}
+            >
+              <img
+                ref={imgRef}
+                // src="https://go2joy.s3.ap-southeast-1.amazonaws.com/blog/wp-content/uploads/2022/04/30104619/thit-ga-chien-mam-toi-72-mon.jpg"/>
+              />
+              <Button
+                sx={{
+                  width: "100px",
+                  height: "40px",
+                  fontSize: "10px",
+                  position: "absolute",
+                  opacity: "50%",
+
+                  "&:hover": { opacity: "100%" },
+                }}
+                variant="contained"
+                startIcon={<BsUpload />}
+                onClick={() => {
+                  uploadImgFoodRef.current.click();
+                }}
+              >
+                chọn ảnh
+              </Button>
+            </Stack>
+            <TextField
+              sx={{ display: "none" }}
+              type="file"
+              inputRef={uploadImgFoodRef}
+              onChange={() => {
+                imagePreviewHandler(uploadImgFoodRef.current?.files);
+              }}
+            />
             <Box>
-              <Button type="submit" sx={{ float: "right" }} variant="contained">
+              <Button
+                type="submit"
+                sx={{
+                  marginLeft: "50%",
+                  transform: "translate(-50%,-50%)",
+                  marginTop: "50px",
+                }}
+                variant="contained"
+              >
                 Tạo công thức
               </Button>
             </Box>
