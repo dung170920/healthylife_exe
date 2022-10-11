@@ -48,11 +48,12 @@ const UserInfo = ({ userData }: PropsType) => {
 
   ///////////////////////////// Start Upload Image ///////////////////////////////
   let filesList = [];
+  let reqPic: string = "";
 
-  const uploadFileProcess = () => {
-    imagePreviewHandler(fileInputRef.current?.files);
-    uploadImage();
-  };
+  // const uploadFileProcess = () => {
+  //   imagePreviewHandler(fileInputRef.current?.files);
+  //   uploadImage();
+  // };
 
   const imagePreviewHandler = (files: any) => {
     filesList = files;
@@ -86,6 +87,7 @@ const UserInfo = ({ userData }: PropsType) => {
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
           setPictureUrl(downloadURL);
+          reqPic = downloadURL;
         });
       }
     );
@@ -94,15 +96,19 @@ const UserInfo = ({ userData }: PropsType) => {
   ///////////////////////////// End Upload Image ///////////////////////////////
 
   const onSubmit = async (data: UserInfoUpdateRequestModel) => {
+    setAlert({});
     try {
-      data.pictureUrl = pictureUrl;
-      const res = await updateUserInfo(data);
+      uploadImage();
+      setTimeout(async () => {
+        data.pictureUrl = reqPic;
+        await updateUserInfo(data);
 
-      setAlert({
-        message: "Cập nhật thông tin thành công",
-        status: true,
-        type: "success",
-      });
+        setAlert({
+          message: "Cập nhật thông tin thành công",
+          status: true,
+          type: "success",
+        });
+      }, 3000);
     } catch (err) {
       console.log(err);
     }
@@ -147,7 +153,9 @@ const UserInfo = ({ userData }: PropsType) => {
         <TextField
           type="file"
           sx={{ display: "none" }}
-          onChange={uploadFileProcess}
+          onChange={() => {
+            imagePreviewHandler(fileInputRef.current?.files);
+          }}
           inputRef={fileInputRef}
         />
       </Stack>
