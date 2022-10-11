@@ -68,7 +68,7 @@ export default function Router() {
               path: "result",
               element: <RecipeSearchResult />,
             },
-            { path: "", element: <Navigate to="/recipes/foods" replace /> },
+            { path: "", element: <RecipeList /> },
           ],
         },
         {

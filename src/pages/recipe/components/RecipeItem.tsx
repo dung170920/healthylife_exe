@@ -95,7 +95,14 @@ export const RecipeItem = ({ item }: RecipeItemProps) => {
         <RecipeHeader
           sx={{ p: 0 }}
           avatar={
-            <Avatar variant="rounded" src={item.pictureUrl} alt="recipe" />
+            <Avatar
+              variant="rounded"
+              src={
+                item.pictureUrl ||
+                "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Image_not_available.png/640px-Image_not_available.png"
+              }
+              alt="recipe"
+            />
           }
           title={item.name}
           subheader={item.foodType.name}

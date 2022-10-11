@@ -1,10 +1,13 @@
-import { Grid } from "@mui/material";
+import { Button, Grid, Stack } from "@mui/material";
 import { getRecipeList } from "api";
 import { HeaderBreadcumbs, Pagination } from "components";
 import { RecipeModel, RecipeRequestModel } from "models";
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
+import { RootState } from "redux/store";
 import { RecipeItem } from "./components/RecipeItem";
+import { MdAdd } from "react-icons/md";
 
 type ResponseModel = {
   items: RecipeModel[];
@@ -14,13 +17,14 @@ type ResponseModel = {
 
 const RecipeList = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [response, setResponse] = useState<ResponseModel | null>();
   const [params, setParams] = useState<RecipeRequestModel>({
     FilterMode: 2,
-    FoodTypeId: 2,
     PageSize: 6,
     Page: 1,
   });
+  let user = useSelector((state: RootState) => state.auth.auth?.user);
 
   function handlePageChange(event: React.ChangeEvent<unknown>, page: number) {
     setParams({
@@ -30,25 +34,37 @@ const RecipeList = () => {
   }
 
   useEffect(() => {
-    setParams((params) => ({
-      ...params,
-      FoodTypeId: location.pathname.includes("foods") ? 2 : 1,
-    }));
+    if (location.pathname !== "/recipes")
+      setParams((params) => ({
+        ...params,
+        FoodTypeId: location.pathname.includes("foods") ? 2 : 1,
+      }));
   }, [location.pathname]);
 
   useEffect(() => {
     getRecipeList(params).then((res: ResponseModel) => {
-
       setResponse(res);
     });
   }, [params]);
 
   return (
     <>
-      <HeaderBreadcumbs
-        heading="Danh sách công thức"
-        links={[{ name: "Trang chủ", to: "/" }, { name: "Danh sách món" }]}
-      />
+      <Stack direction="row" justifyContent="space-between" alignItems="center">
+        <HeaderBreadcumbs
+          heading="Danh sách công thức"
+          links={[{ name: "Trang chủ", to: "/" }, { name: "Danh sách món" }]}
+        />
+        {user?.role.includes("Admin") && (
+          <Button
+            variant="contained"
+            startIcon={<MdAdd />}
+            onClick={() => navigate("add")}
+          >
+            Thêm món ăn
+          </Button>
+        )}
+      </Stack>
+
       <Grid container spacing={6}>
         {response?.items &&
           response.items.map((item) => (
