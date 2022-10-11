@@ -104,6 +104,7 @@ const Recipe = () => {
   };
 
   const { recipeId } = useParams();
+  console.log("recipeIdf: ", recipeId);
   const [isMakingDialogOpen, setIsMakingDialogOpen] = useState(false);
   const [response, setResponse] = useState<ResponseModel | null>();
 
@@ -199,13 +200,16 @@ const Recipe = () => {
           <Stack className="recipe_chef" direction="row">
             <img
               className="recipe_chef--image"
-              src={response?.chef?.pictureUrl}
+              src={
+                response?.chef?.pictureUrl ||
+                "https://cdn-icons-png.flaticon.com/512/3177/3177440.png"
+              }
               alt=""
             ></img>
 
             <Stack>
               <Typography className="recipe_chef--name">
-                {response?.chef.fullName}
+                {response?.chef?.fullName}
               </Typography>
               <Typography>Đầu bếp</Typography>
             </Stack>

@@ -43,7 +43,7 @@ import { CustomDialog } from "components";
 import {
   sendRequestPayment,
   sendRequestToNganLuong,
-  completePayment,
+  // completePayment,
 } from "api/PaymentApi";
 
 const ProfileContentStyles = styled(Paper)(({ theme }: any) => ({
@@ -129,10 +129,9 @@ const Content = () => {
   });
   const [isPayDialogOpen, setIsPayDialogOpen] = useState(false);
   const [nganLuongParams, setNganLuongParams] = useState({
-    userId,
-    orderCode: "",
+    // userId,
+    // orderCode: "",
     price: 1000,
-    secureCode: "",
   });
 
   const [response, setResponse] = useState<ResponseModel | null>();
@@ -169,9 +168,12 @@ const Content = () => {
 
   //////////////////////////////// Start Payment Section ///////////////////////////////
 
-  const processPayment = async () => {
-    await sendRequestToNganLuong(nganLuongParams);
-    await completePayment(nganLuongParams.orderCode);
+  // const processPayment = async () => {
+  //   await sendRequestToNganLuong(nganLuongParams);
+  //   // await completePayment(nganLuongParams.orderCode);
+  // };
+  const openInNewTab = (url: any) => {
+    window.open(url, "_blank");
   };
 
   const topUp = async () => {
@@ -187,17 +189,24 @@ const Content = () => {
       setIsLoading(false);
       return;
     }
-
-    const res = await sendRequestPayment(nganLuongParams.price);
-
-    setNganLuongParams((pre: any) => ({
-      ...pre,
-      orderCode: res.id,
-      userId: user?.id,
-    }));
-
     try {
-      // await processPayment();
+      const res = await sendRequestPayment(nganLuongParams.price);
+
+      console.log("order code:", res.id);
+
+      // setNganLuongParams((pre: any) => ({
+      //   ...pre,
+      //   orderCode: res.id,
+      //   userId: user?.id,
+      // }));
+
+      openInNewTab(
+        `${sendRequestToNganLuong({
+          ...nganLuongParams,
+          orderCode: res.id,
+          userId: user?.id,
+        })}`
+      );
 
       payDialogHandler();
 
@@ -206,6 +215,7 @@ const Content = () => {
         status: true,
         type: "success",
       });
+
       setIsLoading(false);
     } catch (err: any) {
       setIsLoading(false);
@@ -322,6 +332,26 @@ const Content = () => {
       FoodTypeId: value,
     });
   };
+
+  // useEffect(() => {
+  //   const processNganLuong = async () => {
+  //     await sendRequestToNganLuong(nganLuongParams);
+
+  //     payDialogHandler();
+
+  //     setAlert({
+  //       message: "Nạp tiền thành công !!!",
+  //       status: true,
+  //       type: "success",
+  //     });
+  //   };
+
+  //   try {
+  //     processNganLuong();
+  //   } catch (error: any) {
+  //     console.log(error.message);
+  //   }
+  // }, [nganLuongParams.orderCode]);
 
   return (
     <ProfileContentStyles elevation={1}>
