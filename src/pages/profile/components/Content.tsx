@@ -174,6 +174,8 @@ const Content = () => {
   // };
   const openInNewTab = (url: any) => {
     window.open(url, "_blank");
+
+    console.log("url hehe: ", url);
   };
 
   const topUp = async () => {
