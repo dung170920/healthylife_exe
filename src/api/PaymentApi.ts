@@ -15,22 +15,9 @@ export const sendRequestPayment = async (money: number) => {
 // };
 
 export const sendRequestToNganLuong = (params: any) => {
-  console.log("ngan luong params: ", params);
-
-  console.log(
-    "before hash: ",
-    `${process.env.REACT_APP_MERCHANT_CODE} https://helife.netlify.app/users/${params.userId} ${process.env.REACT_APP_RECEIVER_EMAIL} nap tien ${params.orderCode} ${params.price} vnd 1 0 0 0 0    ${process.env.REACT_APP_MERCHANT_PASSWORD}`
-  );
-
   let secureCode = CryptoJS.MD5(
     `${process.env.REACT_APP_MERCHANT_CODE} https://helife.netlify.app/users/${params.userId} ${process.env.REACT_APP_RECEIVER_EMAIL} nap tien ${params.orderCode} ${params.price} vnd 1 0 0 0 0    ${process.env.REACT_APP_MERCHANT_PASSWORD}`
   );
-
-  // let secureCode = CryptoJS.MD5(
-  //   `${process.env.REACT_APP_MERCHANT_CODE} https://helife.netlify.app ${process.env.REACT_APP_RECEIVER_EMAIL} Test Sandbox a786cf03-40bc-4fbd-2115-08daab95f026 10000 vnd 1 0 0 0 0 vi ${process.env.REACT_APP_MERCHANT_PASSWORD}`
-  // );
-  console.log("orderCode: ", params.orderCode);
-  console.log("secureCode: ", secureCode.toString());
 
   const nganluongParams = {
     merchant_site_code: process.env.REACT_APP_MERCHANT_CODE,
@@ -53,9 +40,5 @@ export const sendRequestToNganLuong = (params: any) => {
 
   return `https://sandbox.nganluong.vn:8088/nl35/checkout.php?${queryString.stringify(
     nganluongParams
-  )})`;
-  // return;
-  // `https://sandbox.nganluong.vn:8088/nl35/checkout.php?${queryString.stringify(
-  //   nganluongParams
-  // )}`;
+  )}`;
 };

@@ -168,14 +168,8 @@ const Content = () => {
 
   //////////////////////////////// Start Payment Section ///////////////////////////////
 
-  // const processPayment = async () => {
-  //   await sendRequestToNganLuong(nganLuongParams);
-  //   // await completePayment(nganLuongParams.orderCode);
-  // };
   const openInNewTab = (url: any) => {
     window.open(url, "_blank");
-
-    console.log("url hehe: ", url);
   };
 
   const topUp = async () => {
@@ -194,14 +188,6 @@ const Content = () => {
     try {
       const res = await sendRequestPayment(nganLuongParams.price);
 
-      console.log("order code:", res.id);
-
-      // setNganLuongParams((pre: any) => ({
-      //   ...pre,
-      //   orderCode: res.id,
-      //   userId: user?.id,
-      // }));
-
       openInNewTab(
         `${sendRequestToNganLuong({
           ...nganLuongParams,
@@ -211,12 +197,6 @@ const Content = () => {
       );
 
       payDialogHandler();
-
-      setAlert({
-        message: "Nạp tiền thành công !!!",
-        status: true,
-        type: "success",
-      });
 
       setIsLoading(false);
     } catch (err: any) {
@@ -334,26 +314,6 @@ const Content = () => {
       FoodTypeId: value,
     });
   };
-
-  // useEffect(() => {
-  //   const processNganLuong = async () => {
-  //     await sendRequestToNganLuong(nganLuongParams);
-
-  //     payDialogHandler();
-
-  //     setAlert({
-  //       message: "Nạp tiền thành công !!!",
-  //       status: true,
-  //       type: "success",
-  //     });
-  //   };
-
-  //   try {
-  //     processNganLuong();
-  //   } catch (error: any) {
-  //     console.log(error.message);
-  //   }
-  // }, [nganLuongParams.orderCode]);
 
   return (
     <ProfileContentStyles elevation={1}>
