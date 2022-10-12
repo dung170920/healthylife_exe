@@ -28,7 +28,7 @@ const PaymentSuccess = () => {
         <Typography variant="h5">
           Bạn đã nạp thành công {formatPrice(Number(searchParams.get("price")))}
         </Typography>
-        <Link to={`users/${user.id}`}>
+        <Link to={`/users/${user.id}`}>
           <Button variant="contained">Quay lại thông tin cá nhân</Button>
         </Link>
       </Stack>
