@@ -16,12 +16,12 @@ export const sendRequestPayment = async (money: number) => {
 
 export const sendRequestToNganLuong = (params: any) => {
   let secureCode = CryptoJS.MD5(
-    `${process.env.REACT_APP_MERCHANT_CODE} https://helife.netlify.app/users/${params.userId} ${process.env.REACT_APP_RECEIVER_EMAIL} nap tien ${params.orderCode} ${params.price} vnd 1 0 0 0 0    ${process.env.REACT_APP_MERCHANT_PASSWORD}`
+    `${process.env.REACT_APP_MERCHANT_CODE} https://helife.netlify.app/users/payment/success/${params.userId} ${process.env.REACT_APP_RECEIVER_EMAIL} nap tien ${params.orderCode} ${params.price} vnd 1 0 0 0 0    ${process.env.REACT_APP_MERCHANT_PASSWORD}`
   );
 
   const nganluongParams = {
     merchant_site_code: process.env.REACT_APP_MERCHANT_CODE,
-    return_url: `https://helife.netlify.app/users/${params.userId}`,
+    return_url: `https://helife.netlify.app/users/payment/success/${params.userId}`,
     receiver: process.env.REACT_APP_RECEIVER_EMAIL,
     transaction_info: "nap tien",
     order_code: params.orderCode,
