@@ -144,7 +144,7 @@ export default function Router() {
               ),
             },
             {
-              path: "payment/success/:userId",
+              path: "payment/success",
               element: (
                 <ProtectedRoutes roles={["Chef", "Customer"]}>
                   <PaymentSuccess />

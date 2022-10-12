@@ -12,14 +12,21 @@ const PaymentSuccess = () => {
       elevation={2}
       sx={{
         textAlign: "center",
-        "& .pay-icon": { color: "#1AC073", fontSize: "40px" },
+        padding: "40px",
+        width: "70%",
+        margin: "0 auto",
+
+        "& .pay-icon": {
+          color: "#1AC073",
+          fontSize: "80px",
+          margin: "0 auto",
+        },
       }}
     >
-      <Stack spacing={2}>
+      <Stack spacing={4}>
         <BsCartCheckFill className="pay-icon" />
         <Typography variant="h5">
-          Bạn đã nạp thành công{" "}
-          {formatPrice(Number(searchParams.get("searchParams")))}
+          Bạn đã nạp thành công {formatPrice(Number(searchParams.get("price")))}
         </Typography>
         <Link to={`users/${user.id}`}>
           <Button variant="contained">Quay lại thông tin cá nhân</Button>

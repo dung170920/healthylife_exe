@@ -135,7 +135,36 @@ const Recipe = () => {
           >
             Cách làm
           </Typography>
-          <Typography>{parse(`${response?.instruction}`)}</Typography>
+          <Typography>
+            {parseJsonStringToArray(response?.instruction, 2)?.map(
+              (step: any) => (
+                <Stack
+                  direction="row"
+                  spacing={1}
+                  sx={{ "& span": { fontWeight: "bold" } }}
+                >
+                  {/* <Typography>
+                    <span>Bước {step.number}:</span> {step.step}
+                  </Typography> */}
+                  <Box
+                    sx={{
+                      backgroundColor: "#1AC073",
+                      color: "#FFFF",
+                      width: "25px",
+                      height: "25px",
+                      // padding: "5px",
+                      borderRadius: "100%",
+                      textAlign: "center",
+                      marginBottom: "6px",
+                    }}
+                  >
+                    {step.number}
+                  </Box>
+                  <Typography>{step.step}</Typography>
+                </Stack>
+              )
+            )}
+          </Typography>
         </Box>
       </Stack>
     );
@@ -219,7 +248,7 @@ const Recipe = () => {
         {/* Nutrition Information */}
         <Typography className="title-text">Thông tin dinh dưỡng</Typography>
         <NutritionList
-          nutritionList={parseJsonStringToArray(response?.ingredient)}
+          nutritionList={parseJsonStringToArray(response?.ingredient, 1)}
         />
 
         {/* Button Group */}
@@ -237,13 +266,6 @@ const Recipe = () => {
           >
             Xem cách làm
           </Button>
-          {/* <Button
-            sx={{ fontSize: "12px", padding: "10px 20px" }}
-            variant="outlined"
-            startIcon={<AiOutlineHeart />}
-          >
-            Yêu thích
-          </Button> */}
         </Stack>
       </DetailStyle>
       {/* Gói nguyên liệu */}
