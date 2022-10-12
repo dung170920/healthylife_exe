@@ -69,6 +69,9 @@ const UserInfo = ({ userData }: PropsType) => {
     const filePath = `avt-images/`;
 
     const file = fileInputRef?.current.files[0];
+    if (!file) {
+      return;
+    }
     const name = file.name;
     const storageRef = ref(
       storage,
@@ -100,7 +103,8 @@ const UserInfo = ({ userData }: PropsType) => {
     try {
       uploadImage();
       setTimeout(async () => {
-        data.pictureUrl = reqPic;
+        data.pictureUrl =
+          reqPic || "https://cdn-icons-png.flaticon.com/512/3177/3177440.png";
         await updateUserInfo(data);
 
         setAlert({
@@ -136,7 +140,13 @@ const UserInfo = ({ userData }: PropsType) => {
             },
           }}
         >
-          <img ref={imgRef} src={userData?.pictureUrl} />
+          <img
+            ref={imgRef}
+            src={
+              userData?.pictureUrl ||
+              "https://cdn-icons-png.flaticon.com/512/3177/3177440.png"
+            }
+          />
         </Box>
 
         <Button
