@@ -6,7 +6,7 @@ import NutritionList from "pages/recipe/components/NutritionList";
 import { NutritionModel } from "models/NutritionModel";
 import { AiFillEye } from "react-icons/ai";
 import { IoMdList } from "react-icons/io";
-import { Bowl, CustomDialog } from "components";
+import { Bowl, CustomDialog, CustomSnackBar } from "components";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { getRecipeById } from "api/RecipeApi";

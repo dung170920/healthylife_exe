@@ -68,6 +68,14 @@ export default function Router() {
               path: "result",
               element: <RecipeSearchResult />,
             },
+            {
+              path: "management",
+              element: (
+                <ProtectedRoutes roles={["Chef"]}>
+                  <RecipeManagement />
+                </ProtectedRoutes>
+              ),
+            },
             { path: "", element: <RecipeList /> },
           ],
         },
@@ -188,6 +196,9 @@ const Recipe = Loadable(lazy(() => import("pages/recipe/Recipe")));
 const AddRecipe = Loadable(lazy(() => import("pages/recipe/AddRecipe")));
 const RecipeSearchResult = Loadable(
   lazy(() => import("pages/recipe/RecipeSearchResult"))
+);
+const RecipeManagement = Loadable(
+  lazy(() => import("pages/recipe/RecipeManagement"))
 );
 
 const ChefList = Loadable(lazy(() => import("pages/chef/ChefList")));

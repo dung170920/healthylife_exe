@@ -373,9 +373,9 @@ const Content = () => {
                 <DollarIcon fontSize={24} />
               </IconButton>
             )}
-            <IconButton onClick={() => {}} className="icons rest_icon">
+            {/* <IconButton onClick={() => {}} className="icons rest_icon">
               <AiOutlineEdit fontSize={24} />
-            </IconButton>
+            </IconButton> */}
           </RightIconGroup>
         )}
       </Stack>
