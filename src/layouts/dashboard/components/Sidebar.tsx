@@ -63,18 +63,9 @@ const sidebarCustomer: LinkModel[] = [
 const sidebarChef: LinkModel[] = [
   { name: "Trang chủ", icon: <TbLayout2 />, to: "/" },
   {
-    name: "Danh sách món",
+    name: "Danh sách món của bạn",
     icon: <TbClipboardList />,
-    children: [
-      {
-        name: "Đồ ăn",
-        to: "/recipes/foods",
-      },
-      {
-        name: "Thức uống",
-        to: "/recipes/drinks",
-      },
-    ],
+    to: "/recipes/management",
   },
   {
     name: "Tạo công thức",

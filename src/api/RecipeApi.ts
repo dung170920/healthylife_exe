@@ -15,3 +15,11 @@ export const getRecipeById = async (params: string | undefined) => {
 export const addRecipe = async (params: any) => {
   return await axiosPrivate.post(`${apiPath}`, params);
 };
+
+export const getRecipesForSpecificChef = async (params: Object) => {
+  return await axiosPrivate.get(`${apiPath}?${queryString.stringify(params)}`);
+};
+
+export const deleteRecipe = async (idFood: string) => {
+  return await axiosPrivate.delete(`${apiPath}/${idFood}`);
+};

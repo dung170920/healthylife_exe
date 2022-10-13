@@ -33,7 +33,7 @@ const UserInfo = ({ userData }: PropsType) => {
     gender: userData.gender,
     email: userData.email,
   };
-  const [pictureUrl, setPictureUrl] = useState<string>();
+  // const [pictureUrl, setPictureUrl] = useState<string>();
 
   const [alert, setAlert] = useState<any>({
     message: "",
@@ -89,7 +89,7 @@ const UserInfo = ({ userData }: PropsType) => {
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          setPictureUrl(downloadURL);
+          // setPictureUrl(downloadURL);
           reqPic = downloadURL;
         });
       }
@@ -103,8 +103,10 @@ const UserInfo = ({ userData }: PropsType) => {
     try {
       uploadImage();
       setTimeout(async () => {
-        data.pictureUrl =
-          reqPic || "https://cdn-icons-png.flaticon.com/512/3177/3177440.png";
+        if (reqPic) {
+          data.pictureUrl = reqPic;
+        }
+
         await updateUserInfo(data);
 
         setAlert({
