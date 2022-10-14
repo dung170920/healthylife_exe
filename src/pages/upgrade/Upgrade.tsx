@@ -48,6 +48,7 @@ const Upgrade = () => {
           subTitle="Có hạn sử dụng trong vòng 1 tháng kể từ ngày đăng kí"
           feature={features[0]}
           price={45000}
+          id={1}
         />
         <Divider
           sx={{ color: "grey.200" }}
@@ -77,6 +78,7 @@ const Upgrade = () => {
           subTitle="Có hạn sử dụng trong vòng 1 năm kể từ ngày đăng kí"
           feature={features[1]}
           price={299000}
+          id={2}
         />
       </UpgradeContainer>
     </>

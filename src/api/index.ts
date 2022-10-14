@@ -5,3 +5,4 @@ export * from "./RecipeApi";
 export * from "./UserApi";
 export * from "./PaymentApi";
 export * from "./IngredientApi";
+export * from "./OrderApi";

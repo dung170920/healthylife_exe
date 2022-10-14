@@ -1,4 +1,3 @@
-import { RecipeModel } from "models";
 import { Stack, styled, Typography } from "@mui/material";
 import { BiTimeFive } from "react-icons/bi";
 import { AiOutlineFire } from "react-icons/ai";
@@ -37,40 +36,44 @@ const DateRecipeMenuItem = styled(Stack)(({ theme }) => ({
 const DateRecipeBarList = ({ recipes }: any) => {
   return (
     <Stack>
-      {recipes.map((recipe: any) => (
-        <Link to={`/recipes/recipe/${recipe.food.id}`}>
-          <DateRecipeMenuItem direction="row" key={recipe.food.id}>
-            <Stack className="date-recipe-info" sx={{ width: "100%" }}>
-              <Typography
-                className="date-recipe-name"
-                sx={{
-                  textOverflow: "ellipsis",
-                  whiteSpace: "nowrap",
-                  overflow: "hidden",
-                  width: "80%",
-                }}
-              >
-                {recipe.food.name}
-              </Typography>
-              <Stack className="date-recipe-detail" direction="row">
-                <BiTimeFive className="date-recipe-detail-icon" />{" "}
-                {recipe.food.timeCost} phút
+      {recipes && recipes.length > 0 ? (
+        recipes.map((recipe: any) => (
+          <Link to={`/recipes/recipe/${recipe.food.id}`}>
+            <DateRecipeMenuItem direction="row" key={recipe.food.id}>
+              <Stack className="date-recipe-info" sx={{ width: "100%" }}>
+                <Typography
+                  className="date-recipe-name"
+                  sx={{
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    width: "80%",
+                  }}
+                >
+                  {recipe.food.name}
+                </Typography>
+                <Stack className="date-recipe-detail" direction="row">
+                  <BiTimeFive className="date-recipe-detail-icon" />{" "}
+                  {recipe.food.timeCost} phút
+                </Stack>
+                <Stack className="date-recipe-detail" direction="row">
+                  <AiOutlineFire className="date-recipe-detail-icon" />
+                  {recipe.food.calorie} calories
+                </Stack>
               </Stack>
-              <Stack className="date-recipe-detail" direction="row">
-                <AiOutlineFire className="date-recipe-detail-icon" />
-                {recipe.food.calorie} calories
-              </Stack>
-            </Stack>
-            <Bowl size={60} sx={{ right: 5, bottom: "20px" }}>
-              <img
-                className="date-recipe-image"
-                src={recipe.food.pictureUrl}
-                alt=""
-              ></img>
-            </Bowl>
-          </DateRecipeMenuItem>
-        </Link>
-      ))}
+              <Bowl size={60} sx={{ right: 5, bottom: "20px" }}>
+                <img
+                  className="date-recipe-image"
+                  src={recipe.food.pictureUrl}
+                  alt=""
+                ></img>
+              </Bowl>
+            </DateRecipeMenuItem>
+          </Link>
+        ))
+      ) : (
+        <Typography>Không có thực đơn tuần này của bạn</Typography>
+      )}
     </Stack>
   );
 };

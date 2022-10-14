@@ -131,7 +131,7 @@ const Menu = () => {
                 }}
               >
                 <Typography variant="h5" sx={{ padding: "180px 20px 20px" }}>
-                  This day has not have menu yet
+                  Không có thực đơn cho ngày bạn chọn
                 </Typography>
               </Paper>
             ) : (

@@ -17,7 +17,7 @@ const Navbar = () => {
     >
       <Searchbar />
       <Stack direction="row" gap={3}>
-        <NotificationPopover />
+        {/* <NotificationPopover /> */}
         <UserPopover />
       </Stack>
     </Box>

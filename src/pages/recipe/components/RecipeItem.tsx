@@ -130,7 +130,7 @@ export const RecipeItem = ({ item }: RecipeItemProps) => {
         <ChefContainer
           avatar={<Avatar src={item.chef?.pictureUrl} aria-label="chef" />}
           title={item.chef?.fullName}
-          subheader={`${item.chef?.foodCount} công thức`}
+          // subheader={`${item.chef?.foodCount} công thức`}
         />
       </Card>
     </Box>
