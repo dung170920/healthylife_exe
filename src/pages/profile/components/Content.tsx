@@ -384,7 +384,7 @@ const Content = () => {
               className="icons rest_icon"
             >
               <AiOutlineEdit fontSize={24} />
-            </IconButton> */}
+            </IconButton>
           </RightIconGroup>
         )}
       </Stack>
