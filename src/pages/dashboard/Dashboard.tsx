@@ -9,10 +9,11 @@ import { useState, useEffect } from "react";
 
 const TopMain = styled("div")({
   display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
 });
 
 const LeftInfoStyle = styled(Stack)(({ theme }) => ({
-  width: "65%",
   height: "475px",
   color: "white",
   borderRadius: "15px",
@@ -40,7 +41,14 @@ const Dashboard = () => {
   return (
     <>
       <TopMain>
-        <LeftInfoStyle>
+        <LeftInfoStyle
+          sx={{
+            width:
+              user?.role.includes("Admin") || user?.role.includes("Chef")
+                ? "80%"
+                : "65%",
+          }}
+        >
           <Typography
             variant="h5"
             sx={{
@@ -61,13 +69,15 @@ const Dashboard = () => {
         </LeftInfoStyle>
 
         {/* Right Info */}
-        <RightInfoStyle>
-          {user?.role.includes("Membership") ? (
-            <MemberAccountInfo />
-          ) : (
-            <NormalAccountInfo />
-          )}
-        </RightInfoStyle>
+        {!user?.role.includes("Admin") && !user?.role.includes("Chef") && (
+          <RightInfoStyle>
+            {user?.role.includes("Membership") ? (
+              <MemberAccountInfo />
+            ) : (
+              <NormalAccountInfo />
+            )}
+          </RightInfoStyle>
+        )}
       </TopMain>
 
       {/* Outstanding Recipe */}

@@ -23,7 +23,14 @@ const MemberAccountInfo = () => {
   }, []);
 
   return (
-    <Stack sx={{ backgroundColor: "white", p: 3, borderRadius: "25px" }}>
+    <Stack
+      sx={{
+        backgroundColor: "white",
+        p: 3,
+        borderRadius: "25px",
+        minHeight: "475px",
+      }}
+    >
       <DateBar onGetMenuByDate={getFoodMenu} dates={dates} />
       <DateRecipeBarList recipes={foods} />
     </Stack>
