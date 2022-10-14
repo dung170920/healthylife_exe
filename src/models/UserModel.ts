@@ -24,6 +24,8 @@ export interface UserModel {
   targetName?: string;
   weight?: number;
   foodCount?: number;
+  isMembership?: boolean;
+  validUntil?: string;
 }
 
 export interface UserInfoUpdateRequestModel {

@@ -22,7 +22,6 @@ import {
   FormLabel,
   DialogActions,
   Button,
-  Input,
   ToggleButton,
   ToggleButtonGroup,
   FormControl,
@@ -36,7 +35,7 @@ import dayjs from "dayjs";
 import { formatPrice } from "utils/formatPrice";
 import { RootState } from "redux/store";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { FilterTab, Pagination, CustomSnackBar } from "components";
 import FoodList from "./FoodList";
 import { CustomDialog } from "components";
@@ -120,6 +119,7 @@ type ResponseModel = {
 };
 
 const Content = () => {
+  const navigate = useNavigate();
   const { userId } = useParams();
   const [isLoading, setIsLoading] = useState(false);
   const [alert, setAlert] = useState<any>({
@@ -356,9 +356,13 @@ const Content = () => {
         {/* Right Info */}
         {isProfile && (
           <RightIconGroup direction="row" spacing="32px">
-            {user?.role.includes("Membership") && (
+            {profile?.isMembership && (
               <Tooltip
-                title={`Gói hội viên còn thời hạn đến: ${profile?.fullName}`}
+                title={`Gói hội viên còn thời hạn đến: ${dayjs(
+                  profile.validUntil
+                )
+                  .locale("vi")
+                  .format("DD MMMM, YYYY")}`}
                 placement="bottom"
                 arrow
               >
@@ -373,7 +377,12 @@ const Content = () => {
                 <DollarIcon fontSize={24} />
               </IconButton>
             )}
-            {/* <IconButton onClick={() => {}} className="icons rest_icon">
+            <IconButton
+              onClick={() => {
+                navigate("/users/settings");
+              }}
+              className="icons rest_icon"
+            >
               <AiOutlineEdit fontSize={24} />
             </IconButton> */}
           </RightIconGroup>

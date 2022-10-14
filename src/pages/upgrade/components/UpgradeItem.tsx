@@ -1,13 +1,24 @@
-import { Button, Divider, Stack, SvgIcon, Typography } from "@mui/material";
-import React from "react";
+import {
+  Button,
+  CircularProgress,
+  Divider,
+  Stack,
+  SvgIcon,
+  Typography,
+} from "@mui/material";
+import React, { useState } from "react";
 import { formatPrice } from "utils/formatPrice";
 import { FiCheck } from "react-icons/fi";
+import { upgradeMembership } from "api";
+import { useNavigate } from "react-router-dom";
+import { CustomSnackBar } from "components";
 
 type UpgradeItemProps = {
   title: string | React.ReactNode;
   subTitle: string;
   price: number;
   feature: { name: string; items: string[] };
+  id: number;
 };
 
 const UpgradeItem = ({
@@ -15,8 +26,39 @@ const UpgradeItem = ({
   subTitle,
   price,
   feature,
-  ...props
+  id,
 }: UpgradeItemProps) => {
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+  const [alert, setAlert] = useState<any>({
+    message: "",
+    status: false,
+    type: "success",
+  });
+
+  function upgradeAccount() {
+    setIsLoading(true);
+    upgradeMembership(id)
+      .then((res) => {
+        // console.log(res);
+        setAlert({
+          message: "Nâng cấp tài khoản thành công",
+          status: true,
+          type: "success",
+        });
+        navigate("/users/settings");
+      })
+      .catch((err) => {
+        console.log(err);
+        setAlert({
+          message: "Nâng cấp tài khoản thất bại",
+          status: true,
+          type: "error",
+        });
+      })
+      .finally(() => setIsLoading(false));
+  }
+
   return (
     <Stack direction={"column"} justifyContent="space-between" spacing={10}>
       <Stack direction={"column"} spacing={3}>
@@ -40,9 +82,16 @@ const UpgradeItem = ({
           </Stack>
         ))}
       </Stack>
-      <Button onClick={() => {}} variant="contained">
-        Nâng cấp ngay
+      <Button onClick={upgradeAccount} variant="contained" disabled={isLoading}>
+        {isLoading ? <CircularProgress /> : "Nâng cấp ngay"}
       </Button>
+      {alert?.status && (
+        <CustomSnackBar
+          message={alert.message}
+          status={alert.status}
+          type={alert.type}
+        />
+      )}
     </Stack>
   );
 };

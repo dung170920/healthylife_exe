@@ -1,9 +1,19 @@
-import { Stack, styled, Typography, Button } from "@mui/material";
+import {
+  Stack,
+  styled,
+  Typography,
+  Button,
+  CircularProgress,
+} from "@mui/material";
 import { BsCardList } from "react-icons/bs";
 import { GiOnTarget } from "react-icons/gi";
 import { BiDish } from "react-icons/bi";
 import { chef } from "assets/images";
 import { formatPrice } from "utils/formatPrice";
+import { upgradeMembership } from "api";
+import { useState } from "react";
+import { CustomSnackBar } from "components";
+import { useNavigate } from "react-router-dom";
 
 const UpgradeAccountStyle = styled(Stack)(({ theme }) => ({
   width: 320,
@@ -61,6 +71,37 @@ const MenuBoxItem = styled(Stack)(({ theme }) => ({
 const MemberPrice = formatPrice(45000);
 
 const NormalAccountInfo = () => {
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+  const [alert, setAlert] = useState<any>({
+    message: "",
+    status: false,
+    type: "success",
+  });
+
+  function upgradeAccount() {
+    setIsLoading(true);
+    upgradeMembership(1)
+      .then((res) => {
+        // console.log(res);
+        setAlert({
+          message: "Nâng cấp tài khoản thành công",
+          status: true,
+          type: "success",
+        });
+        navigate("/users/settings");
+      })
+      .catch((err) => {
+        console.log(err);
+        setAlert({
+          message: "Nâng cấp tài khoản thất bại",
+          status: true,
+          type: "error",
+        });
+      })
+      .finally(() => setIsLoading(false));
+  }
+
   return (
     <Stack sx={{ marginTop: "25px" }}>
       <UpgradeAccountStyle direction="column" alignItems="center">
@@ -75,8 +116,17 @@ const NormalAccountInfo = () => {
         >
           Nâng cấp tài khoản để mở khóa tất cả các tính năng
         </Typography>
-        <Button className="upgrade-button">
-          Trở thành hội viên với {MemberPrice}
+
+        <Button
+          className="upgrade-button"
+          onClick={upgradeAccount}
+          disabled={isLoading}
+        >
+          {isLoading ? (
+            <CircularProgress />
+          ) : (
+            `Trở thành hội viên với ${MemberPrice}`
+          )}
         </Button>
       </UpgradeAccountStyle>
 
@@ -112,6 +162,13 @@ const NormalAccountInfo = () => {
           </MenuBoxItem>
         </Stack>
       </Stack>
+      {alert?.status && (
+        <CustomSnackBar
+          message={alert.message}
+          status={alert.status}
+          type={alert.type}
+        />
+      )}
     </Stack>
   );
 };

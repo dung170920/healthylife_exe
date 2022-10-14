@@ -1,4 +1,4 @@
-import { Button, Grid, Stack } from "@mui/material";
+import { Button, CircularProgress, Grid, Stack } from "@mui/material";
 import { getRecipeList } from "api";
 import { HeaderBreadcumbs, Pagination } from "components";
 import { RecipeModel, RecipeRequestModel } from "models";
@@ -19,6 +19,7 @@ const RecipeList = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [response, setResponse] = useState<ResponseModel | null>();
+  const [isLoading, setIsLoading] = useState(false);
   const [params, setParams] = useState<RecipeRequestModel>({
     FilterMode: 2,
     PageSize: 6,
@@ -42,8 +43,10 @@ const RecipeList = () => {
   }, [location.pathname]);
 
   useEffect(() => {
+    setIsLoading(true);
     getRecipeList(params).then((res: ResponseModel) => {
       setResponse(res);
+      setIsLoading(false);
     });
   }, [params]);
 
@@ -66,12 +69,22 @@ const RecipeList = () => {
       </Stack>
 
       <Grid container spacing={6}>
-        {response?.items &&
+        {isLoading ? (
+          <Stack
+            sx={{ height: "100%", width: "100%" }}
+            alignItems={"center"}
+            justifyContent="center"
+          >
+            <CircularProgress />
+          </Stack>
+        ) : (
+          response?.items &&
           response.items.map((item) => (
             <Grid item xs={4} key={item.id}>
               <RecipeItem item={item} />
             </Grid>
-          ))}
+          ))
+        )}
       </Grid>
       <Pagination
         page={params.Page || 1}
