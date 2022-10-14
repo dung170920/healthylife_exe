@@ -198,11 +198,10 @@ const AddRecipe = () => {
       // data.pictureUrl = uploadPic;
       // await addRecipe(data);
       setTimeout(async () => {
-        console.log("food pic: ", uploadPic);
         data.pictureUrl = uploadPic;
         await addRecipe(data);
 
-        navigate("/recipes/foods");
+        navigate("/recipes/management");
       }, 8000);
     } catch (err) {
       console.log(err);
