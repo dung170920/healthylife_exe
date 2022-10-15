@@ -58,7 +58,7 @@ const User = () => {
         headerName: "Email",
         field: "email",
         type: "string",
-        width: 450,
+        width: 300,
       },
     ],
     pageState: pageState,
@@ -95,8 +95,10 @@ const User = () => {
         setParams((pre) => ({ ...pre, Mode: 2 }));
         break;
       }
-      case 3:
+      case 3: {
+        setParams((pre) => ({ ...pre, Mode: 0 }));
         break;
+      }
       default:
         break;
     }
@@ -134,8 +136,11 @@ const User = () => {
   return (
     <>
       <HeaderBreadcumbs
-        heading="Danh sách công thức"
-        links={[{ name: "Trang chủ", to: "/" }, { name: "Danh sách món" }]}
+        heading="Danh sách người dùng"
+        links={[
+          { name: "Trang chủ", to: "/" },
+          { name: "Danh sách người dùng" },
+        ]}
       />
 
       <FilterTab

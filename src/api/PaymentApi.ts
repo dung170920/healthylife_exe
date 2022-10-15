@@ -42,3 +42,13 @@ export const sendRequestToNganLuong = (params: any) => {
     nganluongParams
   )}`;
 };
+
+export const getPaymentHistory = async ({
+  page,
+  pageSize,
+}: {
+  page: number;
+  pageSize: number;
+}) => {
+  return await axiosPrivate.get(`${apiPath}?Page=${page}&PageSize=${pageSize}`);
+};
