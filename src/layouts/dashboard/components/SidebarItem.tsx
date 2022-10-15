@@ -84,7 +84,12 @@ const SidebarItem = ({ item, active, onActive }: SidebarItemProps) => {
       <span></span>
       <ListItemIcon>{item.icon}</ListItemIcon>
       <ListItemText>
-        <Typography sx={{ fontSize: 14, fontWeight: 600 }}>
+        <Typography
+          sx={{
+            fontSize: 14,
+            fontWeight: 600,
+          }}
+        >
           {item.name}
         </Typography>
       </ListItemText>

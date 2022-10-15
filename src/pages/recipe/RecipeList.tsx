@@ -52,6 +52,7 @@ const RecipeList = () => {
       setParams((params) => ({
         ...params,
         FoodTypeId: location.pathname.includes("foods") ? 2 : 1,
+        Page: 1,
       }));
   }, [location.pathname]);
 
