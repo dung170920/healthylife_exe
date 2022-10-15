@@ -1,7 +1,17 @@
-import { Box, Divider, Stack, styled } from "@mui/material";
+import {
+  Box,
+  Divider,
+  Stack,
+  styled,
+  Typography,
+  Button,
+  DialogActions,
+} from "@mui/material";
 import { HeaderBreadcumbs } from "components";
-import React from "react";
+import React, { useState } from "react";
 import UpgradeItem from "./components/UpgradeItem";
+import { CustomDialog } from "components";
+import { useNavigate } from "react-router-dom";
 
 const UpgradeContainer = styled(Stack)(({ theme }) => ({
   padding: "48px",
@@ -32,6 +42,45 @@ const features = [
 ];
 
 const Upgrade = () => {
+  const navigate = useNavigate();
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const dialogOpenCloseHandler = () => {
+    setIsDialogOpen(!isDialogOpen);
+  };
+
+  const dialogContent = () => {
+    return (
+      <Stack spacing={3}>
+        <Typography>
+          Chúc mừng bạn đã thành hội viên của Heli. Hãy qua trang cài đặt và
+          chỉnh sửa lại thông tin sức khỏe để Heli tạo thực đơn hàng tuần cho
+          bạn nhé
+        </Typography>
+
+        <DialogActions sx={{ marginTop: "auto" }}>
+          <Button
+            // sx={{
+            //   backgroundColor: "error.main",
+            //   "&:hover": { backgroundColor: "error.dark" },
+            // }}
+            color="primary"
+            variant="contained"
+            autoFocus
+            onClick={() => {
+              navigate(`/users/settings`);
+            }}
+          >
+            Qua trang cài đặt
+          </Button>
+        </DialogActions>
+      </Stack>
+    );
+  };
+
+  const isUpdradeSuccess = (isSuccessful: any) => {
+    if (isSuccessful) dialogOpenCloseHandler();
+  };
   return (
     <>
       <HeaderBreadcumbs
@@ -47,6 +96,7 @@ const Upgrade = () => {
           title="1 Tháng"
           subTitle="Có hạn sử dụng trong vòng 1 tháng kể từ ngày đăng kí"
           feature={features[0]}
+          isUpgradeSuccess={isUpdradeSuccess}
           price={45000}
           id={1}
         />
@@ -57,6 +107,7 @@ const Upgrade = () => {
           variant="middle"
         />
         <UpgradeItem
+          isUpgradeSuccess={isUpdradeSuccess}
           title={
             <Stack direction="row">
               1 Năm
@@ -81,6 +132,15 @@ const Upgrade = () => {
           id={2}
         />
       </UpgradeContainer>
+
+      {/* Delete Dialog */}
+      <CustomDialog
+        isOpen={isDialogOpen}
+        onClose={dialogOpenCloseHandler}
+        children={dialogContent()}
+        title="Chúc mừng"
+        sx={{ "& .MuiDialog-paper": { width: "50%", height: "43%" } }}
+      />
     </>
   );
 };

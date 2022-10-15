@@ -6,13 +6,18 @@ import {
   CardHeader,
   styled,
   Typography,
+  Tooltip,
 } from "@mui/material";
 import parse from "html-react-parser";
 import { RecipeModel } from "models";
 import { useNavigate } from "react-router-dom";
+import { TbLock } from "react-icons/tb";
 
 type RecipeItemProps = {
   item: RecipeModel;
+  // sx?: string;
+  isMember?: boolean;
+  isFoodForMember?: boolean;
 };
 
 type RecipeHeaderType = {
@@ -73,14 +78,31 @@ const RecipeHeader = styled(CardHeader)<RecipeHeaderType>(
   })
 );
 
-export const RecipeItem = ({ item }: RecipeItemProps) => {
+export const RecipeItem = ({
+  item,
+  isMember,
+  isFoodForMember,
+}: RecipeItemProps) => {
   const navigate = useNavigate();
 
-  return (
-    <Box sx={{ width: 350, height: 350 }}>
+  return isMember ? (
+    <Box
+      sx={{
+        width: 350,
+        height: 350,
+        position: "relative",
+
+        // "& .member_label": {
+        //   position: "absolute",
+        //   top: "5%",
+        //   left: "5%",
+        // },
+      }}
+    >
       <Card
         variant="outlined"
         sx={{
+          // opacity: !isForMember ? "40%" : "",
           px: 1.5,
           py: 2,
           cursor: "pointer",
@@ -90,7 +112,9 @@ export const RecipeItem = ({ item }: RecipeItemProps) => {
           display: "flex",
           flexDirection: "column",
         }}
-        onClick={() => navigate(`/recipes/recipe/${item.id}`)}
+        onClick={() => {
+          navigate(`/recipes/recipe/${item.id}`);
+        }}
       >
         <RecipeHeader
           sx={{ p: 0 }}
@@ -133,6 +157,113 @@ export const RecipeItem = ({ item }: RecipeItemProps) => {
           // subheader={`${item.chef?.foodCount} công thức`}
         />
       </Card>
+      {/* {!isForMember ? <TbLock className="block_icon" /> : ""} */}
+      {/* <Typography className="member_label">Dành riêng cho hội viên</Typography> */}
+    </Box>
+  ) : (
+    <Box
+      sx={{
+        width: 350,
+        height: 350,
+
+        // "& .member_label": {
+        //   position: "absolute",
+        //   top: "5%",
+        //   left: "5%",
+        // },
+
+        "& .block_icon": {
+          position: "absolute",
+          top: "50%",
+          right: "50%",
+          transform: "translate(70%,-50%)",
+          // margin: "0 auto",
+          fontWeight: "bold",
+          color: "#1AC073",
+          width: "80px",
+          height: "80px",
+          cursor: "pointer",
+        },
+      }}
+    >
+      <Card
+        variant="outlined"
+        sx={{
+          opacity: isFoodForMember ? "40%" : "",
+          px: 1.5,
+          py: 2,
+          cursor: "pointer",
+          overflow: "hidden",
+          height: "100%",
+          width: "100%",
+          display: "flex",
+          flexDirection: "column",
+        }}
+        onClick={() => {
+          if (!isFoodForMember) {
+            navigate(`/recipes/recipe/${item.id}`);
+          }
+        }}
+      >
+        <RecipeHeader
+          sx={{ p: 0 }}
+          avatar={
+            <Avatar
+              variant="rounded"
+              src={
+                item.pictureUrl ||
+                "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Image_not_available.png/640px-Image_not_available.png"
+              }
+              alt="recipe"
+            />
+          }
+          title={item.name}
+          subheader={item.foodType.name}
+          type={item.foodType.id}
+        />
+        <CardContent
+          sx={{
+            px: 0,
+          }}
+        >
+          <Typography
+            variant="body1"
+            color="grey.800"
+            sx={{
+              display: "-webkit-box",
+              WebkitBoxOrient: "vertical",
+              WebkitLineClamp: 5,
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+          >
+            {parse(item.description)}
+          </Typography>
+        </CardContent>
+        <ChefContainer
+          avatar={<Avatar src={item.chef?.pictureUrl} aria-label="chef" />}
+          title={item.chef?.fullName}
+          // subheader={`${item.chef?.foodCount} công thức`}
+        />
+      </Card>
+      {isFoodForMember ? (
+        <Box
+          onClick={() => {
+            navigate(`/upgrade`);
+          }}
+        >
+          <TbLock className="block_icon" />
+        </Box>
+      ) : (
+        ""
+      )}
+      {/* {isFoodForMember ? (
+        <Typography className="member_label">
+          Dành riêng cho hội viên
+        </Typography>
+      ) : (
+        ""
+      )} */}
     </Box>
   );
 };

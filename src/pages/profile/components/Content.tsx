@@ -11,6 +11,7 @@ import { BiWallet } from "react-icons/bi";
 import { AiOutlineEdit, AiOutlineMail } from "react-icons/ai";
 import {
   Paper,
+  Box,
   Stack,
   styled,
   Grid,
@@ -357,10 +358,10 @@ const Content = () => {
         {/* Right Info */}
         {isProfile && (
           <RightIconGroup direction="row" spacing="32px">
-            {profile?.isMembership && (
+            {user?.role.includes("Membership") && (
               <Tooltip
                 title={`Gói hội viên còn thời hạn đến: ${dayjs(
-                  profile.validUntil
+                  profile?.validUntil
                 )
                   .locale("vi")
                   .format("DD MMMM, YYYY")}`}
@@ -474,6 +475,9 @@ const Content = () => {
           </ProfileNumberDetail>
         </Grid>
       )}
+
+      {/* BMIMesuarement */}
+
       {profile?.foodCount !== undefined && (
         <>
           <FilterTab

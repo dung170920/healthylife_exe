@@ -11,7 +11,7 @@ const IngredientList: React.FC<any> = ({ ingredients }) => {
       <ul>
         {ingredients.map((ingredient: any, i: number) => (
           <li key={i}>
-            {ingredient.amount} {ingredient.recipeName}
+            {ingredient.amount} {ingredient.unit} {ingredient.recipeName}
           </li>
         ))}
       </ul>
