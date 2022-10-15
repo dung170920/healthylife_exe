@@ -36,8 +36,11 @@ const ChefList = () => {
   return (
     <>
       <HeaderBreadcumbs
-        heading="Danh sách đầu bếp"
-        links={[{ name: "Trang chủ", to: "/" }, { name: "Danh sách đầu bếp" }]}
+        heading="Danh sách chuyên gia dinh dưỡng"
+        links={[
+          { name: "Trang chủ", to: "/" },
+          { name: "Danh sách chuyên gia dinh dưỡng" },
+        ]}
       />
       <Grid container spacing={4}>
         {chefs?.items &&

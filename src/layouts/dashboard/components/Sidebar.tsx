@@ -28,7 +28,7 @@ const sidebarMembership: LinkModel[] = [
     ],
   },
   {
-    name: "Danh sách đầu bếp",
+    name: "Danh sách chuyên gia dinh dưỡng",
     icon: <FoodCoverIcon />,
     to: "/chefs",
   },
@@ -53,7 +53,7 @@ const sidebarCustomer: LinkModel[] = [
     ],
   },
   {
-    name: "Danh sách đầu bếp",
+    name: "Các chuyên gia dinh dưỡng",
     icon: <FoodCoverIcon />,
     to: "/chefs",
   },
