@@ -140,6 +140,7 @@ const Content = () => {
     FoodTypeId: 2,
     PageSize: 9,
     Page: 1,
+    ChefId: userId,
   });
   let user = useSelector((state: RootState) => state.auth.auth?.user);
   const [profile, setProfile] = useState<UserModel | undefined>();
