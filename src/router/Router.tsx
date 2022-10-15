@@ -165,6 +165,15 @@ export default function Router() {
             },
           ],
         },
+
+        {
+          path: "statistical",
+          element: (
+            <ProtectedRoutes roles={["Membership"]}>
+              <Statistical />
+            </ProtectedRoutes>
+          ),
+        },
       ],
     },
     {
@@ -215,6 +224,10 @@ const PaymentSuccess = Loadable(
   lazy(() => import("pages/profile/PaymentSuccess"))
 );
 const Settings = Loadable(lazy(() => import("pages/profile/Settings")));
+
+const Statistical = Loadable(
+  lazy(() => import("pages/statistical/Statistical"))
+);
 
 const Users = Loadable(lazy(() => import("pages/user/Users")));
 
