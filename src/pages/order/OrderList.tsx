@@ -2,26 +2,27 @@ import { HeaderBreadcumbs, DataTable } from "components";
 import React, { useEffect, useState } from "react";
 import { OrderRequestModel } from "models/OrderModel";
 import { styled, Box } from "@mui/material";
+import { getPaymentHistory } from "api/PaymentApi";
 import moment from "moment";
 
-const StatusColorStyle = (status: number) => {
+const StatusColorStyle = (status: string) => {
   switch (status) {
-    case 1: {
+    case "Thành công": {
       return {
-        color: "palette.primary.info.light",
-        backgroundColor: "palette.primary.info.dark",
+        color: "#FFFF",
+        backgroundColor: "#1AC073",
       };
     }
-    case 2: {
+    case "Chờ thanh toán": {
       return {
-        color: "palette.primary.error.light",
-        backgroundColor: "palette.primary.error.dark",
+        color: "#FFFF",
+        backgroundColor: "#FFC542",
       };
     }
-    case 3: {
+    case "Đã hủy": {
       return {
-        color: "palette.primary.primary.light",
-        backgroundColor: "palette.primary.primary.dark",
+        color: "#FFFF",
+        backgroundColor: "#B72136",
       };
     }
     default:
@@ -92,39 +93,37 @@ const OrderList = () => {
         headerName: "Mã đơn hàng",
         field: "id",
         type: "string",
-
-        width: 200,
+        width: 350,
       },
 
       {
         headerName: "Ngày giao dịch",
         field: "date",
         type: "string",
-        width: 250,
+        width: 200,
       },
       {
-        headerName: "Tên khách hàng",
-        field: "fullName",
+        headerName: "Loại hình",
+        field: "paymentType",
         type: "string",
-        width: 400,
+        width: 100,
       },
       {
-        headerName: "Tổng tiền",
+        headerName: "Khoảng tiền",
         field: "price",
         type: "number",
         align: "right",
-        width: 100,
+        width: 150,
       },
       {
         headerName: "Trạng thái",
         field: "status",
         type: "string",
         align: "center",
-
         width: 100,
         renderCell: (statusValue: any) => {
           return (
-            <StatusStyle sx={StatusColorStyle(statusValue)}>
+            <StatusStyle sx={StatusColorStyle(statusValue.value)}>
               {statusValue.value}
             </StatusStyle>
           );
@@ -144,25 +143,28 @@ const OrderList = () => {
     setPageState((old) => ({ ...old, pageSize: newPageSize }));
   };
 
-  const fetchOrderData = () => {
+  const fetchOrderData = async () => {
     setPageState((old) => ({ ...old, isLoading: true, data: [] }));
 
-    // const res = await getUsers(params);
+    const res = await getPaymentHistory({
+      page: params.Page,
+      pageSize: params.PageSize,
+    });
 
-    const dataRow = dummyOrderData.map((item: any, i: number) => ({
+    const dataRow = res.items.map((item: any, i: number) => ({
       no: i + 1,
-      id: item.id,
-      date: moment(item.date, "DD MM YYYY hh:mm:ss"),
-      fullName: item.fullName,
-      price: item.price,
+      id: item.paymentId,
+      date: item.date,
+      paymentType: item.paymentType,
+      price: item.amount,
       status: item.status,
     }));
 
     setPageState((pre) => ({
       ...pre,
       isLoading: false,
-      data: [],
-      total: 8,
+      data: dataRow,
+      total: res.total,
     }));
   };
 
