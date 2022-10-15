@@ -49,7 +49,7 @@ const UserPopover = () => {
     {
       icon: <BiBarChartAlt />,
       name: "Thống kê",
-      to: "/report",
+      to: "/statistical",
     },
     {
       icon: <BiCog />,

@@ -9,3 +9,7 @@ export const getMenuByDate = async (date: string) => {
 export const getCurrentWeekMenu = async () => {
   return await axiosPrivate.get(`${apiPath}/current-week`);
 };
+
+export const getStatisticalMenu = async (year: number) => {
+  return await axiosPrivate.get(`${apiPath}/statistic?Year=${year}`);
+};
