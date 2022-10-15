@@ -27,4 +27,5 @@ export interface RecipeRequestModel {
   RecipeName?: string;
   Page?: number;
   PageSize?: number;
+  ChefId?: string;
 }
