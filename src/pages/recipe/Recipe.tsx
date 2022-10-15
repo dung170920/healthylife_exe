@@ -143,23 +143,13 @@ const Recipe = () => {
                   spacing={1}
                   sx={{ "& span": { fontWeight: "bold" } }}
                 >
-                  {/* <Typography>
-                    <span>Bước {step.number}:</span> {step.step}
-                  </Typography> */}
-                  <Box
+                  <Typography
                     sx={{
-                      backgroundColor: "#1AC073",
-                      color: "#FFFF",
-                      width: "25px",
-                      height: "25px",
-                      // padding: "5px",
-                      borderRadius: "100%",
-                      textAlign: "center",
-                      marginBottom: "6px",
+                      fontWeight: "bold",
                     }}
                   >
-                    {step.number}
-                  </Box>
+                    {step.number}.
+                  </Typography>
                   <Typography>{step.step}</Typography>
                 </Stack>
               )

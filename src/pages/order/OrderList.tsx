@@ -37,37 +37,6 @@ const StatusStyle = styled(Box)(({ theme }) => ({
   borderRadius: "10px",
 }));
 
-const dummyOrderData = [
-  {
-    id: "495369",
-    date: new Date(Date.UTC(96, 1, 2, 3, 4, 5)),
-    fullName: "Lam Vo Khanh Phuong",
-    price: 1000,
-    status: 1,
-  },
-  {
-    id: "495369",
-    date: new Date(Date.UTC(96, 1, 2, 3, 4, 5)),
-    fullName: "Lam Vo Khanh Phuong",
-    price: 1000,
-    status: 1,
-  },
-  {
-    id: "495369",
-    date: new Date(Date.UTC(96, 1, 2, 3, 4, 5)),
-    fullName: "Lam Vo Khanh Phuong",
-    price: 1000,
-    status: 1,
-  },
-  {
-    id: "495369",
-    date: new Date(Date.UTC(96, 1, 2, 3, 4, 5)),
-    fullName: "Lam Vo Khanh Phuong",
-    price: 1000,
-    status: 1,
-  },
-];
-
 const OrderList = () => {
   const [pageState, setPageState] = useState({
     isLoading: false,
@@ -100,7 +69,7 @@ const OrderList = () => {
         headerName: "Ngày giao dịch",
         field: "date",
         type: "string",
-        width: 200,
+        width: 180,
       },
       {
         headerName: "Loại hình",
@@ -119,8 +88,8 @@ const OrderList = () => {
         headerName: "Trạng thái",
         field: "status",
         type: "string",
-        align: "center",
-        width: 100,
+        // align: "right",
+        width: 150,
         renderCell: (statusValue: any) => {
           return (
             <StatusStyle sx={StatusColorStyle(statusValue.value)}>

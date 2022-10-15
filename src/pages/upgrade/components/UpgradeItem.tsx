@@ -19,6 +19,7 @@ type UpgradeItemProps = {
   price: number;
   feature: { name: string; items: string[] };
   id: number;
+  isUpgradeSuccess?: any;
 };
 
 const UpgradeItem = ({
@@ -27,6 +28,7 @@ const UpgradeItem = ({
   price,
   feature,
   id,
+  isUpgradeSuccess,
 }: UpgradeItemProps) => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
@@ -41,17 +43,18 @@ const UpgradeItem = ({
     upgradeMembership(id)
       .then((res) => {
         // console.log(res);
-        setAlert({
-          message: "Nâng cấp tài khoản thành công",
-          status: true,
-          type: "success",
-        });
-        navigate("/users/settings");
+        // setAlert({
+        //   message: "Nâng cấp tài khoản thành công",
+        //   status: true,
+        //   type: "success",
+        // });
+        // navigate("/users/settings");
+        isUpgradeSuccess(true);
       })
       .catch((err) => {
         console.log(err);
         setAlert({
-          message: "Nâng cấp tài khoản thất bại",
+          message: "Nâng cấp tài khoản thất bại, số dư ví của bạn không đủ",
           status: true,
           type: "error",
         });

@@ -26,7 +26,21 @@ const UserPopover = () => {
   const [open, setOpen] = useState<HTMLButtonElement | null>(null);
   let user = useSelector((state: RootState) => state.auth.auth?.user);
 
-  const menu: LinkModel[] = [
+  const customerMenu: LinkModel[] = [
+    {
+      icon: <BiUser />,
+      name: "Thông tin cá nhân",
+      to: `/users/${user!.id}`,
+    },
+
+    {
+      icon: <BiCog />,
+      name: "Cài đặt",
+      to: "/users/settings",
+    },
+  ];
+
+  const memberMenu: LinkModel[] = [
     {
       icon: <BiUser />,
       name: "Thông tin cá nhân",
@@ -94,26 +108,45 @@ const UserPopover = () => {
           }}
         />
         <Stack sx={{ p: 2 }} justifyContent="center">
-          {menu.map((option) => (
-            <MenuItem
-              key={option.name}
-              to={option.to!}
-              component={Link}
-              onClick={handleClose}
-              sx={{ p: 1.5, color: "grey.700", borderRadius: "12px" }}
-            >
-              <ListItemIcon sx={{ fontSize: 24, color: "grey.600" }}>
-                {option.icon}
-              </ListItemIcon>
-              <ListItemText>
-                <Typography sx={{ fontSize: 14, fontWeight: 600 }}>
-                  {option.name}
-                </Typography>
-              </ListItemText>
-            </MenuItem>
-          ))}
+          {user?.role.includes("Membership")
+            ? memberMenu.map((option) => (
+                <MenuItem
+                  key={option.name}
+                  to={option.to!}
+                  component={Link}
+                  onClick={handleClose}
+                  sx={{ p: 1.5, color: "grey.700", borderRadius: "12px" }}
+                >
+                  <ListItemIcon sx={{ fontSize: 24, color: "grey.600" }}>
+                    {option.icon}
+                  </ListItemIcon>
+                  <ListItemText>
+                    <Typography sx={{ fontSize: 14, fontWeight: 600 }}>
+                      {option.name}
+                    </Typography>
+                  </ListItemText>
+                </MenuItem>
+              ))
+            : customerMenu.map((option) => (
+                <MenuItem
+                  key={option.name}
+                  to={option.to!}
+                  component={Link}
+                  onClick={handleClose}
+                  sx={{ p: 1.5, color: "grey.700", borderRadius: "12px" }}
+                >
+                  <ListItemIcon sx={{ fontSize: 24, color: "grey.600" }}>
+                    {option.icon}
+                  </ListItemIcon>
+                  <ListItemText>
+                    <Typography sx={{ fontSize: 14, fontWeight: 600 }}>
+                      {option.name}
+                    </Typography>
+                  </ListItemText>
+                </MenuItem>
+              ))}
 
-          {user?.role === "Customer" && (
+          {!user?.role.includes("Membership") && (
             <>
               <Divider
                 sx={{

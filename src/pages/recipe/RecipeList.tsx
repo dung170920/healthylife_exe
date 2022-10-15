@@ -1,4 +1,4 @@
-import { Button, CircularProgress, Grid, Stack } from "@mui/material";
+import { Button, CircularProgress, Grid, Stack, Tooltip } from "@mui/material";
 import { getRecipeList } from "api";
 import { HeaderBreadcumbs, Pagination } from "components";
 import { RecipeModel, RecipeRequestModel } from "models";
@@ -8,6 +8,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { RootState } from "redux/store";
 import { RecipeItem } from "./components/RecipeItem";
 import { MdAdd } from "react-icons/md";
+import { TbLock } from "react-icons/tb";
 
 type ResponseModel = {
   items: RecipeModel[];
@@ -33,6 +34,18 @@ const RecipeList = () => {
       Page: page,
     });
   }
+
+  const isForMember = (role: any, isMembershipOnly: boolean) => {
+    if (
+      role.includes("Membership") ||
+      role.includes("Chef") ||
+      role.includes("Admin")
+    ) {
+      return true;
+    }
+
+    return false;
+  };
 
   useEffect(() => {
     if (location.pathname !== "/recipes")
@@ -79,9 +92,33 @@ const RecipeList = () => {
           </Stack>
         ) : (
           response?.items &&
-          response.items.map((item) => (
+          response?.items.map((item) => (
             <Grid item xs={4} key={item.id}>
-              <RecipeItem item={item} />
+              <Stack
+                sx={{
+                  // backgroundColor: "Black",
+                  position: "relative",
+                  // display: item.isMembershipOnly ? "" : "none",
+
+                  "& .block_icon": {
+                    position: "absolute",
+                    top: "50%",
+                    right: "50%",
+                    transform: "translate(70%,-50%)",
+                    // margin: "0 auto",
+                    color: "#1AC073",
+                    width: "80px",
+                    height: "80px",
+                  },
+                }}
+              >
+                <RecipeItem
+                  item={item}
+                  // sx="40%"
+                  isMember={isForMember(user?.role, item.isMembershipOnly)}
+                  isFoodForMember={item.isMembershipOnly}
+                />
+              </Stack>
             </Grid>
           ))
         )}
