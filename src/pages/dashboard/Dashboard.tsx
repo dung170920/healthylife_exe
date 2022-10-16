@@ -5,7 +5,6 @@ import MemberAccountInfo from "./components/MemberAccountInfo";
 import RecipeTabList from "./components/RecipeTabList";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/store";
-import { useState, useEffect } from "react";
 
 const TopMain = styled("div")({
   display: "flex",

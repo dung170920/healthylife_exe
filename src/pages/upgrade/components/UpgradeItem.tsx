@@ -9,9 +9,13 @@ import {
 import React, { useState } from "react";
 import { formatPrice } from "utils/formatPrice";
 import { FiCheck } from "react-icons/fi";
-import { upgradeMembership } from "api";
+import { getNewAccessToken, upgradeMembership } from "api";
 import { useNavigate } from "react-router-dom";
 import { CustomSnackBar } from "components";
+import { RootState } from "redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { setToken } from "redux/slices/AuthSlice";
+import { AuthResponseModel } from "models";
 
 type UpgradeItemProps = {
   title: string | React.ReactNode;
@@ -30,26 +34,23 @@ const UpgradeItem = ({
   id,
   isUpgradeSuccess,
 }: UpgradeItemProps) => {
-  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [alert, setAlert] = useState<any>({
     message: "",
     status: false,
     type: "success",
   });
+  const dispatch = useDispatch();
+  let auth = useSelector((state: RootState) => state.auth.auth);
 
   function upgradeAccount() {
     setIsLoading(true);
     upgradeMembership(id)
-      .then((res) => {
-        // console.log(res);
-        // setAlert({
-        //   message: "Nâng cấp tài khoản thành công",
-        //   status: true,
-        //   type: "success",
-        // });
-        // navigate("/users/settings");
+      .then((response) => {
         isUpgradeSuccess(true);
+        getNewAccessToken(auth!.refreshToken).then((res: AuthResponseModel) => {
+          dispatch(setToken(res?.accessToken));
+        });
       })
       .catch((err) => {
         console.log(err);

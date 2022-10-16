@@ -146,7 +146,7 @@ const UserPopover = () => {
                 </MenuItem>
               ))}
 
-          {!user?.role.includes("Membership") && (
+          {user?.role.includes("Customer") && (
             <>
               <Divider
                 sx={{

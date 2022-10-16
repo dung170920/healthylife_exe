@@ -11,18 +11,10 @@ const LeftSideStyle = styled(Stack)(({ theme }) => ({
 
   "& .tab-name": {
     padding: "8px 15px",
-    // color: "#6F767E",
     fontWeight: "600",
     borderRadius: "8px",
     fontSize: "15px",
   },
-
-  // "& .Mui-selected": {
-  //   backgroundColor: "#EFEFEF",
-  //   color: theme.palette.grey[900],
-  //   border: 0,
-  //   fontWeight: "600",
-  // },
 
   "& .MuiTab-root": { textAlign: "right" },
 }));

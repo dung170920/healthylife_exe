@@ -11,6 +11,11 @@ import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { storage } from "config/config";
 import React, { useState, useRef } from "react";
 import { updateUserInfo } from "api/UserApi";
+import { getNewAccessToken } from "api";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "redux/store";
+import { AuthResponseModel } from "models";
+import { setToken } from "redux/slices/AuthSlice";
 
 const RegisterSchema = Yup.object().shape({
   fullName: Yup.string().required("Vui lòng nhập họ và tên"),
@@ -27,12 +32,13 @@ type PropsType = { userData: UserModel };
 const UserInfo = ({ userData }: PropsType) => {
   const fileInputRef = useRef<any>();
   const imgRef = useRef<any>();
-
+  let auth = useSelector((state: RootState) => state.auth.auth);
   const defaultValues = {
     fullName: userData.fullName,
     gender: userData.gender,
     email: userData.email,
   };
+  const dispatch = useDispatch();
   // const [pictureUrl, setPictureUrl] = useState<string>();
 
   const [alert, setAlert] = useState<any>({
@@ -107,12 +113,17 @@ const UserInfo = ({ userData }: PropsType) => {
           data.pictureUrl = reqPic;
         }
 
-        await updateUserInfo(data);
-
-        setAlert({
-          message: "Cập nhật thông tin thành công",
-          status: true,
-          type: "success",
+        updateUserInfo(data).then((response) => {
+          getNewAccessToken(auth!.refreshToken).then(
+            (res: AuthResponseModel) => {
+              dispatch(setToken(res?.accessToken));
+            }
+          );
+          setAlert({
+            message: "Cập nhật thông tin thành công",
+            status: true,
+            type: "success",
+          });
         });
       }, 3000);
     } catch (err) {
@@ -148,6 +159,7 @@ const UserInfo = ({ userData }: PropsType) => {
               userData?.pictureUrl ||
               "https://cdn-icons-png.flaticon.com/512/3177/3177440.png"
             }
+            alt=""
           />
         </Box>
 
