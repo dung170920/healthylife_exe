@@ -1,13 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Paper,
-  Box,
-  Stack,
-  Typography,
-  styled,
-  Tabs,
-  Tab,
-} from "@mui/material";
+import { Paper, Box, Stack, styled, Tabs, Tab } from "@mui/material";
 import HealthInfo from "./components/HealthInfo";
 import UserInfo from "./components/UserInfo";
 import { getProfile } from "api/UserApi";
