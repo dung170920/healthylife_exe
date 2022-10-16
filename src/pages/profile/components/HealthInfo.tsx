@@ -1,5 +1,4 @@
 import {
-  Box,
   Stack,
   Typography,
   FormControl,
@@ -10,9 +9,9 @@ import {
   SelectChangeEvent,
   InputAdornment,
   Button,
+  styled,
 } from "@mui/material";
-import React, { useState } from "react";
-import * as Yup from "yup";
+import React, { useEffect, useState } from "react";
 import { updateHealthInfo } from "api/UserApi";
 import { CustomSnackBar } from "components";
 import { UserModel } from "models/UserModel";
@@ -28,6 +27,84 @@ const convertVNToEn = (targetName: string | undefined) => {
   }
 };
 
+const groups = [
+  {
+    label: "Thiếu cân",
+    max: 18.49,
+  },
+  {
+    label: "Bình thường",
+    min: 18.5,
+    max: 24.99,
+  },
+  {
+    label: "Thừa cân",
+    min: 25,
+    max: 29.99,
+  },
+  {
+    label: "Béo phì độ I",
+    min: 30,
+    max: 34.99,
+  },
+  {
+    label: "Béo phì độ II",
+    min: 35,
+    max: 39.99,
+  },
+  {
+    label: "Béo phì độ III",
+    min: 40,
+  },
+];
+
+type BMIStyleProps = {
+  active: boolean;
+};
+
+const BMIStyle = styled("span", {
+  shouldForwardProp: (props) => props !== "active",
+})<BMIStyleProps>(({ theme, active }: any) => ({
+  padding: "0.5rem",
+  position: "relative",
+  color: "white",
+  width: "145px",
+
+  ":nth-child(1)": {
+    backgroundColor: "#4691e2",
+  },
+  ":nth-child(2)": {
+    backgroundColor: "#0cb764",
+  },
+  ":nth-child(3)": {
+    backgroundColor: "#febf18",
+  },
+  ":nth-child(4)": {
+    backgroundColor: "#fc8711",
+  },
+  ":nth-child(5)": {
+    backgroundColor: "#ff6455",
+  },
+  ":nth-child(6)": {
+    backgroundColor: "#cc1100",
+  },
+
+  ...(active && {
+    "::before": {
+      backgroundColor: "#fff",
+      clipPath: "polygon(0% 0%,0% 100%,75.00% 50.00%)",
+      content: "''",
+      display: "inline-block",
+      height: "1rem",
+      left: "0.5rem",
+      position: "absolute",
+      top: "50%",
+      transform: "translateY(-50%)",
+      width: "1rem",
+    },
+  }),
+}));
+
 type PropsType = { userData: UserModel };
 
 const HealthInfo = ({ userData }: PropsType) => {
@@ -41,6 +118,8 @@ const HealthInfo = ({ userData }: PropsType) => {
     status: false,
     type: "success",
   });
+  const [bmi, setBmi] = useState<number>(0);
+  const [info, setInfo] = useState("");
 
   const handleTargetChange = (event: SelectChangeEvent) => {
     setUserInfo((pre) => ({ ...pre, target: event.target.value }));
@@ -52,7 +131,6 @@ const HealthInfo = ({ userData }: PropsType) => {
     try {
       e.preventDefault();
       await updateHealthInfo(userInfo);
-
       setAlert({
         message: "Cập nhật thông tin thành công",
         status: true,
@@ -62,6 +140,26 @@ const HealthInfo = ({ userData }: PropsType) => {
       console.log(err);
     }
   };
+
+  useEffect(() => {
+    let val =
+      (Number(userInfo.weight) /
+        Number(userInfo.height) /
+        Number(userInfo.height)) *
+      10000;
+    setBmi(val);
+    groups.forEach((item) => {
+      if (!item.min && bmi < item.max!) {
+        setInfo(item.label);
+      }
+      if (bmi > item.min! && bmi < item.max!) {
+        setInfo(item.label);
+      }
+      if (!item.max && bmi > item.min!) {
+        setInfo(item.label);
+      }
+    });
+  }, [bmi, userInfo.height, userInfo.weight]);
 
   return (
     <Stack sx={{ padding: "20px", gap: "20px" }}>
@@ -172,6 +270,14 @@ const HealthInfo = ({ userData }: PropsType) => {
         >
           Lưu
         </Button>
+        <Typography variant="h4" sx={{ mt: 4, mb: 2 }}>
+          Chỉ số BMI của bạn: {bmi.toFixed(1)}
+        </Typography>
+        <Stack direction={"row"} sx={{ width: "100%", textAlign: "center" }}>
+          {groups.map((item) => (
+            <BMIStyle active={info === item.label}>{item.label}</BMIStyle>
+          ))}
+        </Stack>
       </form>
 
       {/* Alert message */}
