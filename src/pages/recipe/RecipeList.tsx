@@ -105,7 +105,7 @@ const RecipeList = () => {
                     position: "absolute",
                     top: "50%",
                     right: "50%",
-                    transform: "translate(70%,-50%)",
+                    transform: "translate(50%,-50%)",
                     // margin: "0 auto",
                     color: "#1AC073",
                     width: "80px",
