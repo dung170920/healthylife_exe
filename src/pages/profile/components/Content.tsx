@@ -166,7 +166,7 @@ const Content = () => {
           });
         });
     }
-  }, [isProfile, userId, params]);
+  }, [isProfile, userId, params, user?.role]);
 
   //////////////////////////////// Start Payment Section ///////////////////////////////
 
