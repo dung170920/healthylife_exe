@@ -38,7 +38,7 @@ export const sendRequestToNganLuong = (params: any) => {
     notify_url: `https://healthy-and-balance.tk/api/v1/payment/ipn`,
   };
 
-  return `https://sandbox.nganluong.vn:8088/nl35/checkout.php?${queryString.stringify(
+  return `https://sandbox.nganluong.vn/nl35/checkout.php?${queryString.stringify(
     nganluongParams
   )}`;
 };
