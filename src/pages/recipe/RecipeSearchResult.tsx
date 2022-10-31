@@ -1,11 +1,10 @@
-import { Grid, Typography, Stack } from "@mui/material";
+import { Grid, Typography, Stack, CircularProgress } from "@mui/material";
 import { getRecipeList } from "api";
 import { HeaderBreadcumbs, Pagination } from "components";
 import { RecipeModel, RecipeRequestModel } from "models";
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
 import { RecipeItem } from "./components/RecipeItem";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 type ResponseModel = {
   items: RecipeModel[];
@@ -14,23 +13,17 @@ type ResponseModel = {
 };
 
 const RecipeList = () => {
-  const location = useLocation();
   const [response, setResponse] = useState<ResponseModel | null>();
   let [searchParams, setSearchParams] = useSearchParams();
   const [filterMode, setFilterMode] = useState(2);
+  const [loading, setLoading] = useState(false);
   let searchKey = searchParams.get("searchKey");
   let recipeName = searchParams.get("RecipeName");
   const [params, setParams] = useState<RecipeRequestModel>({
     FilterMode: filterMode,
     PageSize: 6,
     Page: 1,
-    // SearchKey: `${searchKey?.replaceAll("-", " ")}`,
   });
-
-  const getRecipesData = async () => {
-    const recipeList = await getRecipeList(params);
-    setResponse(recipeList);
-  };
 
   function handlePageChange(event: React.ChangeEvent<unknown>, page: number) {
     setParams({
@@ -40,7 +33,7 @@ const RecipeList = () => {
   }
 
   useEffect(() => {
-    setFilterMode(window.location.search.includes("searchKey") ? 2 : 3);
+    setFilterMode(searchKey !== null ? 2 : 3);
 
     setParams((pre) => ({
       ...pre,
@@ -48,14 +41,19 @@ const RecipeList = () => {
       recipeName: `${recipeName?.replaceAll("-", " ")}`,
       Page: 1,
     }));
-  }, [window.location.search]);
+  }, [searchParams]);
 
   useEffect(() => {
     setParams((pre) => ({ ...pre, FilterMode: filterMode, Page: 1 }));
   }, [filterMode]);
 
   useEffect(() => {
-    getRecipesData();
+    setLoading(true);
+    getRecipeList(params)
+      .then((res) => {
+        setResponse(res);
+      })
+      .finally(() => setLoading(false));
   }, [params]);
 
   return (
@@ -66,7 +64,15 @@ const RecipeList = () => {
         }`}
         links={[{ name: "Trang chủ", to: "/" }, { name: "Kết Quả Tìm Kiếm" }]}
       />
-      {response?.items.length !== 0 ? (
+      {loading ? (
+        <Stack
+          sx={{ height: "100%", width: "100%" }}
+          alignItems={"center"}
+          justifyContent="center"
+        >
+          <CircularProgress />
+        </Stack>
+      ) : response?.items.length !== 0 ? (
         <Grid container spacing={6}>
           {response?.items &&
             response.items.map((item) => (

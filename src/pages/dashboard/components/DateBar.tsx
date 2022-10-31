@@ -1,6 +1,6 @@
 import { Stack, Box, styled, Typography } from "@mui/material";
 import React, { useState, useEffect } from "react";
-import { getMenuByDate, getCurrentWeekMenu } from "api/MenuApi";
+import { getMenuByDate } from "api/MenuApi";
 import moment from "moment";
 
 const DateBarStyle = styled(Stack)(({ theme }) => ({
@@ -9,8 +9,8 @@ const DateBarStyle = styled(Stack)(({ theme }) => ({
   color: theme.palette.grey[900],
 }));
 const DateBarItemStyle = styled(Box)(({ theme }) => ({
-  borderRadius: "18px",
-  padding: "6px",
+  borderRadius: "12px",
+  padding: "12px 18px",
   textAlign: "center",
 }));
 
@@ -42,7 +42,7 @@ const DateBar = ({ onGetMenuByDate, dates }: any) => {
   const FetchMenuData = async () => {
     let res = null;
 
-    if (moment().add(1, "days").get("dates") == dateTab.get("dates")) {
+    if (moment().add(1, "days").get("dates") === dateTab.get("dates")) {
       res = await getMenuByDate(moment().toISOString());
     } else {
       res = await getMenuByDate(dateTab.toISOString());
@@ -58,7 +58,7 @@ const DateBar = ({ onGetMenuByDate, dates }: any) => {
   return (
     <DateBarStyle
       direction="row"
-      spacing={1.5}
+      spacing={0}
       alignItems="center"
       justifyContent="center"
     >
@@ -84,8 +84,10 @@ const DateBar = ({ onGetMenuByDate, dates }: any) => {
             }`,
           }}
         >
-          <Typography fontSize={14}>{d.getDate()}</Typography>
-          <Typography fontSize={14}>{StringOfDay(d.getDay())}</Typography>
+          <Typography fontSize={16} fontWeight={"bold"}>
+            {d.getDate()}
+          </Typography>
+          <Typography fontSize={12}>{StringOfDay(d.getDay())}</Typography>
         </DateBarItemStyle>
       ))}
     </DateBarStyle>
