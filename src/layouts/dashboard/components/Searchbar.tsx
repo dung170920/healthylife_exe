@@ -3,23 +3,20 @@ import {
   InputAdornment,
   Select,
   SelectChangeEvent,
-  FormControl,
   Stack,
   MenuItem,
 } from "@mui/material";
-import React, { useState, useRef, useEffect } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import React, { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { RiSearchLine } from "react-icons/ri";
 
 const Searchbar = () => {
   const searchRef = useRef<HTMLInputElement>(null);
-  const [searchParams, setSearchParams] = useSearchParams();
   const [mode, setMode] = useState("Tên món");
 
   const navigate = useNavigate();
 
   const handleFilterModeChange = (event: SelectChangeEvent) => {
-    // setAge(event.target.value as string);
     setMode(event.target.value as string);
   };
 

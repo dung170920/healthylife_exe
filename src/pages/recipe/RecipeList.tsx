@@ -1,4 +1,4 @@
-import { Button, CircularProgress, Grid, Stack, Tooltip } from "@mui/material";
+import { Button, CircularProgress, Grid, Stack } from "@mui/material";
 import { getRecipeList } from "api";
 import { HeaderBreadcumbs, Pagination } from "components";
 import { RecipeModel, RecipeRequestModel } from "models";
@@ -8,7 +8,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { RootState } from "redux/store";
 import { RecipeItem } from "./components/RecipeItem";
 import { MdAdd } from "react-icons/md";
-import { TbLock } from "react-icons/tb";
 
 type ResponseModel = {
   items: RecipeModel[];
@@ -25,6 +24,9 @@ const RecipeList = () => {
     FilterMode: 2,
     PageSize: 6,
     Page: 1,
+    ...(location.pathname !== "/recipes" && {
+      FoodTypeId: location.pathname.includes("foods") ? 2 : 1,
+    }),
   });
   let user = useSelector((state: RootState) => state.auth.auth?.user);
 
@@ -48,12 +50,13 @@ const RecipeList = () => {
   };
 
   useEffect(() => {
-    if (location.pathname !== "/recipes")
+    if (location.pathname !== "/recipes") {
       setParams((params) => ({
         ...params,
         FoodTypeId: location.pathname.includes("foods") ? 2 : 1,
         Page: 1,
       }));
+    }
   }, [location.pathname]);
 
   useEffect(() => {
