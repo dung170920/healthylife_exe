@@ -24,11 +24,11 @@ export const getUserById = async (params: UserRequestModel) => {
 };
 
 export const updateUserInfo = async (params: UserInfoUpdateRequestModel) => {
-  return await axiosPrivate.post(`${apiPath}/profile`, params);
+  return await axiosPrivate.patch(`${apiPath}/profile`, params);
 };
 
 export const updateHealthInfo = async (
   params: HealthInfoUpdateRequestModel
 ) => {
-  return await axiosPrivate.post(`${apiPath}/health-status`, params);
+  return await axiosPrivate.patch(`${apiPath}/health-status`, params);
 };
