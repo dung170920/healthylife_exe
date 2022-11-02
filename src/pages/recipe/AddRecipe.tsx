@@ -30,6 +30,8 @@ import { FoodCoverIcon } from "assets/icons";
 import { HiPlus, HiOutlineMinusCircle } from "react-icons/hi";
 import { addRecipe, getIngredientList } from "api";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "redux/store";
 
 const AddRecipeSchema = Yup.object().shape({
   name: Yup.string().required("Vui lòng nhập tên"),
@@ -105,6 +107,7 @@ const ImgStyle = styled("img")(() => ({
 
 const AddRecipe = () => {
   const navigate = useNavigate();
+  let user = useSelector((state: RootState) => state.auth.auth?.user);
   const uploadImgFoodRef = useRef<any>();
   const imgRef = useRef<any>();
   const [pictureUrl, setPictureUrl] = useState<string>();
@@ -200,8 +203,11 @@ const AddRecipe = () => {
       setTimeout(async () => {
         data.pictureUrl = uploadPic;
         await addRecipe(data);
-
-        navigate("/recipes/management");
+        if (user !== undefined && user.role === "admin") {
+          navigate("/recipes");
+        } else {
+          navigate("/recipes/management");
+        }
       }, 8000);
     } catch (err) {
       console.log(err);
@@ -349,6 +355,7 @@ const AddRecipe = () => {
               <img
                 ref={imgRef}
                 // src="https://go2joy.s3.ap-southeast-1.amazonaws.com/blog/wp-content/uploads/2022/04/30104619/thit-ga-chien-mam-toi-72-mon.jpg"/>
+                alt=""
               />
               <Button
                 sx={{
